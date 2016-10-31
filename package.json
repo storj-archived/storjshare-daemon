@@ -1,0 +1,30 @@
+{
+  "name": "storjshare-utils",
+  "version": "1.0.0",
+  "description": "utility required for farming on the storj network",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storj/storjshare-utils.git"
+  },
+  "keywords": [
+    "storj",
+    "farmer",
+    "utils",
+    "storjshare",
+    "share"
+  ],
+  "author": "Alexander Leitner <alex@storj.io>",
+  "contributors": [
+  ],
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/storj/storjshare-utils/issues"
+  },
+  "homepage": "https://github.com/storj/storjshare-utils#readme",
+  "dependencies": {
+    "async": "^1.5.2",
+    "graceful-fs": "^4.1.9",
+    "storj-lib": "^4.1.0"
+  }
+}
