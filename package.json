@@ -1,5 +1,5 @@
 {
-  "name": "storjshare-utils",
+  "name": "storjshare-daemon",
   "version": "1.0.0",
   "description": "utility required for farming on the storj network",
   "preferGlobal": true,
@@ -24,7 +24,10 @@
   "homepage": "https://github.com/storj/storjshare-utils#readme",
   "dependencies": {
     "async": "^1.5.2",
+    "du": "^0.1.0",
+    "fd-diskspace": "littleskunk/fd-diskspace",
     "graceful-fs": "^4.1.9",
+    "merge": "^1.2.0",
     "storj-lib": "^4.1.0"
   }
 }
