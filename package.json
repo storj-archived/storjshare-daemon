@@ -2,6 +2,7 @@
   "name": "storjshare-daemon",
   "version": "1.0.0",
   "description": "utility required for farming on the storj network",
+  "main": "index.js",
   "preferGlobal": true,
   "repository": {
     "type": "git",
