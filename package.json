@@ -28,7 +28,10 @@
     "du": "^0.1.0",
     "fd-diskspace": "littleskunk/fd-diskspace",
     "graceful-fs": "^4.1.9",
+    "kad-logger-json": "^0.1.2",
     "merge": "^1.2.0",
-    "storj-lib": "^4.1.0"
+    "myspeed": "^1.0.1",
+    "storj-lib": "^4.1.0",
+    "storj-telemetry-reporter": "^2.0.0"
   }
 }
