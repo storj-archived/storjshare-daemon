@@ -6,7 +6,6 @@
 
 'use strict';
 
-
 /** {@link ConfigManager} */
 exports.ConfigManager = require('./lib/config');
 
@@ -14,4 +13,7 @@ exports.ConfigManager = require('./lib/config');
 exports.Farmer = require('./lib/farmer');
 
 /** {@link Utils} */
-exports.Utils = require('./lib/utils');
+exports.utils = require('./lib/utils');
+
+/** {@link Utils} */
+exports.reporter = require('./lib/reporter');
