@@ -52,6 +52,7 @@
     "mocha": "^2.2.4",
     "noisegen": "^1.0.0",
     "proxyquire": "^1.7.3",
+    "rimraf": "^2.5.3",
     "sinon": "^1.14.1"
   }
 }

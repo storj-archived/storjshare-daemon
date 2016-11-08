@@ -10,6 +10,8 @@ var path = require('path');
 var DIR = path.basename(__dirname);
 var testJsonPath = path.join(DIR, '/_fixtures/test.json');
 var testJson = fs.readFileSync(testJsonPath);
+var tmpdir = require('os').tmpdir();
+var rimraf = require('rimraf');
 
 describe('Farmer', function() {
 
@@ -20,8 +22,16 @@ describe('Farmer', function() {
         'test',
         JSON.parse(testJson.toString())
       );
-      configManager.updateConfig()
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'butts'),
+            path: tmpdir
+          }
+        }
+      );
       expect(Farmer(configManager)).to.be.instanceOf(Farmer);
+      rimraf.sync(path.join(tmpdir, 'butts'));
     });
 
     it('should throw an error if no ConfigManager was passed in', function() {
