@@ -1,7 +1,7 @@
 {
   "farmerConf": {
     "keyPair": null,
-    "paymentAddress": "1EkMi5CFSkPY8jeAdfu3y1tUPCERQAfVx9",
+    "paymentAddress": "1EkMi5CFSkPY8jeAdfu3y1tUPCERQAf9xV",
     "storageManager": {},
     "rpcAddress": "127.0.0.1",
     "maxOfferConcurrency": 3,
