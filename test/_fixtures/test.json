@@ -1,0 +1,39 @@
+{
+  "farmerConf": {
+    "keyPair": null,
+    "paymentAddress": "1EkMi5CFSkPY8jeAdfu3y1tUPCERQAfVx9",
+    "storageManager": {},
+    "rpcAddress": "127.0.0.1",
+    "maxOfferConcurrency": 3,
+    "rpcPort": 4000,
+    "maxConnections": 150,
+    "seedList": [],
+    "renterWhitelist": [],
+    "doNotTraverseNat": false,
+    "logger": {},
+    "tunnelServerPort": 4001,
+    "maxTunnels": 3,
+    "tunnelGatewayRange": {
+      "max": 4004,
+      "min": 4002
+    },
+    "opcodeSubscriptions": [
+      "0f01020202",
+      "0f02020202",
+      "0f03020202"
+    ]
+  },
+  "connectedPeers": 0,
+  "telemetry": {
+    "service": "https://status.storj.io",
+    "enabled": true
+  },
+  "loglevel": 3,
+  "storage": {
+    "path": "/Users/testuser/Desktop",
+    "dataDir": "/Users/testuser/Desktop/storjshare-butts",
+    "size": 2,
+    "unit": "GB"
+  },
+  "privkey": "b2d2e55c459fdb9a5a1f39e1c0ed98c05cf6c8747a67642672faf5cd176f01e9"
+}
