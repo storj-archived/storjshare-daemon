@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "utility required for farming on the storj network",
   "main": "index.js",
+  "directories": {
+    "test": "test",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "npm run testsuite && npm run linter",
+    "testsuite": "STORJ_ALLOW_LOOPBACK=1 ./node_modules/.bin/mocha test/** --recursive",
+    "coverage": "STORJ_ALLOW_LOOPBACK=1 ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive",
+    "linter": "./node_modules/.bin/jshint --config .jshintrc ./index.js ./lib ./test"
+  },
   "preferGlobal": true,
   "repository": {
     "type": "git",
@@ -16,8 +26,7 @@
     "share"
   ],
   "author": "Alexander Leitner <alex@storj.io>",
-  "contributors": [
-  ],
+  "contributors": [],
   "license": "AGPL-3.0",
   "bugs": {
     "url": "https://github.com/storj/storjshare-utils/issues"
@@ -33,5 +42,16 @@
     "myspeed": "^1.0.1",
     "storj-lib": "^4.1.0",
     "storj-telemetry-reporter": "^2.0.0"
+  },
+  "devDependencies": {
+    "benchmark": "^2.1.1",
+    "chai": "^2.2.0",
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.13",
+    "jshint": "2.8.0",
+    "mocha": "^2.2.4",
+    "noisegen": "^1.0.0",
+    "proxyquire": "^1.7.3",
+    "sinon": "^1.14.1"
   }
 }
