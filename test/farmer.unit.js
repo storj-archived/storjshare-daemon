@@ -159,7 +159,7 @@ describe('Farmer', function() {
           )
         },
         './reporter': {
-          report: sinon.stub().throws(new Error('telemetry error'))
+          start: sinon.stub().throws(new Error('telemetry error'))
         }
       });
       var farmer = new stubbedFarmer(configManager);
