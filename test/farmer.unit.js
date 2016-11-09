@@ -205,6 +205,7 @@ describe('Farmer', function() {
       var farmer = new stubbedFarmer(configManager);
       farmer.start(function() {
         farmer.stop(function(err) {
+          /*jshint expr: true*/
           expect(farmer.farmer.leave).to.have.been.called;
           expect(err).to.equal(null);
           done();

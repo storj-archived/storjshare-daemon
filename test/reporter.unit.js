@@ -1,3 +1,3 @@
 'use strict';
 
-var reporter = require('../lib/reporter');
+// var reporter = require('../lib/reporter');
