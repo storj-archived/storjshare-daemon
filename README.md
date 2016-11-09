@@ -13,3 +13,53 @@ and Git installed. [Complete documentation can be found here](http://storj.githu
 ```
 npm install storjshare-daemon --save
 ```
+
+Including in your project 
+```
+var ConfigManager = require('storjshare-daemon').ConfigManager;
+var Farmer = require('storjshare-daemon').Farmer;
+```
+
+Generating the Config Manager
+```
+var configName = 'test';
+var config = {
+      farmerConf: {
+        paymentAddress: '123123334123
+      },
+      storage: {
+        path: '/path/to/datadir',
+        dataDir: path.join('/path/to/datadir', 'storjshare-' + configName),
+        size: size,
+        unit: unit
+      }
+    };
+
+var configManager = new ConfigManager(configName, config);
+
+configManager.saveConfig(function(err) {
+  if (err) {
+    console.log(err)
+  }
+});
+```
+
+Generating the Farmer
+```
+var configName = 'test';
+var configManager = new ConfigManager(configName);
+
+// Initialize Farmer with configManager
+var farmer = new Farmer(configManager);
+
+// Pipe the output to wherever
+configManager.config.farmerConf.logger.pipe(process.stdout);
+
+
+// Begin Farming
+farmer.start(function(err) {
+  if(err) {
+    console.log('Failed to start: ' + err.message);
+  }
+});
+```
