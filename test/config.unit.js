@@ -46,7 +46,7 @@ describe('ConfigManager', function() {
 
     it('should return defaults if no conf file exists', function() {
       var configManager = new ConfigManager('test');
-      expect(configManager._readConf()).to.equal(ConfigManager.DEFAULTS);
+      expect(configManager._readConf()).to.eql(ConfigManager.DEFAULTS);
     });
 
     it('should return config from file if it exists', function() {

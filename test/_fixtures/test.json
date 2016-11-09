@@ -26,7 +26,7 @@
   "connectedPeers": 0,
   "telemetry": {
     "service": "https://status.storj.io",
-    "enabled": true
+    "enabled": false
   },
   "loglevel": 3,
   "storage": {
