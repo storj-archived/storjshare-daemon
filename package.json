@@ -1,6 +1,6 @@
 {
   "name": "storjshare-daemon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "utility required for farming on the storj network",
   "main": "index.js",
   "directories": {
