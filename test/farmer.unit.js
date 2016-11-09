@@ -106,6 +106,238 @@ describe('Farmer', function() {
       rimraf.sync(path.join(tmpdir, 'test'));
     });
 
+    it('should callback with error if failed to join network', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          }
+        }
+      );
+      var stubbedFarmer = proxyquire('../lib/farmer', {
+        'storj-lib': {
+          FarmerInterface: sinon.stub().returns(
+            { join: sinon.stub().callsArgWith(0, new Error('failed to join')) }
+          )
+        }
+      });
+      var farmer = new stubbedFarmer(configManager);
+      farmer.start(function(err) {
+        expect(err.message).to.equal('failed to join');
+        done();
+      });
+
+      rimraf.sync(path.join(tmpdir, 'test'));
+    });
+
+    it('should callback with error if telemetry report fails', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          },
+          telemetry:
+          {
+            enabled: true
+          }
+        }
+      );
+      var stubbedFarmer = proxyquire('../lib/farmer', {
+        'storj-lib': {
+          FarmerInterface: sinon.stub().returns(
+            { join: sinon.stub().callsArgWith(0, null) }
+          )
+        },
+        './reporter': {
+          report: sinon.stub().throws(new Error('telemetry error'))
+        }
+      });
+      var farmer = new stubbedFarmer(configManager);
+      farmer.start(function(err) {
+        expect(err.message).to.equal('telemetry error');
+        done();
+      });
+
+      rimraf.sync(path.join(tmpdir, 'test'));
+    });
+
+  });
+
+  describe('_stop', function() {
+
+    it('should stop the farmer', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          },
+          telemetry:
+          {
+            enabled: true
+          }
+        }
+      );
+      var stubbedFarmer = proxyquire('../lib/farmer', {
+        'storj-lib': {
+          FarmerInterface: sinon.stub().returns(
+            {
+              join: sinon.stub().callsArgWith(0, null),
+              leave: sinon.stub().callsArgWith(0, null)
+            }
+          )
+        }
+      });
+      var farmer = new stubbedFarmer(configManager);
+      farmer.start(function() {
+        farmer.stop(function(err) {
+          expect(farmer.farmer.leave).to.have.been.called;
+          expect(err).to.equal(null);
+          done();
+        });
+      });
+
+      rimraf.sync(path.join(tmpdir, 'test'));
+    });
+
+    it('should callback with null if no farmer was set', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          }
+        }
+      );
+      var farmer = new Farmer(configManager);
+      farmer.stop(function(err) {
+        expect(err).to.equal(null);
+        done();
+      });
+
+      rimraf.sync(path.join(tmpdir, 'test'));
+    });
+
+    it('should callback with error if fails to leave network', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          }
+        }
+      );
+      var stubbedFarmer = proxyquire('../lib/farmer', {
+        'storj-lib': {
+          FarmerInterface: sinon.stub().returns(
+            {
+              join: sinon.stub().callsArgWith(0, null),
+              leave: sinon.stub().callsArgWith(0, new Error('Failed to leave'))
+            }
+          )
+        }
+      });
+      var farmer = new stubbedFarmer(configManager);
+      farmer.start(function() {
+        farmer.stop(function(err) {
+          expect(err.message).to.equal('Failed to leave');
+          done();
+        });
+      });
+
+      rimraf.sync(path.join(tmpdir, 'test'));
+    });
+
+  });
+
+  describe('_restart', function() {
+
+    it('should callback with null if successfully restarts', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          }
+        }
+      );
+      var stubbedFarmer = proxyquire('../lib/farmer', {
+        'storj-lib': {
+          FarmerInterface: sinon.stub().returns(
+            {
+              join: sinon.stub().callsArgWith(0, null),
+              leave: sinon.stub().callsArgWith(0, null)
+            }
+          )
+        }
+      });
+      var farmer = new stubbedFarmer(configManager);
+      farmer.start(function() {
+        farmer.restart(function(err) {
+          expect(err).to.equal(null);
+          done();
+        });
+      });
+    });
+
+    it('should callback with err if fails to restart', function(done) {
+      var configManager = new ConfigManager(
+        'test',
+        JSON.parse(testJson.toString())
+      );
+      configManager.updateConfig(
+        { storage:
+          {
+            dataDir: path.join(tmpdir, 'test'),
+            path: tmpdir
+          }
+        }
+      );
+      var stubbedFarmer = proxyquire('../lib/farmer', {
+        'storj-lib': {
+          FarmerInterface: sinon.stub().returns(
+            {
+              join: sinon.stub().callsArgWith(0, null),
+              leave: sinon.stub().callsArgWith(0, new Error('failed to start'))
+            }
+          )
+        }
+      });
+      var farmer = new stubbedFarmer(configManager);
+      farmer.start(function() {
+        farmer.restart(function(err) {
+          expect(err.message).to.equal('failed to start');
+          done();
+        });
+      });
+    });
+
   });
 
 });
