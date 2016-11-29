@@ -92,7 +92,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             { join: sinon.stub().callsArgWith(0, null) }
           )
         }
@@ -121,7 +121,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             { join: sinon.stub().callsArgWith(0, new Error('failed to join')) }
           )
         }
@@ -154,7 +154,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             { join: sinon.stub().callsArgWith(0, null) }
           )
         },
@@ -194,7 +194,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, null)
@@ -252,7 +252,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, new Error('Failed to leave'))
@@ -290,7 +290,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, null)
@@ -322,7 +322,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, new Error('failed to start'))
