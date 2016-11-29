@@ -1,4 +1,5 @@
 {
+  "farmerId": "test", 
   "farmerConf": {
     "keyPair": null,
     "paymentAddress": "1EkMi5CFSkPY8jeAdfu3y1tUPCERQAf9xV",
