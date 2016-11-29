@@ -39,7 +39,7 @@
     "graceful-fs": "^4.1.9",
     "kad-logger-json": "^0.1.2",
     "merge": "^1.2.0",
-    "storj-lib": "^6.0.0",
+    "storj-lib": "bookchin/storj-core",
     "storj-telemetry-reporter": "^4.0.0"
   },
   "devDependencies": {
