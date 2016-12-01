@@ -24,6 +24,7 @@ Generating the Config Manager
 ```
 var configName = 'test';
 var config = {
+      farmerId: configName,
       farmerConf: {
         paymentAddress: '123123334123
       },
@@ -35,7 +36,7 @@ var config = {
       }
     };
 
-var configManager = new ConfigManager(configName, config);
+var configManager = new ConfigManager(config);
 
 configManager.saveConfig(function(err) {
   if (err) {
@@ -47,7 +48,7 @@ configManager.saveConfig(function(err) {
 Generating the Farmer
 ```
 var configName = 'test';
-var configManager = new ConfigManager(configName);
+var configManager = new ConfigManager({ farmerId: configName });
 
 // Initialize Farmer with configManager
 var farmer = new Farmer(configManager);
@@ -62,4 +63,11 @@ farmer.start(function(err) {
     console.log('Failed to start: ' + err.message);
   }
 });
+```
+
+You may also pass a path to the ConfigManager to load a config from a specific location
+```
+var configName = 'test';
+var configPath = '/Desktop/testconfig.json';
+var configManager = new ConfigManager({ farmerId: configName }, configPath);
 ```
