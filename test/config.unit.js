@@ -16,7 +16,7 @@ describe('ConfigManager', function() {
   describe('@constructor', function() {
 
     it('should work without the new keyword', function() {
-      expect(ConfigManager('test')).to.be.instanceOf(ConfigManager);
+      expect(ConfigManager({farmerId: 'test'})).to.be.instanceOf(ConfigManager);
     });
 
     it('should throw an error if no farmerId', function() {
@@ -35,9 +35,27 @@ describe('ConfigManager', function() {
           writeFileSync: sinon.stub()
         }
       });
-      var configManager = new stubbedConfigManager('test', { loglevel: 2 });
+      var configManager = new stubbedConfigManager(
+        { farmerId: 'test', loglevel: 2 }
+      );
       expect(configManager.config).to.have.property('loglevel')
         .and.equal(2);
+    });
+
+    it('should use the passed in path', function() {
+      var stubbedConfigManager = proxyquire('../lib/config', {
+        './utils': {
+          existsSync: sinon.stub().returns(true)
+        },
+        'fs': {
+          readFileSync: sinon.stub().returns(testJson),
+          writeFileSync: sinon.stub()
+        }
+      });
+      var configManager = new stubbedConfigManager(
+        { farmerId: 'test', loglevel: 2 }, testJsonPath
+      );
+      expect(configManager.confPath).to.equal(testJsonPath);
     });
 
   });
@@ -45,7 +63,7 @@ describe('ConfigManager', function() {
   describe('_readConf', function() {
 
     it('should return defaults if no conf file exists', function() {
-      var configManager = new ConfigManager('test');
+      var configManager = new ConfigManager({farmerId: 'test'});
       expect(configManager._readConf()).to.eql(ConfigManager.DEFAULTS);
     });
 
@@ -59,7 +77,7 @@ describe('ConfigManager', function() {
           writeFileSync: sinon.stub()
         }
       });
-      var configManager = new stubbedConfigManager('test');
+      var configManager = new stubbedConfigManager({farmerId: 'test'});
       expect(configManager._readConf()).to.have.property('loglevel')
         .and.equal(3);
     });
@@ -75,7 +93,7 @@ describe('ConfigManager', function() {
         }
       });
       expect(function() {
-        stubbedConfigManager('test');
+        stubbedConfigManager({farmerId: 'test'});
       }).to.throw(SyntaxError);
     });
   });
@@ -83,7 +101,7 @@ describe('ConfigManager', function() {
   describe('_saveConfigSync', function() {
 
     it('should save the config', function() {
-      var configManager = new ConfigManager('test');
+      var configManager = new ConfigManager({farmerId: 'test'});
       configManager.confPath = path.join(tmpdir, 'test.json');
       configManager.saveConfigSync();
       expect(JSON.parse(fs.readFileSync(configManager.confPath).toString()))
@@ -96,7 +114,7 @@ describe('ConfigManager', function() {
   describe('_saveConfig', function() {
 
     it('should save the config', function(done) {
-      var configManager = new ConfigManager('test');
+      var configManager = new ConfigManager({farmerId: 'test'});
       configManager.confPath = path.join(tmpdir, 'test.json');
       configManager.saveConfig(function() {
         expect(JSON.parse(fs.readFileSync(configManager.confPath).toString()))
@@ -112,7 +130,7 @@ describe('ConfigManager', function() {
   describe('_updateConfig', function() {
 
     it('should update the config', function() {
-      var configManager = new ConfigManager('test');
+      var configManager = new ConfigManager({farmerId: 'test'});
       configManager.updateConfig({ loglevel: 5 });
       expect(configManager.config).to.have.property('loglevel')
         .and.equal(5);
@@ -123,7 +141,7 @@ describe('ConfigManager', function() {
   describe('_getAddress', function() {
 
     it('should return an address formatted without whitespace', function() {
-      var configManager = new ConfigManager('test');
+      var configManager = new ConfigManager({farmerId: 'test'});
       configManager.updateConfig({ farmerConf: { paymentAddress: ' 1234 ' }});
       expect(configManager.getAddress()).to.equal('1234');
     });

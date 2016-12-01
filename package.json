@@ -1,6 +1,6 @@
 {
   "name": "storjshare-daemon",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "utility required for farming on the storj network",
   "main": "index.js",
   "directories": {
@@ -39,9 +39,8 @@
     "graceful-fs": "^4.1.9",
     "kad-logger-json": "^0.1.2",
     "merge": "^1.2.0",
-    "myspeed": "^1.0.1",
-    "storj-lib": "^4.1.0",
-    "storj-telemetry-reporter": "^2.0.0"
+    "storj-lib": "bookchin/storj-core",
+    "storj-telemetry-reporter": "bookchin/storj-telemetry-reporter#upgrade/storj-lib-6"
   },
   "devDependencies": {
     "benchmark": "^2.1.1",

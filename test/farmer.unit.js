@@ -21,19 +21,18 @@ describe('Farmer', function() {
 
     it('should work without the new keyword', function() {
       var configManager = new ConfigManager(
-        'butts',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
         { storage:
           {
-            dataDir: path.join(tmpdir, 'butts'),
+            dataDir: path.join(tmpdir, 'test'),
             path: tmpdir
           }
         }
       );
       expect(Farmer(configManager)).to.be.instanceOf(Farmer);
-      rimraf.sync(path.join(tmpdir, 'butts'));
+      rimraf.sync(path.join(tmpdir, 'test'));
     });
 
     it('should throw an error if no ConfigManager was passed in', function() {
@@ -47,14 +46,13 @@ describe('Farmer', function() {
   describe('_prepare', function() {
     it('should prepare the StorageManager using the config', function() {
       var configManager = new ConfigManager(
-        'butts',
         JSON.parse(testJson.toString())
       );
 
       configManager.updateConfig(
         { storage:
           {
-            dataDir: path.join(tmpdir, 'butts'),
+            dataDir: path.join(tmpdir, 'test'),
             path: tmpdir
           }
         }
@@ -69,7 +67,7 @@ describe('Farmer', function() {
         farmerConfig.keyPair instanceof storj.KeyPair
       )
         .to.equal(true);
-      rimraf.sync(path.join(tmpdir, 'butts'));
+      rimraf.sync(path.join(tmpdir, 'test'));
 
     });
 
@@ -79,7 +77,6 @@ describe('Farmer', function() {
 
     it('should start the farmer', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -92,7 +89,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             { join: sinon.stub().callsArgWith(0, null) }
           )
         }
@@ -108,7 +105,6 @@ describe('Farmer', function() {
 
     it('should callback with error if failed to join network', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -121,7 +117,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             { join: sinon.stub().callsArgWith(0, new Error('failed to join')) }
           )
         }
@@ -137,7 +133,6 @@ describe('Farmer', function() {
 
     it('should callback with error if telemetry report fails', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -154,7 +149,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             { join: sinon.stub().callsArgWith(0, null) }
           )
         },
@@ -177,7 +172,6 @@ describe('Farmer', function() {
 
     it('should stop the farmer', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -194,7 +188,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, null)
@@ -217,7 +211,6 @@ describe('Farmer', function() {
 
     it('should callback with null if no farmer was set', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -239,7 +232,6 @@ describe('Farmer', function() {
 
     it('should callback with error if fails to leave network', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -252,7 +244,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, new Error('Failed to leave'))
@@ -277,7 +269,6 @@ describe('Farmer', function() {
 
     it('should callback with null if successfully restarts', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -290,7 +281,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, null)
@@ -309,7 +300,6 @@ describe('Farmer', function() {
 
     it('should callback with err if fails to restart', function(done) {
       var configManager = new ConfigManager(
-        'test',
         JSON.parse(testJson.toString())
       );
       configManager.updateConfig(
@@ -322,7 +312,7 @@ describe('Farmer', function() {
       );
       var stubbedFarmer = proxyquire('../lib/farmer', {
         'storj-lib': {
-          FarmerInterface: sinon.stub().returns(
+          Farmer: sinon.stub().returns(
             {
               join: sinon.stub().callsArgWith(0, null),
               leave: sinon.stub().callsArgWith(0, new Error('failed to start'))
