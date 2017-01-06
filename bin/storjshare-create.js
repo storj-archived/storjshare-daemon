@@ -3,7 +3,7 @@
 'use strict';
 
 const editor = require('editor');
-const {homedir} = require('os');
+const {tmpdir, homedir} = require('os');
 const fs = require('fs');
 const storj = require('storj-lib');
 const path = require('path');
@@ -45,6 +45,16 @@ if (!storjshare_create.logfile) {
   );
 }
 
+let isWritingToTemp = false;
+
+if (!storjshare_create.outfile) {
+  isWritingToTemp = true;
+  storjshare_create.outfile = path.join(
+    tmpdir(),
+    storj.KeyPair(storjshare_create.privkey).getNodeID() + '.json'
+  );
+}
+
 let exampleConfigPath = path.join(__dirname, '../example/farmer.config.json');
 let exampleConfigString = fs.readFileSync(exampleConfigPath).toString();
 
@@ -60,22 +70,20 @@ replaceEmptyConfig('networkPrivateKey', storjshare_create.privkey);
 replaceEmptyConfig('loggerOutputFile', storjshare_create.logfile);
 replaceEmptyConfig('storagePath', storjshare_create.storage);
 
-if (storjshare_create.outfile) {
-  let outfile = path.join(process.cwd(), storjshare_create.outfile);
+let outfile = isWritingToTemp ?
+              storjshare_create.outfile :
+              path.join(process.cwd(), storjshare_create.outfile);
 
-  try {
-    fs.writeFileSync(outfile, exampleConfigString);
-  } catch (err) {
-    console.log (`\n  failed to write config, reason: ${err.message}`);
-    process.exit(1);
-  }
-
-  console.log(`\n  * configuration written to ${outfile}`);
-  console.log('  * opening in your favorite editor to tweak before running');
-  editor(outfile, () => {
-    console.log('  ...');
-    console.log(`  * use new config: storjshare start --config ${outfile}`);
-  });
-} else {
-  process.stdout.write(exampleConfigString);
+try {
+  fs.writeFileSync(outfile, exampleConfigString);
+} catch (err) {
+  console.log (`\n  failed to write config, reason: ${err.message}`);
+  process.exit(1);
 }
+
+console.log(`\n  * configuration written to ${outfile}`);
+console.log('  * opening in your favorite editor to tweak before running');
+editor(outfile, () => {
+  console.log('  ...');
+  console.log(`  * use new config: storjshare start --config ${outfile}`);
+});
