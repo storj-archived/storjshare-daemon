@@ -46,6 +46,7 @@
     "daemon": "^1.1.0",
     "dnode": "^1.2.2",
     "du": "^0.1.0",
+    "editor": "^1.0.0",
     "fd-diskspace": "github:littleskunk/fd-diskspace#2866a4cf147649d97f81fb33464bcbf0f8176bd5",
     "kad-logger-json": "^0.1.2",
     "mkdirp": "^0.5.1",

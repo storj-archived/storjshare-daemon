@@ -2,6 +2,7 @@
 
 'use strict';
 
+const editor = require('editor');
 const {homedir} = require('os');
 const fs = require('fs');
 const storj = require('storj-lib');
@@ -70,10 +71,11 @@ if (storjshare_create.outfile) {
   }
 
   console.log(`\n  * configuration written to ${outfile}`);
-  console.log('  * open in your favorite editor to tweak before running:');
-  console.log('');
-  console.log(`       storjshare start --config ${outfile}`);
-  process.exit(0);
+  console.log('  * opening in your favorite editor to tweak before running');
+  editor(outfile, () => {
+    console.log('  ...');
+    console.log(`  * use new config: storjshare start --config ${outfile}`);
+  });
+} else {
+  process.stdout.write(exampleConfigString);
 }
-
-process.stdout.write(exampleConfigString);
