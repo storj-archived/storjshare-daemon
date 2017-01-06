@@ -5,7 +5,7 @@
 const storj = require('storj-lib');
 const dnode = require('dnode');
 const path = require('path');
-const config = require('../lib/config');
+const config = require('../lib/config/daemon');
 const storjshare_start = require('commander');
 
 storjshare_start

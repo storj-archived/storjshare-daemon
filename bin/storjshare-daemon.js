@@ -4,7 +4,7 @@
 
 const daemonize = require('daemon');
 const dnode = require('dnode');
-const config = require('../lib/config');
+const config = require('../lib/config/daemon');
 const RPC = require('../lib/api');
 const api = new RPC({ logVerbosity: config.daemonLogVerbosity });
 const {createWriteStream} = require('fs');

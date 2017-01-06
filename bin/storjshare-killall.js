@@ -2,7 +2,7 @@
 
 'use strict';
 
-const config = require('../lib/config');
+const config = require('../lib/config/daemon');
 const dnode = require('dnode');
 const sock = dnode.connect(config.daemonRpcPort);
 

@@ -40,15 +40,21 @@
   },
   "homepage": "https://github.com/storj/storjshare-daemon#readme",
   "dependencies": {
+    "cli-table": "^0.3.1",
+    "colors": "^1.1.2",
     "commander": "^2.9.0",
     "daemon": "^1.1.0",
     "dnode": "^1.2.2",
+    "du": "^0.1.0",
+    "fd-diskspace": "github:littleskunk/fd-diskspace#2866a4cf147649d97f81fb33464bcbf0f8176bd5",
     "kad-logger-json": "^0.1.2",
     "mkdirp": "^0.5.1",
+    "pretty-ms": "^2.1.0",
     "rc": "^1.1.6",
     "readable-stream": "^2.2.2",
     "storj-lib": "^6.0.11",
-    "strip-json-comments": "^2.0.1"
+    "strip-json-comments": "^2.0.1",
+    "tail": "^1.2.1"
   },
   "devDependencies": {
     "chai": "^2.2.0",
