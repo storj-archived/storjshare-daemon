@@ -1,6 +1,6 @@
 
 /**
- * @module storjshare-daemon
+ * @module storj-share
  * @license (AGPL-3.0)
  */
 
