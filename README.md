@@ -97,7 +97,7 @@ daemon.on('remote', (rpc) => {
 You can also easily start the daemon from your program by creating a dnode 
 server and passing it an instance of the `RPC` class exposed from this package.
 
-```
+```js
 const storjshare = require('storj-share');
 const dnode = require('dnode');
 const api = new storjshare.RPC();
