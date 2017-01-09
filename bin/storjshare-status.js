@@ -8,6 +8,11 @@ const dnode = require('dnode');
 const Table = require('cli-table');
 const sock = dnode.connect(config.daemonRpcPort);
 const colors = require('colors/safe');
+const storjshare_status = require('commander');
+
+storjshare_status
+  .description('prints the status of all managed shares')
+  .parse(process.argv);
 
 sock.on('remote', function(rpc) {
   rpc.status(function(err, shares) {

@@ -11,12 +11,12 @@ const path = require('path');
 storjshare
   .version(require('../package').version)
   .command('start', 'start a farming node')
-  .command('stop <nodeid>', 'stop a farming node')
-  .command('restart <nodeid>', 'restart a farming node')
+  .command('stop', 'stop a farming node')
+  .command('restart', 'restart a farming node')
   .command('status', 'check status of node(s)')
-  .command('logs <nodeid>', 'tail the logs for a node')
+  .command('logs', 'tail the logs for a node')
   .command('create', 'create a new configuration')
-  .command('destroy <nodeid>', 'kills the farming node')
+  .command('destroy', 'kills the farming node')
   .command('killall', 'kills all shares and stops the daemon')
   .command('daemon', 'starts the daemon');
 

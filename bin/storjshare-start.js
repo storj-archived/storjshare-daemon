@@ -9,6 +9,7 @@ const config = require('../lib/config/daemon');
 const storjshare_start = require('commander');
 
 storjshare_start
+  .description('starts a new network share')
   .option('-c, --config <path>', 'specify the configuration path')
   .parse(process.argv);
 
