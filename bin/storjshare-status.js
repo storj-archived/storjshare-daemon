@@ -12,7 +12,7 @@ const colors = require('colors/safe');
 sock.on('remote', function(rpc) {
   rpc.status(function(err, shares) {
     let table = new Table({
-      head: ['Node ID', 'Status', 'Uptime', '% Shared'],
+      head: ['Node ID', 'Status', 'Uptime', 'Peers', '% Shared'],
       style: {
         head: ['cyan', 'bold'],
         border: []
@@ -39,7 +39,8 @@ sock.on('remote', function(rpc) {
         share.id,
         status,
         prettyMs(share.meta.uptimeMs),
-        '?'
+        share.meta.farmerState.totalPeers,
+        share.meta.farmerState.percentUsed
       ]);
     });
     console.log('\n' + table.toString());

@@ -2,26 +2,55 @@
 
 'use strict';
 
+const utils = require('../lib/utils');
 const storj = require('storj-lib');
 const Logger = require('kad-logger-json');
 const config = JSON.parse(JSON.stringify(require('../lib/config/farmer')));
+
+let spaceAllocation = storj.utils.toNumberBytes(
+  config.storageAllocationSize,
+  config.storageAllocationUnit
+);
+let farmerState = {
+  percentUsed: '...',
+  totalPeers: 0,
+  lastActivity: Date.now()
+};
 
 config.keyPair = new storj.KeyPair(config.networkPrivateKey);
 config.logger = new Logger(config.loggerVerbosity);
 config.storageManager = new storj.StorageManager(
   new storj.EmbeddedStorageAdapter(config.storagePath),
   {
-    maxCapacity: storj.utils.toNumberBytes(
-      config.storageAllocationSize,
-      config.storageAllocationUnit
-    )
+    maxCapacity: spaceAllocation
   }
 );
 
+const farmer = storj.Farmer(config);
+
+config.logger.on('log', () => farmerState.lastActivity = Date.now());
 config.logger.pipe(process.stdout);
-storj.Farmer(config).join((err) => {
+farmer.join((err) => {
   if (err) {
     config.logger.error(err.message);
     process.exit(1);
   }
 });
+
+function sendFarmerState() {
+  farmerState.totalPeers = farmer.router.length;
+  process.send(farmerState)
+}
+
+function updatePercentUsed() {
+  utils.getDirectorySize(config.storagePath, (err, bytes) => {
+    if (bytes) {
+      farmerState.percentUsed = ((bytes / spaceAllocation) * 100).toFixed();
+    }
+  });
+}
+
+updatePercentUsed();
+sendFarmerState();
+setInterval(sendFarmerState, 10 * 1000); // Update state every 10 secs
+setInterval(updatePercentUsed, 10 * 60 * 1000); // Update space every 10 mins
