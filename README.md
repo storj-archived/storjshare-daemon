@@ -125,6 +125,19 @@ the simplest way to change the daemon's behavior is to create a file at
 Modify these parameters to your liking, see `example/daemon.config.json` for 
 detailed explanation of these properties.
 
+## Debugging the Daemon
+
+The daemon logs activity to the configured log file, which by default is 
+`$HOME/.config/storjshare/logs/daemon.log`. However if you find yourself 
+needing to frequently restart the daemon and check the logs during 
+development, you can run the daemon as a foreground process for a tighter 
+feedback loop.
+
+```
+storjshare killall
+storjshare daemon --foreground
+```
+
 ## Migrating from [`storjshare-cli`](https://github.com/storj/storjshare-cli)
 
 Storj Share provides a simple method for creating new shares, but if you were 
