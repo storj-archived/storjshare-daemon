@@ -1,5 +1,5 @@
-[![Storj Share](https://nodei.co/npm/storjshare-daemon.png?downloads=true)](http://storj.github.io/storjshare-daemon)
-==========================================================================================
+Storj Share
+===========
 
 [![Build Status](https://img.shields.io/travis/Storj/storjshare-daemon.svg?style=flat-square)](https://travis-ci.org/Storj/storjshare-daemon)
 [![Coverage Status](https://img.shields.io/coveralls/Storj/storjshare-daemon.svg?style=flat-square)](https://coveralls.io/r/Storj/storjshare-daemon)
@@ -9,7 +9,7 @@
 Daemon + CLI for farming data on the Storj network, suitable for standalone
 use or inclusion in other packages.
 
-### Installation
+## Installation
 
 Make sure you have the following prerequisites installed:
 
@@ -25,7 +25,7 @@ Install the package globally using Node Package Manager:
 npm install -g storj-share
 ```
 
-### Usage (CLI)
+## Usage (CLI)
 
 Once installed, you will have access to the `storjshare` program, so start by 
 asking it for some help.
@@ -72,7 +72,7 @@ Usage: storjshare-create [options]
     -o, --outfile <writepath>  write config to path
 ```
 
-### Usage (Programmatic)
+## Usage (Programmatic)
 
 The Storj Share daemon uses a local [dnode](https://github.com/substack/dnode) 
 server to handle RPC message from the CLI and other applications. Assuming the 
@@ -88,13 +88,13 @@ daemon.on('remote', (rpc) => {
   // rpc.start(configPath, callback);
   // rpc.stop(nodeId, callback);
   // rpc.restart(nodeId, callback);
-  // rpc.status(nodeId, callback);
+  // rpc.status(callback);
   // rpc.destroy(nodeId, callback);
   // rpc.killall();
 });
 ```
 
-### Configuring the Daemon
+## Configuring the Daemon
 
 The Storj Share daemon loads configuration from anywhere the 
 [rc](https://www.npmjs.com/package/rc) package can read it. The first time you 
@@ -114,7 +114,7 @@ the simplest way to change the daemon's behavior is to create a file at
 Modify these parameters to your liking, see `example/daemon.config.json` for 
 detailed explanation of these properties.
 
-### Migrating from [`storjshare-cli`](https://github.com/storj/storjshare-cli)
+## Migrating from [`storjshare-cli`](https://github.com/storj/storjshare-cli)
 
 Storj Share provides a simple method for creating new shares, but if you were 
 previously using the `storjshare-cli` package superceded by this one, you'll 
@@ -125,7 +125,7 @@ need to dump your private key **before** installing this package.
 > this package, don't worry - just reinstall the old package to dump the key, 
 > then reinstall this package.
 
-#### Step 0: Dump Your Private Key
+### Step 0: Dump Your Private Key
 
 You can print your cleartext private key from storjshare-cli, using the 
 `dump-key` command:
@@ -145,7 +145,7 @@ If you are using a custom data directory, be sure to add the `--datadir <path>`
 option to be sure you get the correct key. Also be sure to note your defined 
 payout address and data directory.
 
-#### Step 1: Install Storj Share and Create Config
+### Step 1: Install Storj Share and Create Config
 
 Now that you have your private key, you can generate a new configuration file. 
 To do this, first install the `storj-share` package globally and use the 
@@ -170,7 +170,7 @@ write the file to the path following the `-o` option, and open it in your text
 editor. Here, you can make other changes to the configuration following the 
 detailed comments in the generated file.
 
-#### Step 2: Use The New Configuration
+### Step 2: Use The New Configuration
 
 Now that you have successfully migrated your configuration file, you can use 
 it to start the share.
@@ -183,7 +183,7 @@ storjshare start --config path/to/config.json
   * starting share with config at path/to/config.json
 ```
 
-### License
+## License
 
 Storj Share - Daemon + CLI for farming data on the Storj network.  
 Copyright (C) 2017 Storj Labs, Inc
