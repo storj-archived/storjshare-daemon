@@ -1,19 +1,13 @@
 
 /**
- * @module storjshare-daemon
+ * @module storj-share
  * @license (AGPL-3.0)
  */
 
 'use strict';
 
-/** {@link ConfigManager} */
-exports.ConfigManager = require('./lib/config');
-
-/** {@link Farmer} */
-exports.Farmer = require('./lib/farmer');
-
-/** {@link Utils} */
+/** {@link module:utils} */
 exports.utils = require('./lib/utils');
 
-/** {@link Utils} */
-exports.reporter = require('./lib/reporter');
+/** {@link RPC} */
+exports.RPC = require('./lib/api');

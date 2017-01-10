@@ -1,8 +1,11 @@
 {
   "name": "storjshare-daemon",
-  "version": "1.0.1",
-  "description": "utility required for farming on the storj network",
+  "version": "2.0.0",
+  "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
+  "bin": {
+    "storjshare": "bin/storjshare.js"
+  },
   "directories": {
     "test": "test",
     "lib": "lib"
@@ -16,43 +19,52 @@
   "preferGlobal": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/storj/storjshare-utils.git"
+    "url": "git+https://github.com/storj/storjshare-daemon.git"
   },
   "keywords": [
     "storj",
     "farmer",
-    "utils",
     "storjshare",
     "share"
   ],
   "author": "Alexander Leitner <alex@storj.io>",
-  "contributors": [],
+  "contributors": [
+    {
+      "name": "Gordon Hall",
+      "email": "gordon@storj.io"
+    }
+  ],
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/storj/storjshare-utils/issues"
+    "url": "https://github.com/storj/storjshare-daemon/issues"
   },
-  "homepage": "https://github.com/storj/storjshare-utils#readme",
+  "homepage": "https://github.com/storj/storjshare-daemon#readme",
   "dependencies": {
-    "async": "^1.5.2",
+    "bytes": "^2.4.0",
+    "cli-table": "^0.3.1",
+    "colors": "^1.1.2",
+    "commander": "^2.9.0",
+    "daemon": "^1.1.0",
+    "dnode": "^1.2.2",
     "du": "^0.1.0",
-    "fd-diskspace": "littleskunk/fd-diskspace",
-    "graceful-fs": "^4.1.9",
+    "editor": "^1.0.0",
+    "fd-diskspace": "github:littleskunk/fd-diskspace#2866a4cf147649d97f81fb33464bcbf0f8176bd5",
     "kad-logger-json": "^0.1.2",
-    "merge": "^1.2.0",
-    "myspeed": "^1.0.1",
-    "storj-lib": "^4.1.0",
-    "storj-telemetry-reporter": "^2.0.0"
+    "mkdirp": "^0.5.1",
+    "pretty-ms": "^2.1.0",
+    "rc": "^1.1.6",
+    "readable-stream": "^2.2.2",
+    "storj-lib": "^6.0.11",
+    "strip-json-comments": "^2.0.1",
+    "tail": "^1.2.1"
   },
   "devDependencies": {
-    "benchmark": "^2.1.1",
     "chai": "^2.2.0",
     "coveralls": "^2.11.2",
     "istanbul": "^0.3.13",
     "jshint": "2.8.0",
     "mocha": "^2.2.4",
-    "noisegen": "^1.0.0",
     "proxyquire": "^1.7.3",
-    "rimraf": "^2.5.3",
     "sinon": "^1.14.1"
   }
 }
