@@ -23,5 +23,5 @@ if (!storjshare_daemon.foreground) {
 }
 
 dnode(api.methods)
-  .on('warn', (err) => api.logger.error(err.message))
+  .on('error', (err) => api.logger.warn(err.message))
   .listen(config.daemonRpcPort, config.daemonRpcAddress);
