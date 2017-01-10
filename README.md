@@ -1,9 +1,9 @@
-Storj Share
-===========
+Storj Share Daemon
+==================
 
 [![Build Status](https://img.shields.io/travis/Storj/storjshare-daemon.svg?style=flat-square)](https://travis-ci.org/Storj/storjshare-daemon)
 [![Coverage Status](https://img.shields.io/coveralls/Storj/storjshare-daemon.svg?style=flat-square)](https://coveralls.io/r/Storj/storjshare-daemon)
-[![NPM](https://img.shields.io/npm/v/storj-share.svg?style=flat-square)](https://www.npmjs.com/package/storj-share)
+[![NPM](https://img.shields.io/npm/v/storjshare-daemon.svg?style=flat-square)](https://www.npmjs.com/package/storjshare-daemon)
 [![License](https://img.shields.io/badge/license-AGPL3.0-blue.svg?style=flat-square)](https://raw.githubusercontent.com/Storj/storjshare-daemon/master/LICENSE)
 
 Daemon + CLI for farming data on the Storj network, suitable for standalone
@@ -22,7 +22,7 @@ Make sure you have the following prerequisites installed:
 Install the package globally using Node Package Manager:
 
 ```
-npm install -g storj-share
+npm install -g storjshare-daemon
 ```
 
 ## Usage (CLI)
@@ -98,7 +98,7 @@ You can also easily start the daemon from your program by creating a dnode
 server and passing it an instance of the `RPC` class exposed from this package.
 
 ```js
-const storjshare = require('storj-share');
+const storjshare = require('storjshare-daemon');
 const dnode = require('dnode');
 const api = new storjshare.RPC();
 
@@ -172,14 +172,14 @@ payout address and data directory.
 ### Step 1: Install Storj Share and Create Config
 
 Now that you have your private key, you can generate a new configuration file. 
-To do this, first install the `storj-share` package globally and use the 
+To do this, first install the `storjshare-daemon` package globally and use the 
 `create` command. You'll need to remove the `storjshare-cli` package first, so 
 make sure you perform the previous step for all shared drives before 
 proceeding forward.
 
 ```
 npm remove -g storjshare-cli
-npm install -g storj-share
+npm install -g storjshare-daemon
 ```
 
 Now that you have Storj Share installed, use the `create` command to generate 

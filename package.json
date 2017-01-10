@@ -1,5 +1,5 @@
 {
-  "name": "storj-share",
+  "name": "storjshare-daemon",
   "version": "2.0.0",
   "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
