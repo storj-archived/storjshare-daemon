@@ -31,7 +31,98 @@ describe('class:RPC', function() {
 
   describe('#start', function() {
 
+    it('should callback error if no config given', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub().throws(new Error())
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal(
+          'failed to read config at path/to/config'
+        );
+        done();
+      });
+    });
 
+    it('should callback error if cannot parse config', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(Buffer.from('not json'))
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal(
+          'failed to parse config at path/to/config'
+        );
+        done();
+      });
+    });
+
+    it('should callback error if config invalid', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal('invalid payout address');
+        done();
+      });
+    });
+
+    it('should callback error if share running', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(Buffer.from(
+            '{"networkPrivateKey":"02d2e5fb5a1fe74804bc1ae3b63bb130441' +
+              'cc9b5c877e225ea723c24bcea4f3b"}'
+          ))
+        },
+        './utils': {
+          validate: sinon.stub()
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.shares.set('2c9e76f298cb3a023785be8985205d371580ba27', {
+        readyState: 1
+      });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal(
+          'share 2c9e76f298cb3a023785be8985205d371580ba27 is already running'
+        );
+        done();
+      });
+    });
+
+    it('should callback error if invalid space allocation', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+        },
+        './utils': {
+          validate: sinon.stub(),
+          validateAllocation: sinon.stub().callsArgWith(
+            1,
+            new Error('Bad space')
+          )
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal('bad space');
+        done();
+      });
+    });
+
+    it.skip('should fork the share and setup listeners');
 
   });
 
