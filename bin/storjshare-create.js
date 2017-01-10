@@ -67,11 +67,12 @@ function replaceEmptyConfig(prop, value) {
 
 replaceEmptyConfig('paymentAddress', storjshare_create.sjcx);
 replaceEmptyConfig('networkPrivateKey', storjshare_create.privkey);
-replaceEmptyConfig('loggerOutputFile', storjshare_create.logfile);
-replaceEmptyConfig('storagePath', storjshare_create.storage);
+replaceEmptyConfig('storagePath', path.normalize(storjshare_create.storage));
+replaceEmptyConfig('loggerOutputFile',
+                   path.normalize(storjshare_create.logfile));
 
 let outfile = isWritingToTemp ?
-              storjshare_create.outfile :
+              path.normalize(storjshare_create.outfile) :
               path.join(process.cwd(), storjshare_create.outfile);
 
 try {
