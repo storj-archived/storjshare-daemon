@@ -4,6 +4,8 @@ const RPC = require('../lib/api');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const {expect} = require('chai');
+const {Readable, Writable} = require('stream');
+const {EventEmitter} = require('events');
 
 describe('class:RPC', function() {
 
@@ -122,7 +124,44 @@ describe('class:RPC', function() {
       });
     });
 
-    it.skip('should fork the share and setup listeners');
+    it('should fork the share and setup listeners', function(done) {
+      let _proc = new EventEmitter();
+      _proc.stdout = new Readable({ read: () => null });
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          createWriteStream: sinon.stub().returns(new Writable({
+            write: (d, e, cb) => cb()
+          })),
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+        },
+        './utils': {
+          validate: sinon.stub(),
+          validateAllocation: sinon.stub().callsArg(1)
+        },
+        child_process: {
+          fork: sinon.stub().returns(_proc)
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      let _ipc = sinon.stub(rpc, '_processShareIpc');
+      rpc.start('path/to/config', function() {
+        let id = rpc.shares.keys().next().value;
+        _proc.emit('message', {});
+        setImmediate(() => {
+          expect(_ipc.called).to.equal(true);
+          _proc.emit('exit');
+          setImmediate(() => {
+            expect(rpc.shares.get(id).readyState).to.equal(RPC.SHARE_STOPPED);
+            _proc.emit('error', new Error());
+            setImmediate(() => {
+              expect(rpc.shares.get(id).readyState).to.equal(RPC.SHARE_ERRORED);
+              done();
+            });
+          });
+        });
+      });
+    });
 
   });
 
