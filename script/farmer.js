@@ -6,11 +6,9 @@ const utils = require('../lib/utils');
 const storj = require('storj-lib');
 const Logger = require('kad-logger-json');
 const config = JSON.parse(JSON.stringify(require('../lib/config/farmer')));
+const bytes = require('bytes');
 
-let spaceAllocation = storj.utils.toNumberBytes(
-  config.storageAllocationSize,
-  config.storageAllocationUnit
-);
+let spaceAllocation = bytes.parse(config.storageAllocation);
 let farmerState = {
   percentUsed: '...',
   totalPeers: 0,
