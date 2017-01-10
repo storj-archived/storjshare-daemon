@@ -59,6 +59,7 @@ let exampleConfigPath = path.join(__dirname, '../example/farmer.config.json');
 let exampleConfigString = fs.readFileSync(exampleConfigPath).toString();
 
 function replaceEmptyConfig(prop, value) {
+  value = value.split('\\').join('\\\\'); // NB: Hack windows paths into JSON
   exampleConfigString = exampleConfigString.replace(
     `"${prop}": ""`,
     `"${prop}": "${value}"`
