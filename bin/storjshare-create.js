@@ -71,9 +71,9 @@ replaceEmptyConfig('storagePath', path.normalize(storjshare_create.storage));
 replaceEmptyConfig('loggerOutputFile',
                    path.normalize(storjshare_create.logfile));
 
-let outfile = isWritingToTemp ?
-              path.normalize(storjshare_create.outfile) :
-              path.join(process.cwd(), storjshare_create.outfile);
+let outfile = isWritingToTemp || path.isAbsolute(storjshare_create.outfile) ?
+                path.normalize(storjshare_create.outfile) :
+                path.join(process.cwd(), storjshare_create.outfile);
 
 try {
   fs.writeFileSync(outfile, exampleConfigString);
