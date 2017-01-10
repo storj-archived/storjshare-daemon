@@ -45,10 +45,7 @@ if (!storjshare_create.logfile) {
   );
 }
 
-let isWritingToTemp = false;
-
 if (!storjshare_create.outfile) {
-  isWritingToTemp = true;
   storjshare_create.outfile = path.join(
     tmpdir(),
     storj.KeyPair(storjshare_create.privkey).getNodeID() + '.json'
@@ -72,7 +69,7 @@ replaceEmptyConfig('storagePath', path.normalize(storjshare_create.storage));
 replaceEmptyConfig('loggerOutputFile',
                    path.normalize(storjshare_create.logfile));
 
-let outfile = isWritingToTemp || path.isAbsolute(storjshare_create.outfile) ?
+let outfile = path.isAbsolute(storjshare_create.outfile) ?
                 path.normalize(storjshare_create.outfile) :
                 path.join(process.cwd(), storjshare_create.outfile);
 
