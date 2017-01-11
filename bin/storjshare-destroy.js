@@ -22,9 +22,9 @@ sock.on('remote', function(rpc) {
   rpc.destroy(storjshare_destroy.nodeid, (err) => {
     if (err) {
       console.error(`\n  cannot destroy node, reason: ${err.message}`);
-      process.exit(1);
+      return sock.end();
     }
     console.info(`\n  * share ${storjshare_destroy.nodeid} destroyed`);
-    process.exit(0);
+    sock.end();
   });
 });

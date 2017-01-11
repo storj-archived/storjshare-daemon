@@ -27,9 +27,9 @@ sock.on('remote', function(rpc) {
   rpc.start(configPath, (err) => {
     if (err) {
       console.error(`\n  failed to start share, reason: ${err.message}`);
-      process.exit(1);
+      return sock.end();
     }
     console.info(`\n  * starting share with config at ${configPath}`);
-    process.exit(0);
+    sock.end();
   });
 });

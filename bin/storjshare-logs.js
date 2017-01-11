@@ -23,11 +23,16 @@ if (!storjshare_logs.nodeid) {
 
 const sock = dnode.connect(config.daemonRpcPort);
 
+process.on('exit', () => {
+  sock.end();
+  process.exit(0);
+});
+
 sock.on('remote', function(rpc) {
   rpc.status((err, shares) => {
     if (err) {
       console.error(`\n  cannot get status, reason: ${err.message}`);
-      process.exit(1);
+      return sock.end();
     }
 
     let logFilePath = null;
@@ -41,7 +46,7 @@ sock.on('remote', function(rpc) {
 
     if (!utils.existsSync(logFilePath)) {
       console.error(`\n  no logs to show for ${storjshare_logs.nodeid}`);
-      process.exit(0);
+      return sock.end();
     }
 
     let logTail = new Tail(logFilePath);

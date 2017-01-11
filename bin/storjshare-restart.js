@@ -22,9 +22,9 @@ sock.on('remote', function(rpc) {
   rpc.restart(storjshare_restart.nodeid, (err) => {
     if (err) {
       console.error(`\n  cannot restart node, reason: ${err.message}`);
-      process.exit(1);
+      return sock.end();
     }
     console.info(`\n  * share ${storjshare_restart.nodeid} restarted`);
-    process.exit(0);
+    sock.end();
   });
 });
