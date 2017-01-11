@@ -54,7 +54,7 @@
     "pretty-ms": "^2.1.0",
     "rc": "^1.1.6",
     "readable-stream": "^2.2.2",
-    "storj-lib": "^6.0.11",
+    "storj-lib": "^6.0.12",
     "strip-json-comments": "^2.0.1",
     "tail": "^1.2.1"
   },
