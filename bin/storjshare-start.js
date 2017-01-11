@@ -19,8 +19,8 @@ if (!storjshare_start.config) {
 }
 
 const configPath = path.isAbsolute(storjshare_start.config) ?
-                   path.normalize(storjshare_start.config) :
-                   path.join(process.cwd(), storjshare_start.config);
+                     path.normalize(storjshare_start.config) :
+                     path.join(process.cwd(), storjshare_start.config);
 const sock = dnode.connect(config.daemonRpcPort);
 
 sock.on('remote', function(rpc) {
