@@ -17,7 +17,7 @@ storjshare_status
 sock.on('remote', function(rpc) {
   rpc.status(function(err, shares) {
     let table = new Table({
-      head: ['Node ID', 'Status', 'Uptime', 'Peers', '% Shared'],
+      head: ['Node ID', 'Status', 'Uptime', 'Restarts', 'Peers', '% Shared'],
       style: {
         head: ['cyan', 'bold'],
         border: []
@@ -41,11 +41,12 @@ sock.on('remote', function(rpc) {
       }
 
       table.push([
-        share.id,
+        share.id || '?',
         status,
         prettyMs(share.meta.uptimeMs),
-        share.meta.farmerState.totalPeers,
-        share.meta.farmerState.percentUsed
+        share.meta.numRestarts || 0,
+        share.meta.farmerState.totalPeers || 0,
+        share.meta.farmerState.percentUsed || '...'
       ]);
     });
     console.log('\n' + table.toString());
