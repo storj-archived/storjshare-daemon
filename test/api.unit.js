@@ -127,6 +127,7 @@ describe('class:RPC', function() {
     it('should fork the share and setup listeners', function(done) {
       let _proc = new EventEmitter();
       _proc.stdout = new Readable({ read: () => null });
+      _proc.stderr = new Readable({ read: () => null });
       let _RPC = proxyquire('../lib/api', {
         fs: {
           createWriteStream: sinon.stub().returns(new Writable({
