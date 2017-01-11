@@ -238,10 +238,13 @@ describe('class:RPC', function() {
       rpc.shares.set('test1', {});
       rpc.shares.set('test2', {});
       rpc.shares.set('test3', {});
-      rpc.killall();
-      expect(destroy.callCount).to.equal(3);
-      expect(exit.called).to.equal(true);
-      exit.restore();
+      rpc.killall(() => {
+        expect(destroy.callCount).to.equal(3);
+        setTimeout(() => {
+          expect(exit.called).to.equal(true);
+          exit.restore();
+        }, 1200);
+      });
     });
 
   });
