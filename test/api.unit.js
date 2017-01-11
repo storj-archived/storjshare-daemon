@@ -127,6 +127,7 @@ describe('class:RPC', function() {
     it('should fork the share and setup listeners', function(done) {
       let _proc = new EventEmitter();
       _proc.stdout = new Readable({ read: () => null });
+      _proc.stderr = new Readable({ read: () => null });
       let _RPC = proxyquire('../lib/api', {
         fs: {
           createWriteStream: sinon.stub().returns(new Writable({
@@ -237,10 +238,13 @@ describe('class:RPC', function() {
       rpc.shares.set('test1', {});
       rpc.shares.set('test2', {});
       rpc.shares.set('test3', {});
-      rpc.killall();
-      expect(destroy.callCount).to.equal(3);
-      expect(exit.called).to.equal(true);
-      exit.restore();
+      rpc.killall(() => {
+        expect(destroy.callCount).to.equal(3);
+        setTimeout(() => {
+          expect(exit.called).to.equal(true);
+          exit.restore();
+        }, 1200);
+      });
     });
 
   });

@@ -17,5 +17,5 @@ sock.on('end', function() {
 });
 
 sock.on('remote', function(rpc) {
-  rpc.killall();
+  rpc.killall(() => sock.end());
 });

@@ -18,18 +18,18 @@ if (!storjshare_start.config) {
   process.exit(1);
 }
 
-const configPath = storjshare_start.config[0] === '/' ?
-                   storjshare_start.config :
-                   path.join(process.cwd(), storjshare_start.config);
+const configPath = path.isAbsolute(storjshare_start.config) ?
+                     path.normalize(storjshare_start.config) :
+                     path.join(process.cwd(), storjshare_start.config);
 const sock = dnode.connect(config.daemonRpcPort);
 
 sock.on('remote', function(rpc) {
   rpc.start(configPath, (err) => {
     if (err) {
       console.error(`\n  failed to start share, reason: ${err.message}`);
-      process.exit(1);
+      return sock.end();
     }
     console.info(`\n  * starting share with config at ${configPath}`);
-    process.exit(0);
+    sock.end();
   });
 });

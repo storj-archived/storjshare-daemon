@@ -22,9 +22,9 @@ sock.on('remote', function(rpc) {
   rpc.stop(storjshare_stop.nodeid, (err) => {
     if (err) {
       console.error(`\n  cannot stop node, reason: ${err.message}`);
-      process.exit(1);
+      return sock.end();
     }
     console.info(`\n  * share ${storjshare_stop.nodeid} stopped`);
-    process.exit(0);
+    return sock.end();
   });
 });

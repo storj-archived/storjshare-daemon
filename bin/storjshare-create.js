@@ -12,11 +12,13 @@ const config = require('../lib/config/daemon');
 const storjshare_create = require('commander');
 
 storjshare_create
+  .description('generates a new share configuration')
   .option('-a, --sjcx <addr>', 'specify the sjcx address (required)')
   .option('-s, --storage <path>', 'specify the storage path')
   .option('-l, --logfile <path>', 'specify the logfile path')
   .option('-k, --privkey <privkey>', 'specify the private key')
   .option('-o, --outfile <writepath>', 'write config to path')
+  .option('-n, --noedit', 'do not open generated config in editor')
   .parse(process.argv);
 
 if (!storjshare_create.sjcx) {
@@ -45,10 +47,7 @@ if (!storjshare_create.logfile) {
   );
 }
 
-let isWritingToTemp = false;
-
 if (!storjshare_create.outfile) {
-  isWritingToTemp = true;
   storjshare_create.outfile = path.join(
     tmpdir(),
     storj.KeyPair(storjshare_create.privkey).getNodeID() + '.json'
@@ -59,6 +58,7 @@ let exampleConfigPath = path.join(__dirname, '../example/farmer.config.json');
 let exampleConfigString = fs.readFileSync(exampleConfigPath).toString();
 
 function replaceEmptyConfig(prop, value) {
+  value = value.split('\\').join('\\\\'); // NB: Hack windows paths into JSON
   exampleConfigString = exampleConfigString.replace(
     `"${prop}": ""`,
     `"${prop}": "${value}"`
@@ -67,12 +67,13 @@ function replaceEmptyConfig(prop, value) {
 
 replaceEmptyConfig('paymentAddress', storjshare_create.sjcx);
 replaceEmptyConfig('networkPrivateKey', storjshare_create.privkey);
-replaceEmptyConfig('loggerOutputFile', storjshare_create.logfile);
-replaceEmptyConfig('storagePath', storjshare_create.storage);
+replaceEmptyConfig('storagePath', path.normalize(storjshare_create.storage));
+replaceEmptyConfig('loggerOutputFile',
+                   path.normalize(storjshare_create.logfile));
 
-let outfile = isWritingToTemp ?
-              storjshare_create.outfile :
-              path.join(process.cwd(), storjshare_create.outfile);
+let outfile = path.isAbsolute(storjshare_create.outfile) ?
+                path.normalize(storjshare_create.outfile) :
+                path.join(process.cwd(), storjshare_create.outfile);
 
 try {
   fs.writeFileSync(outfile, exampleConfigString);
@@ -82,8 +83,14 @@ try {
 }
 
 console.log(`\n  * configuration written to ${outfile}`);
-console.log('  * opening in your favorite editor to tweak before running');
-editor(outfile, () => {
-  console.log('  ...');
-  console.log(`  * use new config: storjshare start --config ${outfile}`);
-});
+
+if (!storjshare_create.noedit) {
+  console.log('  * opening in your favorite editor to tweak before running');
+  editor(outfile, {
+    // NB: Not all distros ship with vim, so let's use GNU Nano
+    editor: process.platform === 'win32' ? null : 'nano'
+  }, () => {
+    console.log('  ...');
+    console.log(`  * use new config: storjshare start --config ${outfile}`);
+  });
+}
