@@ -86,7 +86,10 @@ console.log(`\n  * configuration written to ${outfile}`);
 
 if (!storjshare_create.noedit) {
   console.log('  * opening in your favorite editor to tweak before running');
-  editor(outfile, () => {
+  editor(outfile, {
+    // NB: Not all distros ship with vim, so let's use GNU Nano
+    editor: process.platform === 'win32' ? null : 'nano'
+  }, () => {
     console.log('  ...');
     console.log(`  * use new config: storjshare start --config ${outfile}`);
   });
