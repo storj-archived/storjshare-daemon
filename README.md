@@ -27,16 +27,8 @@ Make sure you have the following prerequisites installed:
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash
 ```
 
-> Detailed NVM installation instructions can be found [here](https://github.com/creationix/nvm#install-script).
-
-After NVM is installed, source your `~/.bashrc`, `~/.profile`, or `~/.zshrc`
-depending on your shell of choice:
-
-```
-source ~/.bashrc # or ~/.zshrc if using zsh
-```
-
-Now that you can call the `nvm` program, install Node.js (which comes with NPM):
+Close and your shell and open an new one. Now that you can call the `nvm` 
+program, install Node.js (which comes with NPM):
 
 ```
 nvm install 6.9.1
@@ -53,7 +45,7 @@ node --version
 npm --version
 ```
 
-### Buid Dependencies
+### Build Dependencies
 
 #### GNU+Linux
 
