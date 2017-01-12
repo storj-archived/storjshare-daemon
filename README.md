@@ -19,7 +19,67 @@ Make sure you have the following prerequisites installed:
 * Python 2.7
 * GCC/G++/Make
 
-Install the package globally using Node Package Manager:
+### Node.js + NPM
+
+#### GNU+Linux & Max OSX
+
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash
+```
+
+> Detailed NVM installation instructions can be found [here](https://github.com/creationix/nvm#install-script).
+
+After NVM is installed, source your `~/.bashrc`, `~/.profile`, or `~/.zshrc`
+depending on your shell of choice:
+
+```
+source ~/.bashrc # or ~/.zshrc if using zsh
+```
+
+Now that you can call the `nvm` program, install Node.js (which comes with NPM):
+
+```
+nvm install 6.9.1
+```
+
+#### Windows
+
+Download [Node.js LTS](https://nodejs.org/en/download/) for Windows, launch the
+installer and follow the setup instructions. Restart your PC, then test it from
+the command prompt:
+
+```
+node --version
+npm --version
+```
+
+### Buid Dependencies
+
+#### GNU+Linux
+
+```
+apt install git python build-essential
+```
+
+#### Mac OSX
+
+```
+xcode-select --install
+```
+
+#### Windows
+
+```
+npm install --global windows-build-tools
+```
+
+> This must be run in an elevated powershell or command prompt (run as 
+> administrator);
+
+---
+
+Once build dependencies have been installed for your platform, install the 
+package globally using Node Package Manager:
 
 ```
 npm install -g storjshare-daemon
