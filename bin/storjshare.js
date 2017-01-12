@@ -26,7 +26,7 @@ if (!['daemon'].includes(process.argv[2])) {
   sock.once('error', function() {
     console.info('\n  * daemon is not running, starting...');
     fork(path.join(__dirname, 'storjshare-daemon.js'), []);
-    setTimeout(() => storjshare.parse(process.argv), 2000);
+    setTimeout(() => storjshare.parse(process.argv), 4000);
   });
 
   sock.once('connect', function() {

@@ -1,10 +1,19 @@
 {
   "name": "storjshare-daemon",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
   "bin": {
-    "storjshare": "bin/storjshare.js"
+    "storjshare": "bin/storjshare.js",
+    "storjshare-start": "bin/storjshare-start.js",
+    "storjshare-stop": "bin/storjshare-stop.js",
+    "storjshare-restart": "bin/storjshare-restart.js",
+    "storjshare-status": "bin/storjshare-status.js",
+    "storjshare-logs": "bin/storjshare-logs.js",
+    "storjshare-killall": "bin/storjshare-killall.js",
+    "storjshare-destroy": "bin/storjshare-destroy.js",
+    "storjshare-daemon": "bin/storjshare-daemon.js",
+    "storjshare-create": "bin/storjshare-create.js"
   },
   "directories": {
     "test": "test",
@@ -40,6 +49,8 @@
   },
   "homepage": "https://github.com/storj/storjshare-daemon#readme",
   "dependencies": {
+    "async": "^2.1.4",
+    "blindfold": "0.0.1",
     "bytes": "^2.4.0",
     "cli-table": "^0.3.1",
     "colors": "^1.1.2",

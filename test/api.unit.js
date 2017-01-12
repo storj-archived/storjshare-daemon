@@ -207,22 +207,37 @@ describe('class:RPC', function() {
       });
     });
 
+    it('should call restart for every share if wildcard', function(done) {
+      let rpc = new RPC({ loggerVerbosity: 0 });
+      rpc.shares.set('test1', {});
+      rpc.shares.set('test2', {});
+      rpc.shares.set('test3', {});
+      let stop = sinon.stub(rpc, 'stop').callsArg(1);
+      let start = sinon.stub(rpc, 'start').callsArg(1);
+      rpc.restart('*', function() {
+        expect(stop.callCount).to.equal(3);
+        expect(start.callCount).to.equal(3);
+        done();
+      });
+    });
+
   });
 
   describe('#status', function() {
 
     it('should return the share statuses', function(done) {
       let rpc = new RPC({ loggerVerbosity: 0 });
+      let meta = {};
       rpc.shares.set('test', {
         config: 'CONFIG',
         readyState: 'READYSTATE',
-        meta: 'META'
+        meta: meta
       });
       rpc.status(function(err, status) {
         expect(status[0].id).to.equal('test');
         expect(status[0].config).to.equal('CONFIG');
         expect(status[0].state).to.equal('READYSTATE');
-        expect(status[0].meta).to.equal('META');
+        expect(status[0].meta).to.equal(meta);
         done();
       });
     });
