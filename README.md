@@ -21,14 +21,14 @@ Make sure you have the following prerequisites installed:
 
 ### Node.js + NPM
 
-#### GNU+Linux & Max OSX
+#### GNU+Linux & Mac OSX
 
 ```
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash
 ```
 
-Close and your shell and open an new one. Now that you can call the `nvm` 
-program, install Node.js (which comes with NPM):
+Close your shell and open an new one. Now that you can call the `nvm` program, 
+install Node.js (which comes with NPM):
 
 ```
 nvm install 6.9.1
@@ -64,9 +64,6 @@ xcode-select --install
 ```
 npm install --global windows-build-tools
 ```
-
-> This must be run in an elevated powershell or command prompt (run as 
-> administrator);
 
 ---
 
