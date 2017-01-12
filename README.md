@@ -14,7 +14,7 @@ use or inclusion in other packages.
 Make sure you have the following prerequisites installed:
 
 * Git
-* Node.js LTS
+* Node.js LTS (6.9.x)
 * NPM
 * Python 2.7
 * GCC/G++/Make
@@ -109,15 +109,25 @@ You can also get more detailed help for a specific command.
 ```
 storjshare help create
 
-Usage: storjshare-create [options]
+  Usage: storjshare-create [options]
+
+  generates a new share configuration
 
   Options:
 
     -h, --help                 output usage information
-    -a, --sjcx <addr>          specify the sjcx address (required)
-    -s, --storage <path>       specify the storage path
-    -l, --logfile <path>       specify the logfile path
-    -k, --privkey <privkey>    specify the private key
+    --sjcx <addr>              specify the sjcx address (required)
+    --key <privkey>            specify the private key
+    --storage <path>           specify the storage path
+    --size <maxsize>           specify share size (ex: 10GB, 1TB)
+    --rpcport <port>           specify the rpc port number
+    --rpcaddress <addr>        specify the rpc address
+    --maxtunnels <tunnels>     specify the max tunnels
+    --tunnelportmin <port>     specify min gateway port
+    --tunnelportmax <port>     specify max gateway port
+    --manualforwarding         do not use nat traversal strategies
+    --logfile <path>           specify the logfile path
+    --noedit                   do not open generated config in editor
     -o, --outfile <writepath>  write config to path
 ```
 
@@ -235,7 +245,7 @@ Now that you have Storj Share installed, use the `create` command to generate
 your configuration.
 
 ```
-storjshare create -k 4154e8... -a 1K1rPg... -s <datadir> -o <writepath>
+storjshare create --key 4154e8... --sjcx 1K1rPg... --storage <datadir> -o <writepath>
 ```
 
 This will generate your configuration file given the parameters you passed in, 
