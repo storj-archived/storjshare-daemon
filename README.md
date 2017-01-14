@@ -31,7 +31,7 @@ Close your shell and open an new one. Now that you can call the `nvm` program,
 install Node.js (which comes with NPM):
 
 ```
-nvm install 6.9.1
+nvm install 6.9.4
 ```
 
 #### Windows
