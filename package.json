@@ -1,6 +1,6 @@
 {
   "name": "storjshare-daemon",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
   "bin": {
@@ -10,6 +10,8 @@
     "storjshare-restart": "bin/storjshare-restart.js",
     "storjshare-status": "bin/storjshare-status.js",
     "storjshare-logs": "bin/storjshare-logs.js",
+    "storjshare-save": "bin/storjshare-save.js",
+    "storjshare-load": "bin/storjshare-load.js",
     "storjshare-killall": "bin/storjshare-killall.js",
     "storjshare-destroy": "bin/storjshare-destroy.js",
     "storjshare-daemon": "bin/storjshare-daemon.js",

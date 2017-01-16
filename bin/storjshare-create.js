@@ -4,17 +4,28 @@
 
 const blindfold = require('blindfold');
 const editor = require('editor');
-const {tmpdir, homedir} = require('os');
+const {homedir} = require('os');
 const fs = require('fs');
 const storj = require('storj-lib');
 const path = require('path');
 const mkdirp = require('mkdirp');
 const stripJsonComments = require('strip-json-comments');
 const storjshare_create = require('commander');
+const {execSync} = require('child_process');
 
 const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
 ).toString()));
+
+function vimIsInstalled() {
+  try {
+    execSync('which vim');
+  } catch (err) {
+    return false;
+  }
+
+  return true;
+}
 
 storjshare_create
   .description('generates a new share configuration')
@@ -61,7 +72,8 @@ if (!storjshare_create.logfile) {
 
 if (!storjshare_create.outfile) {
   storjshare_create.outfile = path.join(
-    tmpdir(),
+    homedir(),
+    '.config/storjshare/configs',
     storj.KeyPair(storjshare_create.key).getNodeID() + '.json'
   );
 }
@@ -139,7 +151,9 @@ if (!storjshare_create.noedit) {
   console.log('  * opening in your favorite editor to tweak before running');
   editor(outfile, {
     // NB: Not all distros ship with vim, so let's use GNU Nano
-    editor: process.platform === 'win32' ? null : 'nano'
+    editor: process.platform === 'win32'
+            ? null
+            : (vimIsInstalled() ? 'vim' : 'nano')
   }, () => {
     console.log('  ...');
     console.log(`  * use new config: storjshare start --config ${outfile}`);

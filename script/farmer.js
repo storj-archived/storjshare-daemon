@@ -11,6 +11,7 @@ const bytes = require('bytes');
 let spaceAllocation = bytes.parse(config.storageAllocation);
 let farmerState = {
   percentUsed: '...',
+  spaceUsed: '...',
   totalPeers: 0,
   lastActivity: Date.now()
 };
@@ -41,9 +42,10 @@ function sendFarmerState() {
 }
 
 function updatePercentUsed() {
-  utils.getDirectorySize(config.storagePath, (err, bytes) => {
-    if (bytes) {
-      farmerState.percentUsed = ((bytes / spaceAllocation) * 100).toFixed();
+  utils.getDirectorySize(config.storagePath, (err, result) => {
+    if (result) {
+      farmerState.spaceUsed = bytes(result);
+      farmerState.percentUsed = ((result / spaceAllocation) * 100).toFixed();
     }
   });
 }
