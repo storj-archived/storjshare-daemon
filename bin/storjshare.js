@@ -7,9 +7,11 @@ const config = require('../lib/config/daemon');
 const storjshare = require('commander');
 const {fork} = require('child_process');
 const path = require('path');
+const {version} = require('../package');
+const {software: core, protocol} = require('storj-lib').version;
 
 storjshare
-  .version(require('../package').version)
+  .version(`\n  * daemon: ${version}, core: ${core}, protocol: ${protocol}`)
   .command('start', 'start a farming node')
   .command('stop', 'stop a farming node')
   .command('restart', 'restart a farming node')
