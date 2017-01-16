@@ -149,7 +149,9 @@ daemon.on('remote', (rpc) => {
   // rpc.restart(nodeId, callback);
   // rpc.status(callback);
   // rpc.destroy(nodeId, callback);
-  // rpc.killall();
+  // rpc.save(snapshotPath, callback);
+  // rpc.load(snapshotPath, callback);
+  // rpc.killall(callback);
 });
 ```
 

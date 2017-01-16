@@ -292,6 +292,112 @@ describe('class:RPC', function() {
     });
   });
 
+  describe('#save', function() {
+
+    it('should error if cannot write file', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          writeFile: sinon.stub().callsArgWith(2, new Error('Failed'))
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.save('save/path', (err) => {
+        expect(err.message).to.equal(
+          'failed to write snapshot, reason: Failed'
+        );
+        done();
+      });
+    });
+
+    it('should write the snapshot file', function(done) {
+      let writeFile = sinon.stub().callsArgWith(2, null);
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          writeFile: writeFile
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.shares.set('test1', { path: 'path/1' });
+      rpc.shares.set('test2', { path: 'path/2' });
+      rpc.shares.set('test3', { path: 'path/3' });
+      rpc.save('save/path', (err) => {
+        expect(err).to.equal(null);
+        expect(writeFile.calledWithMatch('save/path', JSON.stringify([
+          { path: 'path/1', id: 'test1' },
+          { path: 'path/2', id: 'test2' },
+          { path: 'path/3', id: 'test3' }
+        ], null, 2))).to.equal(true);
+        done();
+      });
+    });
+
+  });
+
+  describe('#load', function() {
+
+    it('should error if cannot read snapshot', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          readFile: sinon.stub().callsArgWith(1, new Error('Failed'))
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.load('load/path', (err) => {
+        expect(err.message).to.equal(
+          'failed to read snapshot, reason: Failed'
+        );
+        done();
+      });
+    });
+
+    it('should error if cannot parse snapshot', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          readFile: sinon.stub().callsArgWith(1, null, Buffer.from('notjson'))
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.load('load/path', (err) => {
+        expect(err.message).to.equal(
+          'failed to parse snapshot'
+        );
+        done();
+      });
+    });
+
+    it('should start all of the shares in the snapshot', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          readFile: sinon.stub().callsArgWith(
+            1,
+            null,
+            Buffer.from(
+              `[
+                 { "path": "test/1" },
+                 { "path": "test/2" },
+                 { "path": "test/3" },
+                 { "path": "test/4" },
+                 { "path": "test/5" }
+              ]`
+            )
+          )
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      let start = sinon.stub(rpc, 'start').callsArg(1);
+      rpc.load('load/path', (err) => {
+        expect(start.callCount).to.equal(5);
+        expect(start.getCall(0).calledWithMatch('test/1'));
+        expect(start.getCall(1).calledWithMatch('test/2'));
+        expect(start.getCall(2).calledWithMatch('test/3'));
+        expect(start.getCall(3).calledWithMatch('test/4'));
+        expect(start.getCall(4).calledWithMatch('test/5'));
+        done();
+      });
+    });
+
+  });
+
   describe('get#methods', function() {
 
     it('should return the public methods', function() {
