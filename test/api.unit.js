@@ -385,7 +385,7 @@ describe('class:RPC', function() {
       });
       let rpc = new _RPC({ loggerVerbosity: 0 });
       let start = sinon.stub(rpc, 'start').callsArg(1);
-      rpc.load('load/path', (err) => {
+      rpc.load('load/path', () => {
         expect(start.callCount).to.equal(5);
         expect(start.getCall(0).calledWithMatch('test/1'));
         expect(start.getCall(1).calledWithMatch('test/2'));
