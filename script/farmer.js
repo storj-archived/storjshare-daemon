@@ -56,13 +56,13 @@ function sendTelemetryReport() {
   let telemetry = new Telemetry(telemetryServer, config.keyPair);
   let report = {
     storageAllocated: spaceAllocation,
-    storageUsed: farmerState.spaceUsed,
+    storageUsed: bytes.parse(farmerState.spaceUsed),
     contactNodeId: config.keyPair.getNodeID(),
     paymentAddress: config.paymentAddress
   };
   telemetry.send(report, (err) => {
     if (err) {
-      return config.logger.warn('failed to send telemetry report, reason: %s',
+      return config.logger.warn('telemetry report rejected, reason: %s',
                                 err.message);
     }
     config.logger.info('telemetry report delivered to %s: %j', telemetryServer,
