@@ -39,7 +39,7 @@ farmer.join((err) => {
 
 function sendFarmerState() {
   farmerState.totalPeers = farmer.router.length;
-  process.send(farmerState)
+  process.send(farmerState);
 }
 
 function updatePercentUsed() {
@@ -56,7 +56,7 @@ function sendTelemetryReport() {
   let telemetry = new Telemetry(telemetryServer, config.keyPair);
   let report = {
     storageAllocated: spaceAllocation,
-    storageUsed: spaceUsed,
+    storageUsed: farmerState.spaceUsed,
     contactNodeId: config.keyPair.getNodeID(),
     paymentAddress: config.paymentAddress
   };
