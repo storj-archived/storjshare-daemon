@@ -24,7 +24,7 @@ Make sure you have the following prerequisites installed:
 #### GNU+Linux & Mac OSX
 
 ```
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.1/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
 ```
 
 Close your shell and open an new one. Now that you can call the `nvm` program, 
