@@ -71,7 +71,7 @@ Once build dependencies have been installed for your platform, install the
 package globally using Node Package Manager:
 
 ```
-npm install -g storjshare-daemon
+npm install --global --build-from-source storjshare-daemon
 ```
 
 ## Usage (CLI)
