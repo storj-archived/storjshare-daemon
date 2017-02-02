@@ -199,8 +199,14 @@ storjshare killall
 storjshare daemon --foreground
 ```
 
-## Migrating from [`storjshare-cli`](https://github.com/storj/storjshare-cli)
+## Migrating from [`storjshare-gui`](https://github.com/storj/storjshare-gui) or [`storjshare-cli`](https://github.com/storj/storjshare-cli)
+#### storjshare-gui
+If you are using the `storjshare-gui` package you can go on with the latest
+GUI release. You don't need to migrate but if you like you can do it. If you
+choose to migrate from the old storjshare-gui to the CLI version of
+storjshare-daemon, please follow the instructions below.
 
+#### storjshare-cli
 Storj Share provides a simple method for creating new shares, but if you were 
 previously using the `storjshare-cli` package superceded by this one, you'll 
 want to migrate your configuration to the new format. To do this, first you'll 
@@ -212,6 +218,32 @@ need to dump your private key **before** installing this package.
 
 ### Step 0: Dump Your Private Key
 
+#### storjshare-gui
+Open `%AppData%\Storj Share\settings.json` in any texteditor.
+For each GUI drive you will find the private key and the dataDir. Use these
+information and go on with Step 1 and 2.
+```
+{
+  "tabs": [
+    {
+      "key": "4154e85e87b323611cba45ab1cd51203f2508b1da8455cdff8b641cce827f3d6",
+      "address": "1K1rPg...",
+      "storage": {
+        "dataDir": "D:\\Storj\\storjshare-5f4722"
+      }
+    },
+    {
+      "key": "0b0341a9913bb84b51485152a1b0a8a6ed68fa4f9a4fedb26c61ff778ce61ec8",
+      "address": "1K1rPg...",
+      "storage": {
+        "dataDir": "D:\\Storj\\storjshare-48a1c4"
+      }
+  ],
+  "appSettings": {...}
+}
+```
+
+#### storjshare-cli
 You can print your cleartext private key from storjshare-cli, using the 
 `dump-key` command:
 
