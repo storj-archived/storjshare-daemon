@@ -50,7 +50,7 @@ npm --version
 #### GNU+Linux
 
 ```
-apt install git python build-essential
+apt-get install git python build-essential
 ```
 
 #### Mac OSX
