@@ -4,6 +4,7 @@ const utils = require('../lib/utils');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const {expect} = require('chai');
+const {EventEmitter} = require('events');
 
 describe('module:utils', function() {
 
@@ -51,8 +52,8 @@ describe('module:utils', function() {
       expect(utils._isValidSize(1)).to.equal(true);
     });
 
-    it('should return false for 0 or less', function() {
-      expect(utils._isValidSize(0)).to.equal(false);
+    it('should return false for less than 0', function() {
+      expect(utils._isValidSize(0)).to.equal(true);
       expect(utils._isValidSize(-1)).to.equal(false);
     });
 
@@ -178,6 +179,45 @@ describe('module:utils', function() {
         }
       });
       expect(_utils.existsSync('some/directory/path')).to.equal(false);
+    });
+
+  });
+
+  describe('#checkDaemonRpcStatus', function() {
+
+    it('should callback true if connect', function(done) {
+      let sock = new EventEmitter();
+      sock.end = sinon.stub();
+      let _utils = proxyquire('../lib/utils', {
+        net: {
+          connect: () => {
+            setTimeout(() => sock.emit('connect'), 50);
+            return sock;
+          }
+        }
+      });
+      _utils.checkDaemonRpcStatus(45015, (isRunning) => {
+        expect(isRunning).to.equal(true);
+        done();
+      });
+    });
+
+    it('should callback false if error', function(done) {
+      let sock = new EventEmitter();
+      sock.end = sinon.stub();
+      let _utils = proxyquire('../lib/utils', {
+        net: {
+          connect: () => {
+            setTimeout(() => sock.emit('error',
+                                       new Error('ECONNREFUSED')), 50);
+            return sock;
+          }
+        }
+      });
+      _utils.checkDaemonRpcStatus(45015, (isRunning) => {
+        expect(isRunning).to.equal(false);
+        done();
+      });
     });
 
   });

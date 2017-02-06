@@ -2,13 +2,16 @@
 
 'use strict';
 
-const net = require('net');
 const config = require('../lib/config/daemon');
 const storjshare = require('commander');
 const {fork} = require('child_process');
 const path = require('path');
+const utils = require('../lib/utils');
 const {version} = require('../package');
 const {software: core, protocol} = require('storj-lib').version;
+
+const TIME_WAIT_IF_STARTED = 1000;
+const TIME_WAIT_AFTER_START = 6000;
 
 storjshare
   .version(`\n  * daemon: ${version}, core: ${core}, protocol: ${protocol}`)
@@ -25,17 +28,14 @@ storjshare
   .command('daemon', 'starts the daemon');
 
 if (!['daemon'].includes(process.argv[2])) {
-  const sock = net.connect(config.daemonRpcPort);
-
-  sock.once('error', function() {
-    console.info('\n  * daemon is not running, starting...');
-    fork(path.join(__dirname, 'storjshare-daemon.js'), []);
-    setTimeout(() => storjshare.parse(process.argv), 4000);
-  });
-
-  sock.once('connect', function() {
-    sock.end();
-    setTimeout(() => storjshare.parse(process.argv), 1000);
+  utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
+    if (isRunning) {
+      setTimeout(() => storjshare.parse(process.argv), TIME_WAIT_IF_STARTED);
+    } else {
+      console.info('\n  * daemon is not running, starting...');
+      fork(path.join(__dirname, 'storjshare-daemon.js'), []);
+      setTimeout(() => storjshare.parse(process.argv), TIME_WAIT_AFTER_START);
+    }
   });
 } else {
   storjshare.parse(process.argv);
