@@ -21,6 +21,52 @@ if (!storjshare_logs.nodeid) {
   process.exit(1);
 }
 
+function getLastLines(filename, lines, callback) {
+  let chunk = '';
+  let size = Math.max(0, fs.statSync(filename).size - (lines * 200));
+
+  fs.createReadStream(filename, { start: size })
+    .on('data', function(data) {
+      chunk += data.toString();
+    })
+    .on('end', function() {
+      chunk = chunk.split('\n').slice(-(lines + 1));
+      chunk.pop();
+      callback(chunk);
+    });
+}
+
+function prettyLog(line) {
+  var output = ' ';
+
+  try {
+    line = JSON.parse(line);
+  } catch (err) {
+    return;
+  }
+
+  switch (line.level) {
+    case 'debug':
+      output += colors.magenta('[ debug ] ');
+      break;
+    case 'info':
+      output += colors.cyan('[ info  ] ');
+      break;
+    case 'warn':
+      output += colors.yellow('[ warn  ] ');
+      break;
+    case 'error':
+      output += colors.red('[ error ] ');
+      break;
+    default:
+      // noop
+  }
+
+  output += colors.gray( `[ ${line.timestamp} ]\n [ `);
+  output += `${line.message}`;
+  console.log(output);
+}
+
 const sock = dnode.connect(config.daemonRpcPort);
 
 process.on('exit', () => {
@@ -50,56 +96,9 @@ sock.on('remote', function(rpc) {
     }
 
     let logTail = new Tail(logFilePath);
-
-    function getLastLines(filename, lines, callback) {
-      let chunk = '';
-      let size = Math.max(0, fs.statSync(filename).size - (lines * 200));
-
-      fs.createReadStream(filename, { start: size })
-        .on('data', function(data) {
-          chunk += data.toString();
-        })
-        .on('end', function() {
-          chunk = chunk.split('\n').slice(-(lines + 1));
-          chunk.pop();
-          callback(chunk);
-        });
-    }
-
-    function prettyLog(line) {
-      var output = ' ';
-
-      try {
-        line = JSON.parse(line);
-      } catch (err) {
-        return;
-      }
-
-      switch (line.level) {
-        case 'debug':
-          output += colors.magenta('[ debug ] ');
-          break;
-        case 'info':
-          output += colors.cyan('[ info  ] ');
-          break;
-        case 'warn':
-          output += colors.yellow('[ warn  ] ');
-          break;
-        case 'error':
-          output += colors.red('[ error ] ');
-          break;
-        default:
-          // noop
-      }
-
-      output += colors.gray( `[ ${line.timestamp} ]\n [ `)
-      output += `${line.message}`;
-      console.log(output);
-    }
-
-    let numLines = storjshare_logs.lines ?
-                   parseInt(storjshare_logs.lines) :
-                   20;
+    let numLines = storjshare_logs.lines
+                 ? parseInt(storjshare_logs.lines)
+                 : 20;
 
     getLastLines(logFilePath, numLines, (lines) => {
       lines.forEach((line) => prettyLog(line));

@@ -2,7 +2,6 @@
 
 'use strict';
 
-const storj = require('storj-lib');
 const dnode = require('dnode');
 const path = require('path');
 const config = require('../lib/config/daemon');

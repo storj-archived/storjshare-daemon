@@ -25,7 +25,7 @@
     "test": "npm run testsuite && npm run linter",
     "testsuite": "STORJ_ALLOW_LOOPBACK=1 ./node_modules/.bin/mocha test/** --recursive",
     "coverage": "STORJ_ALLOW_LOOPBACK=1 ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --recursive",
-    "linter": "./node_modules/.bin/jshint --config .jshintrc ./index.js ./lib ./test"
+    "linter": "./node_modules/.bin/jshint --config .jshintrc ./index.js ./lib ./test ./bin"
   },
   "preferGlobal": true,
   "repository": {

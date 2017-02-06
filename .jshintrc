@@ -1,4 +1,5 @@
 {
+  "laxbreak": true,
   "bitwise": false,
   "browser": true,
   "camelcase": false,
