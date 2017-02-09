@@ -3,7 +3,6 @@
 'use strict';
 
 const config = require('../lib/config/daemon');
-const dnode = require('dnode');
 const utils = require('../lib/utils');
 const {Tail} = require('tail');
 const colors = require('colors/safe');
@@ -67,14 +66,12 @@ function prettyLog(line) {
   console.log(output);
 }
 
-const sock = dnode.connect(config.daemonRpcPort);
+utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
+  process.on('exit', () => {
+    sock.end();
+    process.exit(0);
+  });
 
-process.on('exit', () => {
-  sock.end();
-  process.exit(0);
-});
-
-sock.on('remote', function(rpc) {
   rpc.status((err, shares) => {
     if (err) {
       console.error(`\n  cannot get status, reason: ${err.message}`);

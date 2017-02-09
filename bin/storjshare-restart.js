@@ -3,7 +3,7 @@
 'use strict';
 
 const config = require('../lib/config/daemon');
-const dnode = require('dnode');
+const utils = require('../lib/utils');
 const storjshare_restart = require('commander');
 
 storjshare_restart
@@ -17,9 +17,7 @@ if (!storjshare_restart.nodeid && !storjshare_restart.all) {
   process.exit(1);
 }
 
-const sock = dnode.connect(config.daemonRpcPort);
-
-sock.on('remote', function(rpc) {
+utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   if (storjshare_restart.all) {
     console.info('\n  * restarting all managed shares');
   }

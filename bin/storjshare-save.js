@@ -5,7 +5,7 @@
 const os = require('os');
 const path = require('path');
 const config = require('../lib/config/daemon');
-const dnode = require('dnode');
+const utils = require('../lib/utils');
 const storjshare_save = require('commander');
 
 storjshare_save
@@ -25,9 +25,7 @@ if (!path.isAbsolute(storjshare_save.snapshot)) {
                                        storjshare_save.snapshot);
 }
 
-const sock = dnode.connect(config.daemonRpcPort);
-
-sock.on('remote', function(rpc) {
+utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.save(storjshare_save.snapshot, (err) => {
     if (err) {
       console.error(`\n  cannot save snapshot, reason: ${err.message}`);

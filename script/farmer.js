@@ -8,6 +8,7 @@ const Logger = require('kad-logger-json');
 const Telemetry = require('storj-telemetry-reporter');
 const config = JSON.parse(JSON.stringify(require('../lib/config/farmer')));
 const bytes = require('bytes');
+const processIsManaged = typeof process.send === 'function';
 
 let spaceAllocation = bytes.parse(config.storageAllocation);
 let farmerState = {
@@ -71,9 +72,12 @@ function sendTelemetryReport() {
 }
 
 updatePercentUsed();
-sendFarmerState();
-setInterval(sendFarmerState, 10 * 1000); // Update state every 10 secs
 setInterval(updatePercentUsed, 10 * 60 * 1000); // Update space every 10 mins
+
+if (processIsManaged) {
+  sendFarmerState();
+  setInterval(sendFarmerState, 10 * 1000); // Update state every 10 secs
+}
 
 if (config.enableTelemetryReporting) {
   setInterval(sendTelemetryReport, 10 * 60 * 1000);

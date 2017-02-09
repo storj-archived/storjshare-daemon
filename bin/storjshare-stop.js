@@ -3,7 +3,7 @@
 'use strict';
 
 const config = require('../lib/config/daemon');
-const dnode = require('dnode');
+const utils = require('../lib/utils');
 const storjshare_stop = require('commander');
 
 storjshare_stop
@@ -16,9 +16,7 @@ if (!storjshare_stop.nodeid) {
   process.exit(1);
 }
 
-const sock = dnode.connect(config.daemonRpcPort);
-
-sock.on('remote', function(rpc) {
+utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.stop(storjshare_stop.nodeid, (err) => {
     if (err) {
       console.error(`\n  cannot stop node, reason: ${err.message}`);

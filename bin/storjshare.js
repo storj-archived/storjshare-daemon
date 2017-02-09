@@ -25,18 +25,5 @@ storjshare
   .command('load', 'load a snapshot of previously managed shares')
   .command('destroy', 'kills the farming node')
   .command('killall', 'kills all shares and stops the daemon')
-  .command('daemon', 'starts the daemon');
-
-if (!['daemon'].includes(process.argv[2])) {
-  utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
-    if (isRunning) {
-      setTimeout(() => storjshare.parse(process.argv), TIME_WAIT_IF_STARTED);
-    } else {
-      console.info('\n  * daemon is not running, starting...');
-      fork(path.join(__dirname, 'storjshare-daemon.js'), []);
-      setTimeout(() => storjshare.parse(process.argv), TIME_WAIT_AFTER_START);
-    }
-  });
-} else {
-  storjshare.parse(process.argv);
-}
+  .command('daemon', 'starts the daemon')
+  .parse(process.argv);

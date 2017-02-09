@@ -3,7 +3,7 @@
 'use strict';
 
 const config = require('../lib/config/daemon');
-const dnode = require('dnode');
+const utils = require('../lib/utils');
 const storjshare_destroy = require('commander');
 
 storjshare_destroy
@@ -16,9 +16,7 @@ if (!storjshare_destroy.nodeid) {
   process.exit(1);
 }
 
-const sock = dnode.connect(config.daemonRpcPort);
-
-sock.on('remote', function(rpc) {
+utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.destroy(storjshare_destroy.nodeid, (err) => {
     if (err) {
       console.error(`\n  cannot destroy node, reason: ${err.message}`);
