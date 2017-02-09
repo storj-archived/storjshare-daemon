@@ -23,12 +23,6 @@ const configPath = path.isAbsolute(storjshare_start.config) ?
                      path.normalize(storjshare_start.config) :
                      path.join(process.cwd(), storjshare_start.config);
 
-if (storjshare_start.detached) {
-  runDetachedShare();
-} else {
-  runManagedShare();
-}
-
 function runDetachedShare() {
   const scriptPath = path.join(__dirname, '../script/farmer.js');
   const shareProc = spawn(scriptPath, ['--config', configPath]);
@@ -36,7 +30,7 @@ function runDetachedShare() {
   process.stdin.pipe(shareProc.stdin);
   shareProc.stdout.pipe(process.stdout);
   shareProc.stderr.pipe(process.stderr);
-  shareProc.on('exit', (code) => process.exit(code))
+  shareProc.on('exit', (code) => process.exit(code));
 }
 
 function runManagedShare() {
@@ -51,3 +45,11 @@ function runManagedShare() {
     });
   });
 }
+
+if (storjshare_start.detached) {
+  runDetachedShare();
+} else {
+  runManagedShare();
+}
+
+
