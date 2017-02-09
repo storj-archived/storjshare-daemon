@@ -4,9 +4,8 @@
 
 const prettyMs = require('pretty-ms');
 const config = require('../lib/config/daemon');
-const dnode = require('dnode');
+const utils = require('../lib/utils');
 const Table = require('cli-table');
-const sock = dnode.connect(config.daemonRpcPort);
 const colors = require('colors/safe');
 const storjshare_status = require('commander');
 
@@ -14,7 +13,7 @@ storjshare_status
   .description('prints the status of all managed shares')
   .parse(process.argv);
 
-sock.on('remote', function(rpc) {
+utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.status(function(err, shares) {
     let table = new Table({
       head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers', 'Shared'],

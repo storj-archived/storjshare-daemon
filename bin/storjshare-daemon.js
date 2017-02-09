@@ -23,22 +23,22 @@ function startDaemonRpcServer() {
     .listen(config.daemonRpcPort, config.daemonRpcAddress);
 }
 
-function checkDaemonRpcStatus() {
-  utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
+utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
+  if (storjshare_daemon.status) {
     console.info(`\n  * daemon ${isRunning ? 'is' : 'is not'} running`);
     process.exitCode = isRunning ? 0 : 3;
-  });
-}
-
-if (storjshare_daemon.status) {
-  checkDaemonRpcStatus();
-} else if (!storjshare_daemon.foreground) {
-  daemonize();
-  api.logger.pipe(logFile);
-  startDaemonRpcServer();
-} else {
-  api.logger.pipe(process.stdout);
-  startDaemonRpcServer();
-}
-
-
+  } else if (isRunning) {
+      return console.info('\n  * daemon is already running');
+  } else {
+    if (storjshare_daemon.foreground) {
+      console.info('\n  * starting daemon in foreground\n');
+      api.logger.pipe(process.stdout);
+      startDaemonRpcServer();
+    } else {
+      console.info('\n  * starting daemon in background');
+      daemonize();
+      api.logger.pipe(logFile);
+      startDaemonRpcServer();
+    }
+  }
+});
