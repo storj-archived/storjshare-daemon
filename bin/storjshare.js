@@ -2,16 +2,9 @@
 
 'use strict';
 
-const config = require('../lib/config/daemon');
 const storjshare = require('commander');
-const {fork} = require('child_process');
-const path = require('path');
-const utils = require('../lib/utils');
 const {version} = require('../package');
 const {software: core, protocol} = require('storj-lib').version;
-
-const TIME_WAIT_IF_STARTED = 1000;
-const TIME_WAIT_AFTER_START = 6000;
 
 storjshare
   .version(`\n  * daemon: ${version}, core: ${core}, protocol: ${protocol}`)
