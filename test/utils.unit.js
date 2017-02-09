@@ -222,4 +222,44 @@ describe('module:utils', function() {
 
   });
 
+  describe('#connectToDaemon', function() {
+
+    it('should set the process exit code and log error', function(done) {
+      let socket = new EventEmitter();
+      let error = sinon.stub(console, 'error');
+      let _utils = proxyquire('../lib/utils', {
+        dnode: {
+          connect: () => socket
+        }
+      });
+      _utils.connectToDaemon(45015, () => null);
+      setImmediate(() => {
+        socket.emit('error', new Error('Failed to connect'));
+        setImmediate(() => {
+          error.restore();
+          expect(process.exitCode).to.equal(1);
+          process.exitCode = 0;
+          done();
+        });
+      });
+    });
+
+    it('should callback with remote object and socket', function(done) {
+      let socket = new EventEmitter();
+      let rpc = {};
+      let _utils = proxyquire('../lib/utils', {
+        dnode: {
+          connect: () => socket
+        }
+      });
+      _utils.connectToDaemon(45015, (_rpc, sock) => {
+        expect(_rpc).to.equal(rpc);
+        expect(sock).to.equal(socket);
+        done();
+      });
+      setImmediate(() => socket.emit('remote', rpc));
+    });
+
+  });
+
 });
