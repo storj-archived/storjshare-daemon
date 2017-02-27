@@ -23,7 +23,8 @@ config.logger = new Logger(config.loggerVerbosity);
 config.storageManager = new storj.StorageManager(
   new storj.EmbeddedStorageAdapter(config.storagePath),
   {
-    maxCapacity: spaceAllocation
+    maxCapacity: spaceAllocation,
+    logger: config.logger
   }
 );
 
