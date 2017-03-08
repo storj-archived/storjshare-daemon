@@ -83,12 +83,12 @@ RUN Write-Host ('Installing storjshare-daemon - Latest Version'); \
 	Write-Host 'Completed storjshare-daemon Installation Successfully';
 
 #Setting up MOTD
-ADD motd.txt motd.txt
-ADD Microsoft.PowerShell_profile.ps1 Microsoft.PowerShell_profile.ps1
+#ADD motd.txt motd.txt
+#ADD Microsoft.PowerShell_profile.ps1 Microsoft.PowerShell_profile.ps1
 
-RUN New-item -type file -force $profile; \
-	Set-Content $Profile (Get-Content Microsoft.PowerShell_profile.ps1); \
-	Write-Host 'Cleaning up...'; \
+#RUN New-item -type file -force $profile; \
+#	Set-Content $Profile (Get-Content Microsoft.PowerShell_profile.ps1); \
+RUN 	Write-Host 'Cleaning up...'; \
 	Remove-Item *.log -Force; \
 	Remove-Item *.ps1 -Force;
 
