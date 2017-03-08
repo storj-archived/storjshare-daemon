@@ -15,9 +15,18 @@ Make sure you have the following prerequisites installed:
 
 * Git
 * Node.js LTS (6.9.x)
-* NPM
-* Python 2.7
 * GCC/G++/Make
+
+### Git
+
+#### GNU+Linux & Mac OSX
+
+Install git for linux
+
+#### Windows
+
+Download [Git for Windows](https://github.com/git-for-windows/git/releases) for Windows, launch the
+installer and follow the setup instructions.
 
 ### Node.js + NPM
 
