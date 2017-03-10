@@ -43,6 +43,10 @@
     {
       "name": "Gordon Hall",
       "email": "gordon@storj.io"
+    },
+    {
+      "name": "littleskunk",
+      "url": "https://github.com/littleskunk"
     }
   ],
   "license": "AGPL-3.0",
