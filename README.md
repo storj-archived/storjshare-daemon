@@ -179,7 +179,7 @@ The Storj Share daemon loads configuration from anywhere the
 [rc](https://www.npmjs.com/package/rc) package can read it. The first time you 
 run the daemon, it will create a directory in `$HOME/.config/storjshare`, so 
 the simplest way to change the daemon's behavior is to create a file at 
-`$HOME/.config/storjshare/config` containing the following:
+`$HOME/.config/storjshare/config.json` containing the following:
 
 ```json
 {
