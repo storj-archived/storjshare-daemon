@@ -6,6 +6,9 @@ RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get -y dist-upgrade
 
+#Install vim - Text Editor
+RUN apt-get -y install vim
+
 #Installs curl
 RUN apt-get -y install curl
 
