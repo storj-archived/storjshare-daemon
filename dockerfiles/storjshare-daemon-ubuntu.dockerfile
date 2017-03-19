@@ -9,6 +9,9 @@ RUN apt-get -y dist-upgrade
 #Install vim - Text Editor
 RUN apt-get -y install vim
 
+#Install libssl
+RUN apt-get -y install libssl-dev 
+
 #Installs curl
 RUN apt-get -y install curl
 
