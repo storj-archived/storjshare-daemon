@@ -45,7 +45,7 @@ function sendFarmerState() {
 }
 
 function updatePercentUsed() {
-  utils.getDirectorySize(config.storagePath, (err, result) => {
+  config.storageManager._storage.size((err, result) => {
     if (result) {
       farmerState.spaceUsed = bytes(result);
       farmerState.percentUsed = ((result / spaceAllocation) * 100).toFixed();
