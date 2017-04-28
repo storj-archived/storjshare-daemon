@@ -9,7 +9,23 @@ Storj Share Daemon
 Daemon + CLI for farming data on the Storj network, suitable for standalone
 use or inclusion in other packages.
 
-## Installation
+## Installation of Pre-built Binaries
+
+storjshare daemon is available as a snap package in the store, installable on [supported](https://snapcraft.io/docs/core/install) systems. These packages are securely confined and automatically updated.
+
+### Latest stable release
+
+```
+snap install storjshare
+```
+
+### Latest build from github master
+
+```
+snap install storjshare --edge
+```
+
+## Manual Installation
 
 Make sure you have the following prerequisites installed:
 
