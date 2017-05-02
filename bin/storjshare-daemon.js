@@ -4,11 +4,10 @@
 
 const daemonize = require('daemon');
 const dnode = require('dnode');
-const config = require('../lib/config/daemon');
 const RPC = require('../lib/api');
 const utils = require('../lib/utils');
-const api = new RPC({ logVerbosity: config.daemonLogVerbosity });
-const {createWriteStream} = require('fs');
+const config = require('../lib/config/daemon');
+const { createWriteStream } = require('fs');
 const logFile = createWriteStream(config.daemonLogFilePath, { flags: 'a' });
 const storjshare_daemon = require('commander');
 
@@ -16,6 +15,10 @@ storjshare_daemon
   .option('--status', 'print the status of the daemon and exit')
   .option('-F, --foreground', 'keeps the process in the foreground')
   .parse(process.argv);
+
+const api = new RPC({
+  logVerbosity: config.daemonLogVerbosity
+});
 
 function startDaemonRpcServer() {
   dnode(api.methods)
