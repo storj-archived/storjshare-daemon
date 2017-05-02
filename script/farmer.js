@@ -48,6 +48,7 @@ function updatePercentUsed() {
   config.storageManager._storage.size((err, result) => {
     if (result) {
       farmerState.spaceUsed = bytes(result);
+      farmerState.spaceUsedBytes = result;
       farmerState.percentUsed = ((result / spaceAllocation) * 100).toFixed();
     }
   });
