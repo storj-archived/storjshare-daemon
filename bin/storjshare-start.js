@@ -12,6 +12,7 @@ storjshare_start
   .description('starts a new network share')
   .option('-c, --config <path>', 'specify the configuration path')
   .option('-d, --detached', 'run share without management from daemon')
+  .option('-u, --unsafe', 'ignore system resource guards')
   .parse(process.argv);
 
 if (!storjshare_start.config) {
@@ -42,7 +43,7 @@ function runManagedShare() {
       }
       console.info(`\n  * starting share with config at ${configPath}`);
       sock.end();
-    });
+    }, storjshare_start.unsafe);
   });
 }
 
@@ -51,5 +52,3 @@ if (storjshare_start.detached) {
 } else {
   runManagedShare();
 }
-
-

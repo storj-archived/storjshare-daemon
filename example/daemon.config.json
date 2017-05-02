@@ -1,10 +1,10 @@
 {
   // Bind Dnode RPC server to this port
   "daemonRpcPort": 45015,
-  // Interface to bind Dnode RPC server, if your host is public, be sure to 
+  // Interface to bind Dnode RPC server, if your host is public, be sure to
   // leave this as "127.0.0.1" to prevent others from controlling your nodes
   // You can set this to a public address if you'd like to control your shares
-  // remotely, however you must secure access on your own - you have been 
+  // remotely, however you must secure access on your own - you have been
   // warned
   "daemonRpcAddress": "127.0.0.1",
   // Path to write daemon log file to disk, leave blank to default to:

@@ -33,6 +33,36 @@ describe('class:RPC', function() {
 
   describe('#start', function() {
 
+    it('should callback error if too many shares', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        os: {
+          cpus: sinon.stub().returns([])
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal(
+          'insufficient system resources available'
+        );
+        done();
+      });
+    });
+
+    it('should fall through is unsafe flag', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        os: {
+          cpus: sinon.stub().returns([])
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal(
+          'failed to read config at path/to/config'
+        );
+        done();
+      }, true);
+    });
+
     it('should callback error if no config given', function(done) {
       let _RPC = proxyquire('../lib/api', {
         fs: {
@@ -148,6 +178,8 @@ describe('class:RPC', function() {
       let _ipc = sinon.stub(rpc, '_processShareIpc');
       rpc.start('path/to/config', function() {
         let id = rpc.shares.keys().next().value;
+        let share = rpc.shares.get(id);
+        share.meta.uptimeMs = 6000;
         _proc.emit('message', {});
         setImmediate(() => {
           expect(_ipc.called).to.equal(true);
