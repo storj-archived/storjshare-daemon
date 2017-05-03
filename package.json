@@ -1,6 +1,6 @@
 {
   "name": "storjshare-daemon",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
   "bin": {
@@ -71,7 +71,7 @@
     "pretty-ms": "^2.1.0",
     "rc": "^1.1.6",
     "readable-stream": "^2.2.2",
-    "storj-lib": "^6.3.2",
+    "storj-lib": "^6.4.2",
     "storj-telemetry-reporter": "^5.0.0",
     "strip-json-comments": "^2.0.1",
     "tail": "^1.2.1"
