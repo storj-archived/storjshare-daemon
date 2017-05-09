@@ -67,7 +67,7 @@ npm --version
 
 Debian based (like Ubuntu)
 ```
-apt install git python build-essential
+apt-get install git python build-essential
 ```
 
 Red Hat / Centos
