@@ -7,7 +7,7 @@ const {version} = require('../package');
 const {software: core, protocol} = require('storj-lib').version;
 
 storjshare
-  .version(`daemon: ${version}, core: ${core}, protocol: ${protocol}`)
+  .version(`\n  * daemon: ${version}, core: ${core}, protocol: ${protocol}`)
   .command('start', 'start a farming node')
   .command('stop', 'stop a farming node')
   .command('restart', 'restart a farming node')
