@@ -22,7 +22,7 @@ const api = new RPC({
 
 function startDaemonRpcServer() {
   dnode(api.methods)
-    .on('error', (err) => api.logger.warn(err.message))
+    .on('error', (err) => api.jsonlogger.warn(err.message))
     .listen(config.daemonRpcPort, config.daemonRpcAddress);
 }
 
@@ -35,12 +35,12 @@ utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
   } else {
     if (storjshare_daemon.foreground) {
       console.info('\n  * starting daemon in foreground\n');
-      api.logger.pipe(process.stdout);
+      api.jsonlogger.pipe(process.stdout);
       startDaemonRpcServer();
     } else {
       console.info('\n  * starting daemon in background');
       daemonize();
-      api.logger.pipe(logFile);
+      api.jsonlogger.pipe(logFile);
       startDaemonRpcServer();
     }
   }

@@ -78,11 +78,11 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       return sock.end();
     }
 
-    let logFilePath = null;
+    let logFileDir = null;
 
     for (let i = 0; i < shares.length; i++) {
       if (shares[i].id === storjshare_logs.nodeid) {
-        logFilePath = shares[i].config.loggerOutputFile;
+        logFileDir = shares[i].config.loggerOutputDirectory;
         break;
       }
     }

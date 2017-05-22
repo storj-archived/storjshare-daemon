@@ -16,11 +16,11 @@
   // Known preferred seeds in form of a storj URI
   // Example: "storj://[ip.or.hostname]:[port]/[nodeid]"
   "seedList": [],
-  // Interface to bind RPC server, use 0.0.0.0 for all interfaces or if you 
+  // Interface to bind RPC server, use 0.0.0.0 for all interfaces or if you
   // have a public address, use that, else leave 127.0.0.1 and Storj Share
   // will try to determine your address
   "rpcAddress": "127.0.0.1",
-  // Port to bind for RPC server, make sure this is forwarded if behind a 
+  // Port to bind for RPC server, make sure this is forwarded if behind a
   // NAT or firewall - otherwise Storj Share will try to punch out
   "rpcPort": 4000,
   // Enables NAT traversal strategies, first UPnP, then reverse HTTP tunnel
@@ -31,7 +31,7 @@
   "maxTunnels": 3,
   // Maximum number of concurrent connections to allow
   "maxConnections": 150,
-  // If providing tunnels, the starting and ending port range to open for 
+  // If providing tunnels, the starting and ending port range to open for
   // them
   "tunnelGatewayRange": {
     "min": 4001,
@@ -42,7 +42,7 @@
     "times": 3,
     "interval": 5000
   },
-  // Temporarily stop sending OFFER messages if more than this number of shard 
+  // Temporarily stop sending OFFER messages if more than this number of shard
   // transfers are active
   "offerBackoffLimit": 4,
   // ECDSA private key for your network identity, your Node ID is derived from
@@ -52,14 +52,14 @@
   // 4 - DEBUG | 3 - INFO | 2 - WARN | 1 - ERROR | 0 - SILENT
   "loggerVerbosity": 3,
   // Path to write the log file to disk, leave empty to default to:
-  // $HOME/.config/storjshare/logs/[nodeid].log
-  "loggerOutputFile": "",
+  // $HOME/.config/storjshare/logs/[nodeid]_date.log
+  "loggerOutputDirectory": "",
   // Directory path to store contracts and shards
   "storagePath": "",
   // Amount of space to lease to the network, as human readable string
   // Valid units are B, KB, MB, GB, TB
   "storageAllocation": "2GB",
-  // Periodically report your used and free capacity to Storj Labs to improve 
+  // Periodically report your used and free capacity to Storj Labs to improve
   // the network - no personally identifiable information is sent
   "enableTelemetryReporting": true
 }
