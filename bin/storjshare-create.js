@@ -114,7 +114,7 @@ replaceDefaultConfigValue('paymentAddress', storjshare_create.sjcx);
 replaceDefaultConfigValue('networkPrivateKey', storjshare_create.key);
 replaceDefaultConfigValue('storagePath',
                           path.normalize(storjshare_create.storage));
-replaceDefaultConfigValue('loggerOutputDirectory',
+replaceDefaultConfigValue('loggerOutputFile',
                           path.normalize(storjshare_create.logdir));
 
 const optionalReplacements = [

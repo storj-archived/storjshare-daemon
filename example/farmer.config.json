@@ -53,7 +53,7 @@
   "loggerVerbosity": 3,
   // Path to write the log file to disk, leave empty to default to:
   // $HOME/.config/storjshare/logs/[nodeid]_date.log
-  "loggerOutputDirectory": "",
+  "loggerOutputFile": "",
   // Directory path to store contracts and shards
   "storagePath": "",
   // Amount of space to lease to the network, as human readable string
