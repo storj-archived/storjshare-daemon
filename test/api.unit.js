@@ -13,7 +13,7 @@ describe('class:RPC', function() {
 
     it('should call the log method', function() {
       let rpc = new RPC({ loggerVerbosity: 0 });
-      let info = sinon.stub(rpc.logger, 'info');
+      let info = sinon.stub(rpc.jsonlogger, 'info');
       rpc._log('test');
       expect(info.called).to.equal(true);
     });

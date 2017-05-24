@@ -94,7 +94,7 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
     let logTail = null;
 
     setInterval(function() {
-      if (currentFile != fslogger._todaysFile()) {
+      if (currentFile !== fslogger._todaysFile()) {
         if (logTail instanceof Tail) {
           logTail.unwatch();
         }
