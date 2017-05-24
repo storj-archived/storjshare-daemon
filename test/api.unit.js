@@ -158,6 +158,9 @@ describe('class:RPC', function() {
       let _proc = new EventEmitter();
       _proc.stdout = new Readable({ read: () => null });
       _proc.stderr = new Readable({ read: () => null });
+      var MockFsLogger = function(){};
+      MockFsLogger.prototype.setLogLevel = sinon.stub();
+      MockFsLogger.prototype.write = sinon.stub();
       let _RPC = proxyquire('../lib/api', {
         fs: {
           createWriteStream: sinon.stub().returns(new Writable({
@@ -172,11 +175,12 @@ describe('class:RPC', function() {
         },
         child_process: {
           fork: sinon.stub().returns(_proc)
-        }
+        },
+        fslogger: MockFsLogger
       });
       let rpc = new _RPC({ loggerVerbosity: 0 });
       let _ipc = sinon.stub(rpc, '_processShareIpc');
-      rpc.start('path/to/config', function() {
+      rpc.start('/tmp/', function() {
         let id = rpc.shares.keys().next().value;
         let share = rpc.shares.get(id);
         share.meta.uptimeMs = 6000;
