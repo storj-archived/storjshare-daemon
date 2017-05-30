@@ -166,7 +166,9 @@ describe('class:RPC', function() {
           createWriteStream: sinon.stub().returns(new Writable({
             write: (d, e, cb) => cb()
           })),
-          statSync: sinon.stub(),
+          statSync: sinon.stub().returns({
+            isDirectory: () => true
+          }),
           readFileSync: sinon.stub().returns(Buffer.from('{}'))
         },
         './utils': {
@@ -212,7 +214,9 @@ describe('class:RPC', function() {
           createWriteStream: sinon.stub().returns(new Writable({
             write: (d, e, cb) => cb()
           })),
-          statSync: sinon.stub(),
+          statSync: sinon.stub().returns({
+            isDirectory: () => false
+          }),
           readFileSync: sinon.stub().returns(Buffer.from('{}'))
         },
         './utils': {
