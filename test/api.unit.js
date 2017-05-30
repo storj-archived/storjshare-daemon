@@ -200,6 +200,49 @@ describe('class:RPC', function() {
       });
     });
 
+    it('should call fslogger.write on data', function(done) {
+      let _proc = new EventEmitter();
+      _proc.stdout = new Readable({ read: () => null });
+      _proc.stderr = new Readable({ read: () => null });
+      var MockFsLogger = function(){};
+      MockFsLogger.prototype.setLogLevel = sinon.stub();
+      MockFsLogger.prototype.write = sinon.stub();
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          createWriteStream: sinon.stub().returns(new Writable({
+            write: (d, e, cb) => cb()
+          })),
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+        },
+        './utils': {
+          validate: sinon.stub(),
+          validateAllocation: sinon.stub().callsArg(1)
+        },
+        child_process: {
+          fork: sinon.stub().returns(_proc)
+        },
+        fslogger: MockFsLogger
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      let _ipc = sinon.stub(rpc, '_processShareIpc');
+      rpc.start('/tmp/', function() {
+        let id = rpc.shares.keys().next().value;
+        let share = rpc.shares.get(id);
+        share.meta.uptimeMs = 6000;
+        _proc.stdout.emit('data', {});
+        setImmediate(() => {
+          expect(MockFsLogger.prototype.write.called).to.equal(true);
+          MockFsLogger.prototype.write.called = false;
+          _proc.stderr.emit('data', {});
+          setImmediate(() => {
+            expect(MockFsLogger.prototype.write.called).to.equal(true);
+            done();
+          });
+        });
+      });
+    });
+
   });
 
   describe('#stop', function() {
