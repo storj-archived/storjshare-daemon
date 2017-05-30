@@ -39,7 +39,7 @@ storjshare_create
   .option('--tunnelportmin <port>', 'specify min gateway port')
   .option('--tunnelportmax <port>', 'specify max gateway port')
   .option('--manualforwarding', 'do not use nat traversal strategies')
-  .option('--logfile <path>', 'specify the logfile path')
+  .option('--logdir <path>', 'specify the log directory')
   .option('--noedit', 'do not open generated config in editor')
   .option('-o, --outfile <writepath>', 'write config to path')
   .parse(process.argv);
@@ -62,19 +62,18 @@ if (!storjshare_create.storage) {
   mkdirp.sync(storjshare_create.storage);
 }
 
-if (!storjshare_create.logfile) {
-  storjshare_create.logfile = path.join(
-    homedir(),
-    '.config/storjshare/logs',
-    storj.KeyPair(storjshare_create.key).getNodeID() + '.log'
-  );
-}
-
 if (!storjshare_create.outfile) {
   storjshare_create.outfile = path.join(
     homedir(),
     '.config/storjshare/configs',
     storj.KeyPair(storjshare_create.key).getNodeID() + '.json'
+  );
+}
+
+if (!storjshare_create.logdir) {
+  storjshare_create.logdir = path.join(
+    homedir(),
+    '.config/storjshare/logs'
   );
 }
 
@@ -116,7 +115,7 @@ replaceDefaultConfigValue('networkPrivateKey', storjshare_create.key);
 replaceDefaultConfigValue('storagePath',
                           path.normalize(storjshare_create.storage));
 replaceDefaultConfigValue('loggerOutputFile',
-                          path.normalize(storjshare_create.logfile));
+                          path.normalize(storjshare_create.logdir));
 
 const optionalReplacements = [
   { option: storjshare_create.size, name: 'storageAllocation' },

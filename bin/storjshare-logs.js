@@ -8,6 +8,7 @@ const {Tail} = require('tail');
 const colors = require('colors/safe');
 const storjshare_logs = require('commander');
 const fs = require('fs');
+const FsLogger = require('fslogger');
 
 storjshare_logs
   .description('tails the logs for the given share id')
@@ -78,28 +79,44 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       return sock.end();
     }
 
-    let logFilePath = null;
+    let logFileDir = null;
 
     for (let i = 0; i < shares.length; i++) {
       if (shares[i].id === storjshare_logs.nodeid) {
-        logFilePath = shares[i].config.loggerOutputFile;
+        logFileDir = shares[i].config.loggerOutputFile;
         break;
       }
     }
 
-    if (!utils.existsSync(logFilePath)) {
-      console.error(`\n  no logs to show for ${storjshare_logs.nodeid}`);
-      return sock.end();
-    }
+    const fslogger = new FsLogger(logFileDir, storjshare_logs.nodeid);
 
-    let logTail = new Tail(logFilePath);
-    let numLines = storjshare_logs.lines
-                 ? parseInt(storjshare_logs.lines)
-                 : 20;
+    let currentFile = null;
+    let logTail = null;
 
-    getLastLines(logFilePath, numLines, (lines) => {
-      lines.forEach((line) => prettyLog(line));
-      logTail.on('line', (line) => prettyLog(line));
-    });
+    setInterval(function() {
+      if (currentFile !== fslogger._todaysFile()) {
+        if (logTail instanceof Tail) {
+          logTail.unwatch();
+        }
+
+        currentFile = fslogger._todaysFile();
+        if (!utils.existsSync(fslogger._todaysFile())) {
+          console.error(`\n  no logs to show for ${storjshare_logs.nodeid}`);
+          return sock.end();
+        }
+
+        logTail = new Tail(fslogger._todaysFile());
+        let numLines = storjshare_logs.lines
+                     ? parseInt(storjshare_logs.lines)
+                     : 20;
+
+        getLastLines(fslogger._todaysFile(), numLines, (lines) => {
+          lines.forEach((line) => prettyLog(line));
+          logTail.on('line', (line) => prettyLog(line));
+        });
+      }
+
+    }, 1000);
+
   });
 });
