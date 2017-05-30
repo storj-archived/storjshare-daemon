@@ -46,7 +46,7 @@ Make sure you have the following prerequisites installed:
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
 ```
 
-Close your shell and open an new one. Now that you can call the `nvm` program, 
+Close your shell and open an new one. Now that you can call the `nvm` program,
 install Node.js (which comes with NPM):
 
 ```
@@ -93,7 +93,7 @@ npm install --global windows-build-tools
 
 ---
 
-Once build dependencies have been installed for your platform, install the 
+Once build dependencies have been installed for your platform, install the
 package globally using Node Package Manager:
 
 ```
@@ -102,7 +102,7 @@ npm install --global storjshare-daemon
 
 ## Usage (CLI)
 
-Once installed, you will have access to the `storjshare` program, so start by 
+Once installed, you will have access to the `storjshare` program, so start by
 asking it for some help.
 
 ```
@@ -152,16 +152,16 @@ storjshare help create
     --tunnelportmin <port>     specify min gateway port
     --tunnelportmax <port>     specify max gateway port
     --manualforwarding         do not use nat traversal strategies
-    --logfile <path>           specify the logfile path
+    --logdir <path>            specify the log directory
     --noedit                   do not open generated config in editor
     -o, --outfile <writepath>  write config to path
 ```
 
 ## Usage (Programmatic)
 
-The Storj Share daemon uses a local [dnode](https://github.com/substack/dnode) 
-server to handle RPC message from the CLI and other applications. Assuming the 
-daemon is running, your program can communicate with it using this interface. 
+The Storj Share daemon uses a local [dnode](https://github.com/substack/dnode)
+server to handle RPC message from the CLI and other applications. Assuming the
+daemon is running, your program can communicate with it using this interface.
 The example that follows is using Node.js, but dnode is implemented in many
 [other languages](https://github.com/substack/dnode#dnode-in-other-languages).
 
@@ -181,7 +181,7 @@ daemon.on('remote', (rpc) => {
 });
 ```
 
-You can also easily start the daemon from your program by creating a dnode 
+You can also easily start the daemon from your program by creating a dnode
 server and passing it an instance of the `RPC` class exposed from this package.
 
 ```js
@@ -194,10 +194,10 @@ dnode(api.methods).listen(45015, '127.0.0.1');
 
 ## Configuring the Daemon
 
-The Storj Share daemon loads configuration from anywhere the 
-[rc](https://www.npmjs.com/package/rc) package can read it. The first time you 
-run the daemon, it will create a directory in `$HOME/.config/storjshare`, so 
-the simplest way to change the daemon's behavior is to create a file at 
+The Storj Share daemon loads configuration from anywhere the
+[rc](https://www.npmjs.com/package/rc) package can read it. The first time you
+run the daemon, it will create a directory in `$HOME/.config/storjshare`, so
+the simplest way to change the daemon's behavior is to create a file at
 `$HOME/.config/storjshare/config` containing the following:
 
 ```json
@@ -209,15 +209,15 @@ the simplest way to change the daemon's behavior is to create a file at
 }
 ```
 
-Modify these parameters to your liking, see `example/daemon.config.json` for 
+Modify these parameters to your liking, see `example/daemon.config.json` for
 detailed explanation of these properties.
 
 ## Debugging the Daemon
 
-The daemon logs activity to the configured log file, which by default is 
-`$HOME/.config/storjshare/logs/daemon.log`. However if you find yourself 
-needing to frequently restart the daemon and check the logs during 
-development, you can run the daemon as a foreground process for a tighter 
+The daemon logs activity to the configured log file, which by default is
+`$HOME/.config/storjshare/logs/daemon.log`. However if you find yourself
+needing to frequently restart the daemon and check the logs during
+development, you can run the daemon as a foreground process for a tighter
 feedback loop.
 
 ```
@@ -233,13 +233,13 @@ choose to migrate from the old storjshare-gui to the CLI version of
 storjshare-daemon, please follow the instructions below.
 
 #### storjshare-cli
-Storj Share provides a simple method for creating new shares, but if you were 
-previously using the `storjshare-cli` package superceded by this one, you'll 
-want to migrate your configuration to the new format. To do this, first you'll 
+Storj Share provides a simple method for creating new shares, but if you were
+previously using the `storjshare-cli` package superceded by this one, you'll
+want to migrate your configuration to the new format. To do this, first you'll
 need to dump your private key **before** installing this package.
 
-> If you accidentally overwrote your old `storjshare-cli` installation with 
-> this package, don't worry - just reinstall the old package to dump the key, 
+> If you accidentally overwrote your old `storjshare-cli` installation with
+> this package, don't worry - just reinstall the old package to dump the key,
 > then reinstall this package.
 
 ### Step 0: Dump Your Private Key
@@ -270,7 +270,7 @@ information and go on with Step 1 and 2.
 ```
 
 #### storjshare-cli
-You can print your cleartext private key from storjshare-cli, using the 
+You can print your cleartext private key from storjshare-cli, using the
 `dump-key` command:
 
 ```
@@ -285,15 +285,15 @@ storjshare dump-key
 ```
 
 If you are using a custom data directory, be sure to add the `--datadir <path>`
-option to be sure you get the correct key. Also be sure to note your defined 
+option to be sure you get the correct key. Also be sure to note your defined
 payout address and data directory.
 
 ### Step 1: Install Storj Share and Create Config
 
-Now that you have your private key, you can generate a new configuration file. 
-To do this, first install the `storjshare-daemon` package globally and use the 
-`create` command. You'll need to remove the `storjshare-cli` package first, so 
-make sure you perform the previous step for all shared drives before 
+Now that you have your private key, you can generate a new configuration file.
+To do this, first install the `storjshare-daemon` package globally and use the
+`create` command. You'll need to remove the `storjshare-cli` package first, so
+make sure you perform the previous step for all shared drives before
 proceeding forward.
 
 ```
@@ -301,21 +301,21 @@ npm remove -g storjshare-cli
 npm install -g storjshare-daemon
 ```
 
-Now that you have Storj Share installed, use the `create` command to generate 
+Now that you have Storj Share installed, use the `create` command to generate
 your configuration.
 
 ```
 storjshare create --key 4154e8... --sjcx 1K1rPg... --storage <datadir> -o <writepath>
 ```
 
-This will generate your configuration file given the parameters you passed in, 
-write the file to the path following the `-o` option, and open it in your text 
-editor. Here, you can make other changes to the configuration following the 
+This will generate your configuration file given the parameters you passed in,
+write the file to the path following the `-o` option, and open it in your text
+editor. Here, you can make other changes to the configuration following the
 detailed comments in the generated file.
 
 ### Step 2: Use The New Configuration
 
-Now that you have successfully migrated your configuration file, you can use 
+Now that you have successfully migrated your configuration file, you can use
 it to start the share.
 
 ```
@@ -343,4 +343,3 @@ GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see http://www.gnu.org/licenses/.
-
