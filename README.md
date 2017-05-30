@@ -24,6 +24,9 @@ snap install storjshare
 ```
 snap install storjshare --edge
 ```
+## Installation via Arch User Repositories
+
+storjshare daemon is also available for Arch Linux as a package on the AUR as [storjshare-daemon](https://aur.archlinux.org/packages/storjshare-daemon/). Install it via your favourite AUR helper.
 
 ## Manual Installation
 

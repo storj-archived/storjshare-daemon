@@ -225,7 +225,6 @@ describe('class:RPC', function() {
         fslogger: MockFsLogger
       });
       let rpc = new _RPC({ loggerVerbosity: 0 });
-      let _ipc = sinon.stub(rpc, '_processShareIpc');
       rpc.start('/tmp/', function() {
         let id = rpc.shares.keys().next().value;
         let share = rpc.shares.get(id);
@@ -237,6 +236,7 @@ describe('class:RPC', function() {
           _proc.stderr.emit('data', {});
           setImmediate(() => {
             expect(MockFsLogger.prototype.write.called).to.equal(true);
+            _proc.emit('error', new Error());
             done();
           });
         });
