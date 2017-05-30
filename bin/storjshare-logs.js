@@ -8,6 +8,7 @@ const {Tail} = require('tail');
 const colors = require('colors/safe');
 const storjshare_logs = require('commander');
 const fs = require('fs');
+const path = require('path');
 const FsLogger = require('fslogger');
 
 storjshare_logs
@@ -86,6 +87,14 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
         logFileDir = shares[i].config.loggerOutputFile;
         break;
       }
+    }
+
+    try {
+      if (!fs.statSync(logFileDir).isDirectory()) {
+        logFileDir = path.dirname(logFileDir);
+      }
+    } catch (err) {
+      logFileDir = path.dirname(logFileDir);
     }
 
     const fslogger = new FsLogger(logFileDir, storjshare_logs.nodeid);
