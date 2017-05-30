@@ -90,7 +90,7 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
     }
 
     try {
-      if (fs.statSync(logFileDir).isDirectory()) {
+      if (!fs.statSync(logFileDir).isDirectory()) {
         logFileDir = path.dirname(logFileDir);
       }
     } catch (err) {
