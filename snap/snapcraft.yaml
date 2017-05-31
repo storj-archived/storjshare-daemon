@@ -1,11 +1,11 @@
 name: storjshare
-version: master
+version: 3.1.0
 summary: farm data on the Storj network.
 description: |
   Earn money by sharing your hard drive space.
   Daemon + CLI for farming data on the Storj network.
 
-grade: devel # must be 'stable' to release into candidate/stable channels
+grade: stable
 confinement: strict
 
 apps:

@@ -1,3 +1,7 @@
+*.snap
+parts/
+stage/
+prime/
 node_modules/
 coverage/
 *.swp
