@@ -11,19 +11,16 @@ use or inclusion in other packages.
 
 ## Installation of Pre-built Binaries
 
-storjshare daemon is available as a snap package in the store, installable on [supported](https://snapcraft.io/docs/core/install) systems. These packages are securely confined and automatically updated.
+Storj Share Daemon is available as a snap package in the store, installable on 
+[supported](https://snapcraft.io/docs/core/install) systems. These packages are 
+securely confined and automatically updated.
 
-### Latest stable release
+### Latest Stable Release
 
 ```
 snap install storjshare
 ```
 
-### Latest build from github master
-
-```
-snap install storjshare --edge
-```
 ## Installation via Arch User Repositories
 
 storjshare daemon is also available for Arch Linux as a package on the AUR as [storjshare-daemon](https://aur.archlinux.org/packages/storjshare-daemon/). Install it via your favourite AUR helper.
