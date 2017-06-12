@@ -30,6 +30,22 @@ describe('module:utils', function() {
 
   });
 
+  describe('#isValidEthereumAddress', function() {
+
+    it('should return true for valid mainnet', function() {
+      expect(utils.isValidEthereumAddress(
+        '0xC2D7CF95645D33006175B78989035C7c9061d3F9'
+      )).to.equal(true);
+    });
+
+    it('should return false for invalid address', function() {
+      expect(utils.isValidEthereumAddress(
+        '1234 Fake Street'
+      )).to.equal(false);
+    });
+
+  });
+
   describe('#_isValidDirectory', function() {
 
     it('should return the the result of existsSync', function() {
