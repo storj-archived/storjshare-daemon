@@ -18,7 +18,7 @@ let farmerState = {
   lastActivity: Date.now(),
   portStatus: {
     listenPort: 0,
-    isPublic: null,
+    publicIp: null,
     uPnP: null,
     tunneled: null,
     portOpen: null
@@ -49,7 +49,7 @@ farmer.join((err) => {
 function updatePortStatus() {
   farmerState.portStatus.uPnP = farmer.transport._requiresTraversal;
   farmerState.portStatus.listenPort = farmer.transport._contact.port;
-  farmerState.portStatus.isPublic = farmer.transport._isPublic;
+  farmerState.portStatus.publicIp = farmer.transport._publicIp || false;
   farmerState.portStatus.portOpen = farmer.transport._portOpen;
   farmerState.portStatus.tunneled = farmer._tunneled || false;
 }

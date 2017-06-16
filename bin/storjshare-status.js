@@ -14,8 +14,7 @@ storjshare_status
   .parse(process.argv);
 
 function portStatusInitialized(portStatus) {
-  return portStatus.isPublic !== undefined
-    && portStatus.uPnP !== undefined
+  return portStatus.uPnP !== undefined
     && portStatus.portOpen !== undefined;
 }
 
@@ -47,7 +46,7 @@ function getConnectionType(portStatus) {
   else if (portStatus.tunneled) {
     connectionType = '(Tunnel)';
   }
-  else if (!portStatus.uPnP && !portStatus.isPublic) {
+  else if (!portStatus.uPnP && !portStatus.publicIp) {
     connectionType = '(Private)';
   }
   else {
