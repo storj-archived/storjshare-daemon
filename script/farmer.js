@@ -15,7 +15,14 @@ let farmerState = {
   percentUsed: '...',
   spaceUsed: '...',
   totalPeers: 0,
-  lastActivity: Date.now()
+  lastActivity: Date.now(),
+  portStatus: {
+    listenPort: 0,
+    isPublic: null,
+    uPnP: null,
+    tunneled: null,
+    portOpen: null
+  }
 };
 
 config.keyPair = new storj.KeyPair(config.networkPrivateKey);
@@ -39,7 +46,16 @@ farmer.join((err) => {
   }
 });
 
+function updatePortStatus() {
+  farmerState.portStatus.uPnP = farmer.transport._requiresTraversal;
+  farmerState.portStatus.listenPort = farmer.transport._contact.port;
+  farmerState.portStatus.isPublic = farmer.transport._isPublic;
+  farmerState.portStatus.portOpen = farmer.transport._portOpen;
+  farmerState.portStatus.tunneled = farmer._tunneled || false;
+}
+
 function sendFarmerState() {
+  updatePortStatus();
   farmerState.totalPeers = farmer.router.length;
   process.send(farmerState);
 }
