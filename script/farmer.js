@@ -17,11 +17,9 @@ let farmerState = {
   totalPeers: 0,
   lastActivity: Date.now(),
   portStatus: {
-    listenPort: 0,
-    publicIp: null,
-    uPnP: null,
-    tunneled: null,
-    portOpen: null
+    listenPort: '...',
+    connectionStatus: -1,
+    connectionType: ''
   }
 };
 
@@ -46,16 +44,52 @@ farmer.join((err) => {
   }
 });
 
-function updatePortStatus() {
-  farmerState.portStatus.uPnP = farmer.transport._requiresTraversal;
-  farmerState.portStatus.listenPort = farmer.transport._contact.port;
-  farmerState.portStatus.publicIp = farmer.transport._publicIp || false;
-  farmerState.portStatus.portOpen = farmer.transport._portOpen;
-  farmerState.portStatus.tunneled = farmer._tunneled || false;
+function transportInitialized() {
+  return farmer.transport._requiresTraversal !== undefined
+    && farmer.transport._portOpen !== undefined;
+}
+
+function getPort() {
+  if (transportInitialized()) {
+    return farmer.transport._contact.port;
+  }
+  return '...';
+}
+
+function getConnectionType() {
+  if(!transportInitialized()) {
+    return '';
+  }
+  if (farmer.transport._portOpen) {
+    return farmer.transport._requiresTraversal ? '(uPnP)' : '(TCP)';
+  }
+  if (farmer._tunneled) {
+    return '(Tunnel)';
+  }
+  if (!farmer.transport._requiresTraversal
+    && !farmer.transport._publicIp) {
+    return '(Private)';
+  }
+  return '(Closed)';
+}
+
+function getConnectionStatus() {
+  if (!transportInitialized()) {
+    return -1;
+  }
+  if (farmer.transport._portOpen) {
+    return 0;
+  }
+  if (farmer._tunneled) {
+    return 1;
+  }
+  return 2;
 }
 
 function sendFarmerState() {
-  updatePortStatus();
+  farmerState.portStatus.listenPort = getPort();
+  farmerState.portStatus.connectionType = getConnectionType();
+  farmerState.portStatus.connectionStatus = getConnectionStatus();
   farmerState.totalPeers = farmer.router.length;
   process.send(farmerState);
 }

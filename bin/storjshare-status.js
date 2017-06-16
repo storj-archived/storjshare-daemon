@@ -13,46 +13,17 @@ storjshare_status
   .description('prints the status of all managed shares')
   .parse(process.argv);
 
-function portStatusInitialized(portStatus) {
-  return portStatus.uPnP !== undefined
-    && portStatus.portOpen !== undefined;
-}
-
-function getPortValueColored(portStatus, value) {
-  if (portStatus.portOpen) {
-    return colors.green(value);
+function getColoredPortValue(connectionStatus, value) {
+  switch (connectionStatus) {
+    case 0:
+      return colors.green(value);
+    case 1:
+      return colors.yellow(value);
+    case 2:
+      return colors.red(value);
+    default:
+      return value;
   }
-  if (portStatus.tunneled) {
-    return colors.yellow(value);
-  }
-  return colors.red(value);
-}
-
-function getPort(portStatus) {
-  if (portStatusInitialized(portStatus)) {
-    return getPortValueColored(portStatus,portStatus.listenPort);
-  }
-  return '...';
-}
-
-function getConnectionType(portStatus) {
-  let connectionType = '';
-  if (!portStatusInitialized(portStatus)) {
-    return connectionType;
-  }
-  if (portStatus.portOpen) {
-    connectionType = portStatus.uPnP ? '(uPnP)' : '(TCP)';
-  }
-  else if (portStatus.tunneled) {
-    connectionType = '(Tunnel)';
-  }
-  else if (!portStatus.uPnP && !portStatus.publicIp) {
-    connectionType = '(Private)';
-  }
-  else {
-    connectionType = '(Closed)';
-  }
-  return getPortValueColored(portStatus,connectionType);
 }
 
 utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
@@ -84,6 +55,11 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       }
 
       let portStatus = share.meta.farmerState.portStatus;
+      let port = getColoredPortValue(portStatus.connectionStatus,
+         portStatus.listenPort);
+      let connectionType =  getColoredPortValue(portStatus.connectionStatus, 
+        portStatus.connectionType);
+      
 
       table.push([
         `${share.id}\n  → ${share.config.storagePath}`,
@@ -91,7 +67,7 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
         prettyMs(share.meta.uptimeMs),
         share.meta.numRestarts || 0,
         share.meta.farmerState.totalPeers || 0,
-        getPort(portStatus) + '\n' + getConnectionType(portStatus),
+        port + '\n' + connectionType,
         share.meta.farmerState.spaceUsed + '\n' +
           `(${share.meta.farmerState.percentUsed}%)`
       ]);
