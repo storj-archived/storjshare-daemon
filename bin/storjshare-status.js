@@ -13,8 +13,8 @@ storjshare_status
   .description('prints the status of all managed shares')
   .parse(process.argv);
 
-function getColoredPortValue(connectionStatus, value) {
-  switch (connectionStatus) {
+function getColoredValue(status, value) {
+  switch (status) {
     case 0:
       return colors.green(value);
     case 1:
@@ -30,12 +30,12 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.status(function(err, shares) {
     let table = new Table({
       head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-        'Port', 'Shared'],
+        'Delta', 'Port', 'Shared'],
       style: {
         head: ['cyan', 'bold'],
         border: []
       },
-      colWidths: [45, 10, 10, 10, 10, 11, 10]
+      colWidths: [45, 10, 10, 10, 10, 8, 11, 10]
     });
     shares.forEach((share) => {
       let status = '?';
@@ -55,10 +55,13 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       }
 
       let portStatus = share.meta.farmerState.portStatus;
-      let port = getColoredPortValue(portStatus.connectionStatus,
+      let port = getColoredValue(portStatus.connectionStatus,
          portStatus.listenPort);
-      let connectionType =  getColoredPortValue(portStatus.connectionStatus, 
+      let connectionType =  getColoredValue(portStatus.connectionStatus, 
         portStatus.connectionType);
+
+      let ntpStatus = getColoredValue(share.meta.farmerState.ntpStatus.status,
+        share.meta.farmerState.ntpStatus.delta);
       
 
       table.push([
@@ -67,6 +70,7 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
         prettyMs(share.meta.uptimeMs),
         share.meta.numRestarts || 0,
         share.meta.farmerState.totalPeers || 0,
+        ntpStatus,
         port + '\n' + connectionType,
         share.meta.farmerState.spaceUsed + '\n' +
           `(${share.meta.farmerState.percentUsed}%)`
