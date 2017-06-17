@@ -135,11 +135,11 @@ function updateNtpDelta() {
     }
     else {
       farmerState.ntpStatus.delta = delta + 'ms';
-      if (delta <= 50) {
-        farmerState.ntpStatus.status = 0;
+      if (delta > 9999 || delta < -9999) {
+        farmerState.ntpStatus.delta = '>9999ms';
       }
-      else if (delta <= 100) {
-        farmerState.ntpStatus.status = 1;
+      if (delta <= 500 && delta >= -500) {
+        farmerState.ntpStatus.status = 0;
       }
       else {
         farmerState.ntpStatus.status = 2;
