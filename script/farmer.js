@@ -20,6 +20,10 @@ let farmerState = {
     listenPort: '...',
     connectionStatus: -1,
     connectionType: ''
+  },
+  ntpStatus: {
+    delta: '...',
+    status: -1
   }
 };
 
@@ -123,10 +127,34 @@ function sendTelemetryReport() {
   });
 }
 
+function updateNtpDelta() {
+  storj.utils.getNtpTimeDelta(function(err, delta) {
+    if (err) {
+      farmerState.ntpStatus.delta = '...';
+      farmerState.ntpStatus.status = -1;
+    }
+    else {
+      farmerState.ntpStatus.delta = delta + 'ms';
+      if (delta <= 50) {
+        farmerState.ntpStatus.status = 0;
+      }
+      else if (delta <= 100) {
+        farmerState.ntpStatus.status = 1;
+      }
+      else {
+        farmerState.ntpStatus.status = 2;
+      }
+    }
+  });
+}
+
 updatePercentUsed();
 setInterval(updatePercentUsed, 10 * 60 * 1000); // Update space every 10 mins
 
 if (processIsManaged) {
+  updateNtpDelta();
+  setInterval(updateNtpDelta, 10 * 60 * 1000); // Update ntp delta every 10 mins
+
   sendFarmerState();
   setInterval(sendFarmerState, 10 * 1000); // Update state every 10 secs
 }
