@@ -30,12 +30,12 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.status(function(err, shares) {
     let table = new Table({
       head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-        'Delta', 'Port', 'Shared'],
+        'Contracts', 'Delta', 'Port', 'Shared'],
       style: {
         head: ['cyan', 'bold'],
         border: []
       },
-      colWidths: [45, 10, 10, 10, 10, 9, 11, 10]
+      colWidths: [45, 10, 10, 10, 10, 11, 9, 11, 10]
     });
     shares.forEach((share) => {
       let status = '?';
@@ -63,6 +63,10 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       let ntpStatus = getColoredValue(share.meta.farmerState.ntpStatus.status,
         share.meta.farmerState.ntpStatus.delta);
       
+      let contracts = share.meta.farmerState.contractCount || 0;
+      if (contracts > 99999999) {
+        contracts = ">99999999";
+      }
 
       table.push([
         `${share.id}\n  → ${share.config.storagePath}`,
@@ -70,6 +74,7 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
         prettyMs(share.meta.uptimeMs),
         share.meta.numRestarts || 0,
         share.meta.farmerState.totalPeers || 0,
+        contracts,
         ntpStatus,
         port + '\n' + connectionType,
         share.meta.farmerState.spaceUsed + '\n' +
