@@ -26,6 +26,14 @@ function getColoredValue(status, value) {
   }
 }
 
+function fixContractValue(contractCount) {
+  contractCount = contractCount || 0;
+  if (contractCount > 99999999) {
+    return '>99999999';
+  }
+  return contractCount;
+}
+
 utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
   rpc.status(function(err, shares) {
     let table = new Table({
@@ -63,10 +71,7 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       let ntpStatus = getColoredValue(share.meta.farmerState.ntpStatus.status,
         share.meta.farmerState.ntpStatus.delta);
       
-      let contracts = share.meta.farmerState.contractCount || 0;
-      if (contracts > 99999999) {
-        contracts = ">99999999";
-      }
+      let contracts = fixContractValue(share.meta.farmerState.contractCount);
 
       table.push([
         `${share.id}\n  → ${share.config.storagePath}`,
