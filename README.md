@@ -250,14 +250,14 @@ information and go on with Step 1 and 2.
   "tabs": [
     {
       "key": "4154e85e87b323611cba45ab1cd51203f2508b1da8455cdff8b641cce827f3d6",
-      "address": "1K1rPg...",
+      "address": "0xfB691...",
       "storage": {
         "dataDir": "D:\\Storj\\storjshare-5f4722"
       }
     },
     {
       "key": "0b0341a9913bb84b51485152a1b0a8a6ed68fa4f9a4fedb26c61ff778ce61ec8",
-      "address": "1K1rPg...",
+      "address": "0xfB691...",
       "storage": {
         "dataDir": "D:\\Storj\\storjshare-48a1c4"
       }
@@ -302,7 +302,7 @@ Now that you have Storj Share installed, use the `create` command to generate
 your configuration.
 
 ```
-storjshare create --key 4154e8... --storj 1K1rPg... --storage <datadir> -o <writepath>
+storjshare create --key 4154e8... --storj 0xfB691... --storage <datadir> -o <writepath>
 ```
 
 This will generate your configuration file given the parameters you passed in,
