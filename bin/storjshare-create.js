@@ -12,6 +12,7 @@ const mkdirp = require('mkdirp');
 const stripJsonComments = require('strip-json-comments');
 const storjshare_create = require('commander');
 const {execSync} = require('child_process');
+const utils = require('../lib/utils');
 
 const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
@@ -46,6 +47,11 @@ storjshare_create
 
 if (!storjshare_create.storj) {
   console.error('\n  no payment address was given, try --help');
+  process.exit(1);
+}
+
+if (!utils.isValidEthereumAddress(storjshare_create.storj)) {
+  console.error('\n SJCX addresses are no longer supported. Please enter ERC20 compatible ETH wallet address');
   process.exit(1);
 }
 
