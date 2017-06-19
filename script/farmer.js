@@ -20,6 +20,7 @@ let farmerState = {
 
 config.keyPair = new storj.KeyPair(config.networkPrivateKey);
 config.logger = new Logger(config.loggerVerbosity);
+config.maxShardSize = config.maxShardSize ? bytes.parse(config.maxShardSize) : null;
 config.storageManager = new storj.StorageManager(
   new storj.EmbeddedStorageAdapter(config.storagePath),
   {
