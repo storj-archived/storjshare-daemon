@@ -51,7 +51,8 @@ if (!storjshare_create.storj) {
 }
 
 if (!utils.isValidEthereumAddress(storjshare_create.storj)) {
-  console.error('\n SJCX addresses are no longer supported. Please enter ERC20 compatible ETH wallet address');
+  console.error('\n SJCX addresses are no longer supported. \
+Please enter ERC20 compatible ETH wallet address');
   process.exit(1);
 }
 
