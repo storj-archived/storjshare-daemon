@@ -11,8 +11,8 @@ use or inclusion in other packages.
 
 ## Installation of Pre-built Binaries
 
-Storj Share Daemon is available as a snap package in the store, installable on 
-[supported](https://snapcraft.io/docs/core/install) systems. These packages are 
+Storj Share Daemon is available as a snap package in the store, installable on
+[supported](https://snapcraft.io/docs/core/install) systems. These packages are
 securely confined and automatically updated.
 
 ### Latest Stable Release
@@ -139,7 +139,7 @@ storjshare help create
   Options:
 
     -h, --help                 output usage information
-    --sjcx <addr>              specify the sjcx address (required)
+    --storj <addr>             specify the STORJ address (required)
     --key <privkey>            specify the private key
     --storage <path>           specify the storage path
     --size <maxsize>           specify share size (ex: 10GB, 1TB)
@@ -302,7 +302,7 @@ Now that you have Storj Share installed, use the `create` command to generate
 your configuration.
 
 ```
-storjshare create --key 4154e8... --sjcx 1K1rPg... --storage <datadir> -o <writepath>
+storjshare create --key 4154e8... --storj 1K1rPg... --storage <datadir> -o <writepath>
 ```
 
 This will generate your configuration file given the parameters you passed in,
