@@ -1,5 +1,5 @@
 name: storjshare
-version: 3.1.0
+version: git
 summary: farm data on the Storj network.
 description: |
   Earn money by sharing your hard drive space.
