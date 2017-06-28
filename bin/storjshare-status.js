@@ -11,6 +11,8 @@ const storjshare_status = require('commander');
 
 storjshare_status
   .description('prints the status of all managed shares')
+  .option('-r, --remote <hostname:port>',
+    'hostname and optional port of the daemon')
   .parse(process.argv);
 
 function getColoredValue(status, value) {
@@ -34,7 +36,16 @@ function fixContractValue(contractCount) {
   return contractCount;
 }
 
-utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
+let port = config.daemonRpcPort;
+let address = null;
+if (storjshare_status.remote) {
+  address = storjshare_status.remote.split(':')[0];
+  if (storjshare_status.remote.split(':').length > 1) {
+    port = parseInt(storjshare_status.remote.split(':')[1], 10);
+  }
+}
+
+utils.connectToDaemon(port, function(rpc, sock) {
   rpc.status(function(err, shares) {
     let table = new Table({
       head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
@@ -65,12 +76,12 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
       let portStatus = share.meta.farmerState.portStatus;
       let port = getColoredValue(portStatus.connectionStatus,
          portStatus.listenPort);
-      let connectionType =  getColoredValue(portStatus.connectionStatus, 
+      let connectionType =  getColoredValue(portStatus.connectionStatus,
         portStatus.connectionType);
 
       let ntpStatus = getColoredValue(share.meta.farmerState.ntpStatus.status,
         share.meta.farmerState.ntpStatus.delta);
-      
+
       let contracts = fixContractValue(share.meta.farmerState.contractCount);
 
       table.push([
@@ -89,4 +100,4 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
     console.log('\n' + table.toString());
     sock.end();
   });
-});
+}, address);

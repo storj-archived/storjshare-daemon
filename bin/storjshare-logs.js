@@ -15,6 +15,8 @@ storjshare_logs
   .description('tails the logs for the given share id')
   .option('-i, --nodeid <nodeid>', 'id of the running share')
   .option('-l, --lines <num>', 'lines back to print')
+  .option('-r, --remote <hostname:port>',
+    'hostname and optional port of the daemon')
   .parse(process.argv);
 
 if (!storjshare_logs.nodeid) {
@@ -68,7 +70,16 @@ function prettyLog(line) {
   console.log(output);
 }
 
-utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
+let port = config.daemonRpcPort;
+let address = null;
+if (storjshare_logs.remote) {
+  address = storjshare_logs.remote.split(':')[0];
+  if (storjshare_logs.remote.split(':').length > 1) {
+    port = parseInt(storjshare_logs.remote.split(':')[1], 10);
+  }
+}
+
+utils.connectToDaemon(port, function(rpc, sock) {
   process.on('exit', () => {
     sock.end();
     process.exit(0);
@@ -128,4 +139,4 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
     }, 1000);
 
   });
-});
+}, address);
