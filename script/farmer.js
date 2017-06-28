@@ -15,7 +15,17 @@ let farmerState = {
   percentUsed: '...',
   spaceUsed: '...',
   totalPeers: 0,
-  lastActivity: Date.now()
+  lastActivity: Date.now(),
+  contractCount: 0,
+  portStatus: {
+    listenPort: '...',
+    connectionStatus: -1,
+    connectionType: ''
+  },
+  ntpStatus: {
+    delta: '...',
+    status: -1
+  }
 };
 
 config.keyPair = new storj.KeyPair(config.networkPrivateKey);
@@ -40,8 +50,54 @@ farmer.join((err) => {
   }
 });
 
+function transportInitialized() {
+  return farmer.transport._requiresTraversal !== undefined
+    && farmer.transport._portOpen !== undefined;
+}
+
+function getPort() {
+  if (transportInitialized()) {
+    return farmer.transport._contact.port;
+  }
+  return '...';
+}
+
+function getConnectionType() {
+  if(!transportInitialized()) {
+    return '';
+  }
+  if (farmer.transport._portOpen) {
+    return farmer.transport._requiresTraversal ? '(uPnP)' : '(TCP)';
+  }
+  if (farmer._tunneled) {
+    return '(Tunnel)';
+  }
+  if (!farmer.transport._requiresTraversal
+    && !farmer.transport._publicIp) {
+    return '(Private)';
+  }
+  return '(Closed)';
+}
+
+function getConnectionStatus() {
+  if (!transportInitialized()) {
+    return -1;
+  }
+  if (farmer.transport._portOpen) {
+    return 0;
+  }
+  if (farmer._tunneled) {
+    return 1;
+  }
+  return 2;
+}
+
 function sendFarmerState() {
+  farmerState.portStatus.listenPort = getPort();
+  farmerState.portStatus.connectionType = getConnectionType();
+  farmerState.portStatus.connectionStatus = getConnectionStatus();
   farmerState.totalPeers = farmer.router.length;
+  farmerState.contractCount = farmer._contractCount || 0;
   process.send(farmerState);
 }
 
@@ -74,10 +130,34 @@ function sendTelemetryReport() {
   });
 }
 
+function updateNtpDelta() {
+  storj.utils.getNtpTimeDelta(function(err, delta) {
+    if (err) {
+      farmerState.ntpStatus.delta = '...';
+      farmerState.ntpStatus.status = -1;
+    }
+    else {
+      farmerState.ntpStatus.delta = delta + 'ms';
+      if (delta > 9999 || delta < -9999) {
+        farmerState.ntpStatus.delta = '>9999ms';
+      }
+      if (delta <= 500 && delta >= -500) {
+        farmerState.ntpStatus.status = 0;
+      }
+      else {
+        farmerState.ntpStatus.status = 2;
+      }
+    }
+  });
+}
+
 updatePercentUsed();
 setInterval(updatePercentUsed, 10 * 60 * 1000); // Update space every 10 mins
 
 if (processIsManaged) {
+  updateNtpDelta();
+  setInterval(updateNtpDelta, 10 * 60 * 1000); // Update ntp delta every 10 mins
+
   sendFarmerState();
   setInterval(sendFarmerState, 10 * 1000); // Update state every 10 secs
 }
