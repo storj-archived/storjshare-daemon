@@ -14,6 +14,8 @@ const storjshare_daemon = require('commander');
 storjshare_daemon
   .option('--status', 'print the status of the daemon and exit')
   .option('-F, --foreground', 'keeps the process in the foreground')
+  .option('-r, --remote <hostname:port>',
+    'hostname and optional port of the daemon')
   .parse(process.argv);
 
 const api = new RPC({
@@ -26,7 +28,16 @@ function startDaemonRpcServer() {
     .listen(config.daemonRpcPort, config.daemonRpcAddress);
 }
 
-utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
+let port = config.daemonRpcPort;
+let address = null;
+if (storjshare_daemon.remote) {
+  address = storjshare_daemon.remote.split(':')[0];
+  if (storjshare_daemon.remote.split(':').length > 1) {
+    port = parseInt(storjshare_daemon.remote.split(':')[1], 10);
+  }
+}
+
+utils.checkDaemonRpcStatus(port, (isRunning) => {
   if (storjshare_daemon.status) {
     console.info(`\n  * daemon ${isRunning ? 'is' : 'is not'} running`);
     process.exitCode = isRunning ? 0 : 3;
@@ -44,4 +55,4 @@ utils.checkDaemonRpcStatus(config.daemonRpcPort, (isRunning) => {
       startDaemonRpcServer();
     }
   }
-});
+}, address);

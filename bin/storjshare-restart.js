@@ -10,6 +10,8 @@ storjshare_restart
   .description('restarts the running share specified')
   .option('-i, --nodeid <nodeid>', 'id of the running share')
   .option('-a, --all', 'restart all running shares')
+  .option('-r, --remote <hostname:port>',
+    'hostname and optional port of the daemon')
   .parse(process.argv);
 
 if (!storjshare_restart.nodeid && !storjshare_restart.all) {
@@ -17,7 +19,16 @@ if (!storjshare_restart.nodeid && !storjshare_restart.all) {
   process.exit(1);
 }
 
-utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
+let port = config.daemonRpcPort;
+let address = null;
+if (storjshare_restart.remote) {
+  address = storjshare_restart.remote.split(':')[0];
+  if (storjshare_restart.remote.split(':').length > 1) {
+    port = parseInt(storjshare_restart.remote.split(':')[1], 10);
+  }
+}
+
+utils.connectToDaemon(port, function(rpc, sock) {
   if (storjshare_restart.all) {
     console.info('\n  * restarting all managed shares');
   }
@@ -36,4 +47,4 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
 
     sock.end();
   });
-});
+}, address);

@@ -9,6 +9,8 @@ const storjshare_stop = require('commander');
 storjshare_stop
   .description('stops the running share specified')
   .option('-i, --nodeid <nodeid>', 'id of the running share')
+  .option('-r, --remote <hostname:port>',
+    'hostname and optional port of the daemon')
   .parse(process.argv);
 
 if (!storjshare_stop.nodeid) {
@@ -16,7 +18,16 @@ if (!storjshare_stop.nodeid) {
   process.exit(1);
 }
 
-utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
+let port = config.daemonRpcPort;
+let address = null;
+if (storjshare_stop.remote) {
+  address = storjshare_stop.remote.split(':')[0];
+  if (storjshare_stop.remote.split(':').length > 1) {
+    port = parseInt(storjshare_stop.remote.split(':')[1], 10);
+  }
+}
+
+utils.connectToDaemon(port, function(rpc, sock) {
   rpc.stop(storjshare_stop.nodeid, (err) => {
     if (err) {
       console.error(`\n  cannot stop node, reason: ${err.message}`);
@@ -25,4 +36,4 @@ utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
     console.info(`\n  * share ${storjshare_stop.nodeid} stopped`);
     return sock.end();
   });
-});
+}, address);
