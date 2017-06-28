@@ -5,6 +5,7 @@ const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 const {expect} = require('chai');
 const {EventEmitter} = require('events');
+const net = require('net');
 
 describe('module:utils', function() {
 
@@ -185,6 +186,52 @@ describe('module:utils', function() {
         expect(err.message).to.equal('Invalid storage size');
         done();
       });
+    });
+
+  });
+
+  describe('#portIsAvailable', function() {
+
+    it('should callback error if argument is not a valid port', function(done) {
+      utils.portIsAvailable('Not a port number', function(err, result) {
+        expect(err).to.equal('Invalid port');
+        expect(result).to.equal(undefined);
+        done();
+      });
+    });
+
+    it('should callback error if port is in well-known range', function(done) {
+      utils.portIsAvailable(77, function(err, result) {
+        expect(err).to.equal(
+          'Using a port in the well-known range is strongly discouraged');
+        done();
+        expect(result).to.equal(undefined);
+      });
+    });
+
+    it('should hopefully return true on this semi-random port', function(done) {
+      utils.portIsAvailable(17026, function(err, result) {
+        expect(err).to.equal(null);
+        expect(result).to.equal(true);
+        done();
+      });
+    });
+
+    it('should return false on a port already in use', function(done) {
+      const server = net.createServer();
+      server.once('error', function(err) {
+        done(err);
+      })
+      .once('listening', function() {
+        utils.portIsAvailable(17027, function(err, result) {
+          expect(err).to.equal(null);
+          expect(result).to.equal(false);
+          server.once('close', function() {
+            done();
+          }).close();
+        });
+      })
+      .listen(17027);
     });
 
   });
