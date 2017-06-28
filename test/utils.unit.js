@@ -44,6 +44,18 @@ describe('module:utils', function() {
       )).to.equal(false);
     });
 
+    it('should return false for contract address', function() {
+      expect(utils.isValidEthereumAddress(
+        '0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac'
+      )).to.equal(false);
+    });
+
+    it('should return false for contract owner address', function() {
+      expect(utils.isValidEthereumAddress(
+        '0x00f6bf3c5033e944feddb3dc8ffb4d47af17ef0b'
+      )).to.equal(false);
+    });
+
   });
 
   describe('#_isValidDirectory', function() {
