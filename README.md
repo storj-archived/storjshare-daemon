@@ -222,6 +222,34 @@ storjshare killall
 storjshare daemon --foreground
 ```
 
+## Connecting to a remote Daemon
+
+**Note: Exposing your storjshare-daemon to the Internet is a bad idea
+as everybody could read your Private Key!**
+
+To connect to a remote running daemon instance you will first need to
+ensure this daemon is running on a different address than the default
+`127.0.0.1`. This can be achieved by [configuring the Daemon](#configuring-the-daemon).
+
+After your storjshare-daemon is reachable (eg. within your home network)
+you can use `-r` or `--remote` option (on supported commands) to use the
+specified IP/hostname and port to connect to, instead of `127.0.0.1`.
+
+**Note that this option does not support to start the storjshare-daemon
+on a different system, only connect to an already running one!**
+
+Example to connect to remote daemon running on `192.168.0.10` on the default port (`45015`) and show the status:
+
+```
+storjshare status --remote 192.168.0.10
+```
+
+If the port is changed, just append it like so:
+
+```
+storjshare status --remote 192.168.0.10:51000
+```
+
 ## Migrating from [`storjshare-gui`](https://github.com/storj/storjshare-gui) or [`storjshare-cli`](https://github.com/storj/storjshare-cli)
 #### storjshare-gui
 If you are using the `storjshare-gui` package you can go on with the latest
