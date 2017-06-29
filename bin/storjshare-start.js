@@ -13,6 +13,8 @@ storjshare_start
   .option('-c, --config <path>', 'specify the configuration path')
   .option('-d, --detached', 'run share without management from daemon')
   .option('-u, --unsafe', 'ignore system resource guards')
+  .option('-r, --remote <hostname:port>',
+    'hostname and optional port of the daemon')
   .parse(process.argv);
 
 if (!storjshare_start.config) {
@@ -23,6 +25,15 @@ if (!storjshare_start.config) {
 const configPath = path.isAbsolute(storjshare_start.config) ?
                      path.normalize(storjshare_start.config) :
                      path.join(process.cwd(), storjshare_start.config);
+
+let port = config.daemonRpcPort;
+let address = null;
+if (storjshare_start.remote) {
+  address = storjshare_start.remote.split(':')[0];
+  if (storjshare_start.remote.split(':').length > 1) {
+    port = parseInt(storjshare_start.remote.split(':')[1], 10);
+  }
+}
 
 function runDetachedShare() {
   const scriptPath = path.join(__dirname, '../script/farmer.js');
@@ -35,7 +46,7 @@ function runDetachedShare() {
 }
 
 function runManagedShare() {
-  utils.connectToDaemon(config.daemonRpcPort, function(rpc, sock) {
+  utils.connectToDaemon(port, function(rpc, sock) {
     rpc.start(configPath, (err) => {
       if (err) {
         console.error(`\n  failed to start share, reason: ${err.message}`);
@@ -44,7 +55,7 @@ function runManagedShare() {
       console.info(`\n  * starting share with config at ${configPath}`);
       sock.end();
     }, storjshare_start.unsafe);
-  });
+  }, address);
 }
 
 if (storjshare_start.detached) {

@@ -12,6 +12,7 @@ const mkdirp = require('mkdirp');
 const stripJsonComments = require('strip-json-comments');
 const storjshare_create = require('commander');
 const {execSync} = require('child_process');
+const utils = require('../lib/utils');
 
 const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
@@ -29,7 +30,7 @@ function vimIsInstalled() {
 
 storjshare_create
   .description('generates a new share configuration')
-  .option('--sjcx <addr>', 'specify the sjcx address (required)')
+  .option('--storj <addr>', 'specify the STORJ address (required)')
   .option('--key <privkey>', 'specify the private key')
   .option('--storage <path>', 'specify the storage path')
   .option('--size <maxsize>', 'specify share size (ex: 10GB, 1TB)')
@@ -44,8 +45,14 @@ storjshare_create
   .option('-o, --outfile <writepath>', 'write config to path')
   .parse(process.argv);
 
-if (!storjshare_create.sjcx) {
+if (!storjshare_create.storj) {
   console.error('\n  no payment address was given, try --help');
+  process.exit(1);
+}
+
+if (!utils.isValidEthereumAddress(storjshare_create.storj)) {
+  console.error('\n SJCX addresses are no longer supported. \
+Please enter ERC20 compatible ETH wallet address');
   process.exit(1);
 }
 
@@ -110,7 +117,7 @@ function replaceDefaultConfigValue(prop, value) {
   );
 }
 
-replaceDefaultConfigValue('paymentAddress', storjshare_create.sjcx);
+replaceDefaultConfigValue('paymentAddress', storjshare_create.storj);
 replaceDefaultConfigValue('networkPrivateKey', storjshare_create.key);
 replaceDefaultConfigValue('storagePath',
                           path.normalize(storjshare_create.storage));
