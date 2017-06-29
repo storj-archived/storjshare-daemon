@@ -76,7 +76,9 @@ function getConnectionType() {
     && !farmer.transport._publicIp) {
     return '(Private)';
   }
-  return '(Closed)';
+  //return '(Closed)';
+  //TODO: Uncomment when open port detection is fixed
+  return '';
 }
 
 function getConnectionStatus() {
@@ -89,7 +91,9 @@ function getConnectionStatus() {
   if (farmer._tunneled) {
     return 1;
   }
-  return 2;
+  //return 2;
+  //TODO: Uncomment when open port detection is fixed
+  return -1;
 }
 
 function sendFarmerState() {
