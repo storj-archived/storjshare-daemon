@@ -86,8 +86,8 @@ function getConnectionStatus() {
   if (farmer._tunneled) {
     return 1;
   }
-  if (!farmer._requiresTraversal
-    && !farmer.transport_publicIP) {
+  if (!farmer.transport._requiresTraversal
+    && !farmer.transport._publicIp) {
       return 2;
   }
   return -1;
