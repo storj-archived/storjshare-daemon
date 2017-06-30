@@ -66,9 +66,6 @@ function getConnectionType() {
   if(!transportInitialized()) {
     return '';
   }
-  if (farmer.transport._portOpen) {
-    return farmer.transport._requiresTraversal ? '(uPnP)' : '(TCP)';
-  }
   if (farmer._tunneled) {
     return '(Tunnel)';
   }
@@ -76,7 +73,7 @@ function getConnectionType() {
     && !farmer.transport._publicIp) {
     return '(Private)';
   }
-  return '(Closed)';
+  return farmer.transport._requiresTraversal ? '(uPnP)' : '(TCP)';
 }
 
 function getConnectionStatus() {
@@ -89,7 +86,11 @@ function getConnectionStatus() {
   if (farmer._tunneled) {
     return 1;
   }
-  return 2;
+  if (!farmer._requiresTraversal
+    && !farmer.transport_publicIP) {
+      return 2;
+  }
+  return -1;
 }
 
 function sendFarmerState() {
