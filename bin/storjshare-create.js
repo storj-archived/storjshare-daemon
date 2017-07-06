@@ -84,6 +84,13 @@ if (!storjshare_create.logdir) {
   );
 }
 
+if (storjshare_create.size &&
+    !storjshare_create.size.match(/[0-9]+(T|M|G|K)?B/g)) {
+  console.error('\n Invalid storage size specified: '+
+                storjshare_create.size);
+  process.exit(1);
+}
+
 let exampleConfigPath = path.join(__dirname, '../example/farmer.config.json');
 let exampleConfigString = fs.readFileSync(exampleConfigPath).toString();
 
