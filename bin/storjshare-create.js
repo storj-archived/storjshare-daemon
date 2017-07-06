@@ -18,9 +18,9 @@ const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
 ).toString()));
 
-function vimIsInstalled() {
+function viIsInstalled() {
   try {
-    execSync('which vim');
+    execSync('which vi');
   } catch (err) {
     return false;
   }
@@ -166,7 +166,7 @@ if (!storjshare_create.noedit) {
     // NB: Not all distros ship with vim, so let's use GNU Nano
     editor: process.platform === 'win32'
             ? null
-            : (vimIsInstalled() ? 'vim' : 'nano')
+            : (viIsInstalled() ? 'vi' : null)
   }, () => {
     console.log('  ...');
     console.log(`  * use new config: storjshare start --config ${outfile}`);
