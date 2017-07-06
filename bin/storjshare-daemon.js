@@ -15,7 +15,8 @@ storjshare_daemon
   .option('--status', 'print the status of the daemon and exit')
   .option('-F, --foreground', 'keeps the process in the foreground')
   .option('-r, --remote <hostname:port>',
-    'hostname and optional port of the daemon')
+    'hostname and optional port of the daemon ' +
+    'to connect to when using --status')
   .parse(process.argv);
 
 const api = new RPC({
