@@ -28,7 +28,7 @@ function vimIsInstalled() {
   return true;
 }
 
-function nanoIsIntalled() {
+function nanoIsInstalled() {
   try {
     execSync('which nano');
   } catch (err) {
