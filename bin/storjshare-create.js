@@ -169,8 +169,8 @@ if (!storjshare_create.noedit) {
     // NB: Not all distros ship with vim, so let's use GNU Nano
     editor: process.platform === 'win32'
             ? null
-            : (vimIsInstalled() ? 'vim' 
-            : (nanoIsInstalled() ? 'nano' : null))
+            : (nanoIsInstalled() ? 'nano' 
+            : (vimIsInstalled() ? 'vim' : null))
   }, () => {
     console.log('  ...');
     console.log(`  * use new config: storjshare start --config ${outfile}`);
