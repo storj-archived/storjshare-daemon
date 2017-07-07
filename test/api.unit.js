@@ -137,7 +137,9 @@ describe('class:RPC', function() {
       let _RPC = proxyquire('../lib/api', {
         fs: {
           statSync: sinon.stub(),
-          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB"}')
+          )
         },
         './utils': {
           validate: sinon.stub(),
@@ -150,6 +152,29 @@ describe('class:RPC', function() {
       let rpc = new _RPC({ loggerVerbosity: 0 });
       rpc.start('path/to/config', function(err) {
         expect(err.message).to.equal('bad space');
+        done();
+      });
+    });
+
+    it('should callback error if invalid space specified', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23G"}')
+          )
+        },
+        './utils': {
+          validate: sinon.stub(),
+          validateAllocation: sinon.stub().callsArgWith(
+            1,
+            new Error('Bad space')
+          )
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal('Invalid Storage size specified: 23G');
         done();
       });
     });
@@ -169,7 +194,9 @@ describe('class:RPC', function() {
           statSync: sinon.stub().returns({
             isDirectory: () => true
           }),
-          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB"}')
+          )
         },
         './utils': {
           validate: sinon.stub(),
@@ -217,7 +244,9 @@ describe('class:RPC', function() {
           statSync: sinon.stub().returns({
             isDirectory: () => false
           }),
-          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB"}')
+          )
         },
         './utils': {
           validate: sinon.stub(),

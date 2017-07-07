@@ -20,7 +20,7 @@ const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
 
 function whichEditor() {
 
-  const editors = ['vim', 'nano'];
+  const editors = ['vi', 'nano'];
 
   function checkIsInstalled(editor) {
     try {
@@ -30,12 +30,12 @@ function whichEditor() {
     }
 
     return true;
-  };
+  }
 
   for (let i = 0; i < editors.length; i++) {
     if (checkIsInstalled(editors[i])) {
       return editors[i];
-    };
+    }
   }
 
   return null;
