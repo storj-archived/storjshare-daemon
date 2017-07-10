@@ -47,47 +47,55 @@ if (storjshare_status.remote) {
   }
 }
 
+// Prepare json formatted status for each share
+function prepareJson(shares) {
+  /*jshint maxcomplexity:7 */
+  let json = [];
+
+  for (let i = 0; i < shares.length; i++) {
+    let share = shares[i];
+
+    json[i] = {};
+    json[i].id = share.id;
+
+    let status = '?';
+
+    switch (share.state) {
+      case 0:
+        status = 'stopped';
+        break;
+      case 1:
+        status = 'running';
+        break;
+      case 2:
+        status = 'errored';
+        break;
+      default:
+        status = 'unknown';
+    }
+
+    json[i].status = status;
+    json[i].configPath = share.config.storagePath;
+    json[i].uptime = prettyMs(share.meta.uptimeMs);
+    json[i].restarts = share.meta.numRestarts || 0;
+    json[i].peers = share.meta.farmerState.totalPeers || 0;
+    json[i].contracts = fixContractValue(
+      share.meta.farmerState.contractCount
+    );
+    json[i].delta = share.meta.farmerState.ntpStatus.delta;
+    json[i].port = share.meta.farmerState.portStatus.listenPort;
+    json[i].shared = share.meta.farmerState.spaceUsed;
+    json[i].sharedPercent = share.meta.farmerState.percentUsed;
+  }
+
+  return json;
+}
+
 utils.connectToDaemon(port, function(rpc, sock) {
   rpc.status(function(err, shares) {
     if (storjshare_status.json) {
-      let json = [];
-
-      for (let i = 0; i < shares.length; i++) {
-        let share = shares[i];
-
-        json[i] = {};
-        json[i].id = share.id;
-
-        let status = '?';
-
-        switch (share.state) {
-          case 0:
-            status = 'stopped';
-            break;
-          case 1:
-            status = 'running';
-            break;
-          case 2:
-            status = 'errored';
-            break;
-          default:
-            status = 'unknown';
-        }
-
-        json[i].status = status;
-        json[i].configPath = share.config.storagePath;
-        json[i].uptime = prettyMs(share.meta.uptimeMs);
-        json[i].restarts = share.meta.numRestarts || 0;
-        json[i].peers = share.meta.farmerState.totalPeers || 0;
-        json[i].contracts = fixContractValue(
-          share.meta.farmerState.contractCount
-        );
-        json[i].delta = share.meta.farmerState.ntpStatus.delta;
-        json[i].port = share.meta.farmerState.portStatus.listenPort;
-        json[i].shared = share.meta.farmerState.spaceUsed;
-        json[i].sharedPercent = share.meta.farmerState.percentUsed;
-      }
-
+      // Print out json formatted share statuses
+      const json = prepareJson(shares);
       console.log(json);
     } else {
       let table = new Table({
