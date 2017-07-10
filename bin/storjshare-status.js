@@ -13,6 +13,8 @@ storjshare_status
   .description('prints the status of all managed shares')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
+  .option('-j, --json',
+    'JSON formatted status of all managed shares')
   .parse(process.argv);
 
 function getColoredValue(status, value) {
@@ -47,57 +49,99 @@ if (storjshare_status.remote) {
 
 utils.connectToDaemon(port, function(rpc, sock) {
   rpc.status(function(err, shares) {
-    let table = new Table({
-      head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-        'Contracts', 'Delta', 'Port', 'Shared'],
-      style: {
-        head: ['cyan', 'bold'],
-        border: []
-      },
-      colWidths: [45, 10, 10, 10, 10, 11, 9, 11, 10]
-    });
-    shares.forEach((share) => {
-      let status = '?';
+    if (storjshare_status.json) {
+      let json = [];
 
-      switch (share.state) {
-        case 0:
-          status = colors.gray('stopped');
-          break;
-        case 1:
-          status = colors.green('running');
-          break;
-        case 2:
-          status = colors.red('errored');
-          break;
-        default:
-          status = 'unknown';
+      for (let i = 0; i < shares.length; i++) {
+        let share = shares[i];
+
+        json[i] = {};
+        json[i].id = share.id;
+
+        let status = '?';
+
+        switch (share.state) {
+          case 0:
+            status = 'stopped';
+            break;
+          case 1:
+            status = 'running';
+            break;
+          case 2:
+            status = 'errored';
+            break;
+          default:
+            status = 'unknown';
+        }
+
+        json[i].status = status;
+        json[i].configPath = share.config.storagePath;
+        json[i].uptime = prettyMs(share.meta.uptimeMs);
+        json[i].restarts = share.meta.numRestarts || 0;
+        json[i].peers = share.meta.farmerState.totalPeers || 0;
+        json[i].contracts = fixContractValue(
+          share.meta.farmerState.contractCount
+        );
+        json[i].delta = share.meta.farmerState.ntpStatus.delta;
+        json[i].port = share.meta.farmerState.portStatus.listenPort;
+        json[i].shared = share.meta.farmerState.spaceUsed;
+        json[i].sharedPercent = share.meta.farmerState.percentUsed;
       }
 
-      let portStatus = share.meta.farmerState.portStatus;
-      let port = getColoredValue(portStatus.connectionStatus,
-         portStatus.listenPort);
-      let connectionType =  getColoredValue(portStatus.connectionStatus,
-        portStatus.connectionType);
+      console.log(json);
+    } else {
+      let table = new Table({
+        head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
+          'Contracts', 'Delta', 'Port', 'Shared'],
+        style: {
+          head: ['cyan', 'bold'],
+          border: []
+        },
+        colWidths: [45, 10, 10, 10, 10, 11, 9, 11, 10]
+      });
+      shares.forEach((share) => {
+        let status = '?';
 
-      let ntpStatus = getColoredValue(share.meta.farmerState.ntpStatus.status,
-        share.meta.farmerState.ntpStatus.delta);
+        switch (share.state) {
+          case 0:
+            status = colors.gray('stopped');
+            break;
+          case 1:
+            status = colors.green('running');
+            break;
+          case 2:
+            status = colors.red('errored');
+            break;
+          default:
+            status = 'unknown';
+        }
 
-      let contracts = fixContractValue(share.meta.farmerState.contractCount);
+        let portStatus = share.meta.farmerState.portStatus;
+        let port = getColoredValue(portStatus.connectionStatus,
+           portStatus.listenPort);
+        let connectionType =  getColoredValue(portStatus.connectionStatus,
+          portStatus.connectionType);
 
-      table.push([
-        `${share.id}\n  → ${share.config.storagePath}`,
-        status,
-        prettyMs(share.meta.uptimeMs),
-        share.meta.numRestarts || 0,
-        share.meta.farmerState.totalPeers || 0,
-        contracts,
-        ntpStatus,
-        port + '\n' + connectionType,
-        share.meta.farmerState.spaceUsed + '\n' +
-          `(${share.meta.farmerState.percentUsed}%)`
-      ]);
-    });
-    console.log('\n' + table.toString());
+        let ntpStatus = getColoredValue(share.meta.farmerState.ntpStatus.status,
+          share.meta.farmerState.ntpStatus.delta);
+
+        let contracts = fixContractValue(share.meta.farmerState.contractCount);
+
+        table.push([
+          `${share.id}\n  → ${share.config.storagePath}`,
+          status,
+          prettyMs(share.meta.uptimeMs),
+          share.meta.numRestarts || 0,
+          share.meta.farmerState.totalPeers || 0,
+          contracts,
+          ntpStatus,
+          port + '\n' + connectionType,
+          share.meta.farmerState.spaceUsed + '\n' +
+            `(${share.meta.farmerState.percentUsed}%)`
+        ]);
+      });
+      console.log('\n' + table.toString());
+    }
     sock.end();
   });
 }, address);
