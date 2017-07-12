@@ -23,7 +23,10 @@
   // Port to bind for RPC server, make sure this is forwarded if behind a
   // NAT or firewall - otherwise Storj Share will try to punch out
   "rpcPort": 4000,
-  // Enables NAT traversal strategies, first UPnP, then reverse HTTP tunnel
+  // doNotTraverseNat: false requires you to have an external ip address.
+  // You can use a proxy to gain an external IP address.
+  // doNotTraverseNat: true Enables NAT traversal strategies
+  // first UPnP, then reverse HTTP tunnel
   // if that fails. Disable if you are public or using dynamic DNS
   "doNotTraverseNat": true,
   // Maximum number of tunnels to provide to the network
@@ -59,6 +62,9 @@
   // Amount of space to lease to the network, as human readable string
   // Valid units are B, KB, MB, GB, TB
   "storageAllocation": "2GB",
+  // Max size of shards that will be accepted and stored
+  // Use this and make this lower if you don't have a strong internet connection
+  // "maxShardSize": "100MB",
   // Periodically report your used and free capacity to Storj Labs to improve
   // the network - no personally identifiable information is sent
   "enableTelemetryReporting": true

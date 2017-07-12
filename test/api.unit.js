@@ -165,16 +165,12 @@ describe('class:RPC', function() {
           )
         },
         './utils': {
-          validate: sinon.stub(),
-          validateAllocation: sinon.stub().callsArgWith(
-            1,
-            new Error('Bad space')
-          )
+          validate: sinon.stub()
         }
       });
       let rpc = new _RPC({ loggerVerbosity: 0 });
       rpc.start('path/to/config', function(err) {
-        expect(err.message).to.equal('Invalid Storage size specified: 23G');
+        expect(err.message).to.eql('invalid storage size specified: 23g');
         done();
       });
     });
