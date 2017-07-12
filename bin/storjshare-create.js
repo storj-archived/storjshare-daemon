@@ -53,6 +53,7 @@ storjshare_create
   .option('--tunnelportmin <port>', 'specify min gateway port')
   .option('--tunnelportmax <port>', 'specify max gateway port')
   .option('--manualforwarding', 'do not use nat traversal strategies')
+  .option('--verbosity <verbosity>', 'specify the logger verbosity')
   .option('--logdir <path>', 'specify the log directory')
   .option('--noedit', 'do not open generated config in editor')
   .option('-o, --outfile <writepath>', 'write config to path')
@@ -130,6 +131,15 @@ function replaceDefaultConfigValue(prop, value) {
     }
   }
 
+let validVerbosities = new RegExp(/^[0-4]$/);
+if (storjshare_create.verbosity &&
+  !validVerbosities.test(storjshare_create.verbosity)) {
+  console.error('\n  * Invalid verbosity.\n  * Accepted values: 4 - DEBUG | \
+3 - INFO | 2 - WARN | 1 - ERROR | 0 - SILENT\n  * Default value of %s \
+will be used.', getDefaultConfigValue('loggerVerbosity').value);
+  storjshare_create.verbosity = null;
+}
+
   prop = prop.split('.').pop();
   exampleConfigString = exampleConfigString.replace(
     toStringReplace(prop, defaultValue.value, defaultValue.type),
@@ -151,7 +161,8 @@ const optionalReplacements = [
   { option: storjshare_create.maxtunnels, name: 'maxTunnels' },
   { option: storjshare_create.tunnelportmin, name: 'tunnelGatewayRange.min' },
   { option: storjshare_create.tunnelportmax, name: 'tunnelGatewayRange.max' },
-  { option: storjshare_create.manualforwarding, name: 'doNotTraverseNat' }
+  { option: storjshare_create.manualforwarding, name: 'doNotTraverseNat' },
+  { option: storjshare_create.verbosity, name: 'loggerVerbosity' }
 ];
 
 optionalReplacements.forEach((repl) => {
