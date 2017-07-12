@@ -8,8 +8,6 @@
     "0f02020202",
     "0f03020202"
   ],
-  // Limits the number of pending OFFER message at one time
-  "maxOfferConcurrency": 3,
   // If the seedList is empty, use this bridge to discover seeds
   // Following a transfer, also send an exchange report to this bridge
   "bridgeUri": "https://api.storj.io",
@@ -45,9 +43,6 @@
     "times": 3,
     "interval": 5000
   },
-  // Temporarily stop sending OFFER messages if more than this number of shard
-  // transfers are active
-  "offerBackoffLimit": 4,
   // ECDSA private key for your network identity, your Node ID is derived from
   // this and it is used to sign and verify messages
   "networkPrivateKey": "",
