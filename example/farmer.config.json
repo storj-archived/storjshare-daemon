@@ -25,7 +25,7 @@
   "rpcPort": 4000,
   // Enables NAT traversal strategies, first UPnP, then reverse HTTP tunnel
   // if that fails. Disable if you are public or using dynamic DNS
-  "doNotTraverseNat": false,
+  "doNotTraverseNat": true,
   // Maximum number of tunnels to provide to the network
   // Tunnels help nodes with restrictive network configurations participate
   "maxTunnels": 3,
