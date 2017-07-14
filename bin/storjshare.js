@@ -3,17 +3,17 @@
 'use strict';
 
 const storjshare = require('commander');
-const {version} = require('../package');
+const {version, bin} = require('../package');
 const {software: core, protocol} = require('storj-lib').version;
-const fs = require('fs');
 
 function checkIfValidSubcommand() {
   if (process.argv.length > 2) {
-    let files = fs.readdirSync(__dirname) || [];
-    return files.some((file) => {
-      return file.replace('storjshare-','')
-        .replace('.js','') === process.argv[2];
-    });
+    for (var prop in bin) {
+      if (bin[prop].replace('bin/storjshare-','')
+        .replace('.js','') === process.argv[2]) {
+        return true;
+      }
+    }
   }
   return false;
 }
