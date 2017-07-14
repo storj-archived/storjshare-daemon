@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-MAINTAINER Storj Labs (bill@storj.io)
+MAINTAINER Storj Labs (www.storj.io)
 
 RUN apt-get update && \
 apt-get -y install apt-utils curl && \
