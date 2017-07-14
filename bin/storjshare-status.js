@@ -82,6 +82,9 @@ function prepareJson(shares) {
     json[i].contracts = fixContractValue(
       share.meta.farmerState.contractCount
     );
+    json[i].dataReceivedCount = fixContractValue(
+      share.meta.farmerState.dataReceivedCount
+    );
     json[i].delta = share.meta.farmerState.ntpStatus.delta;
     json[i].port = share.meta.farmerState.portStatus.listenPort;
     json[i].shared = share.meta.farmerState.spaceUsed;
