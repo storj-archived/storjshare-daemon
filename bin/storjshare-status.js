@@ -95,6 +95,7 @@ function prepareJson(shares) {
 }
 
 utils.connectToDaemon(port, function(rpc, sock) {
+  /*jshint maxcomplexity:7 */
   rpc.status(function(err, shares) {
     if (storjshare_status.json) {
       // Print out json formatted share statuses
