@@ -17,6 +17,7 @@ let farmerState = {
   totalPeers: 0,
   lastActivity: Date.now(),
   contractCount: 0,
+  dataReceivedCount: 0,
   portStatus: {
     listenPort: '...',
     connectionStatus: -1,
@@ -99,6 +100,7 @@ function sendFarmerState() {
   farmerState.portStatus.connectionStatus = getConnectionStatus();
   farmerState.totalPeers = farmer.router.length;
   farmerState.contractCount = farmer._contractCount || 0;
+  farmerState.dataReceivedCount = farmer._dataReceivedCount || 0;
   process.send(farmerState);
 }
 

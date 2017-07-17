@@ -18,14 +18,27 @@ const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
 ).toString()));
 
-function vimIsInstalled() {
-  try {
-    execSync('which vim');
-  } catch (err) {
-    return false;
+function whichEditor() {
+
+  const editors = ['vi', 'nano'];
+
+  function checkIsInstalled(editor) {
+    try {
+      execSync('which ' + editor);
+    } catch (err) {
+      return false;
+    }
+
+    return true;
   }
 
-  return true;
+  for (let i = 0; i < editors.length; i++) {
+    if (checkIsInstalled(editors[i])) {
+      return editors[i];
+    }
+  }
+
+  return null;
 }
 
 storjshare_create
@@ -83,6 +96,13 @@ if (!storjshare_create.logdir) {
     homedir(),
     '.config/storjshare/logs'
   );
+}
+
+if (storjshare_create.size &&
+    !storjshare_create.size.match(/[0-9]+(T|M|G|K)?B/g)) {
+  console.error('\n Invalid storage size specified: '+
+                storjshare_create.size);
+  process.exit(1);
 }
 
 let exampleConfigPath = path.join(__dirname, '../example/farmer.config.json');
@@ -170,7 +190,7 @@ if (!storjshare_create.noedit) {
     // NB: Not all distros ship with vim, so let's use GNU Nano
     editor: process.platform === 'win32'
             ? null
-            : (vimIsInstalled() ? 'vim' : 'nano')
+            : whichEditor()
   }, () => {
     console.log('  ...');
     console.log(`  * use new config: storjshare start --config ${outfile}`);

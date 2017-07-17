@@ -137,7 +137,9 @@ describe('class:RPC', function() {
       let _RPC = proxyquire('../lib/api', {
         fs: {
           statSync: sinon.stub(),
-          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB"}')
+          )
         },
         './utils': {
           validate: sinon.stub(),
@@ -150,6 +152,47 @@ describe('class:RPC', function() {
       let rpc = new _RPC({ loggerVerbosity: 0 });
       rpc.start('path/to/config', function(err) {
         expect(err.message).to.equal('bad space');
+        done();
+      });
+    });
+
+    it('should callback error if invalid space specified', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23G"}')
+          )
+        },
+        './utils': {
+          validate: sinon.stub()
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.eql('invalid storage size specified: 23g');
+        done();
+      });
+    });
+
+    it('should callback error if invalid network Private key', function(done) {
+      let _RPC = proxyquire('../lib/api', {
+        fs: {
+          statSync: sinon.stub(),
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB","networkPrivateKey":' +
+                        '"02d2e5fb5a1fe74804bc1ae3b63bb130441cc9b5c877e22' +
+                        '5ea723c24bcea4f3babc123"}')
+          )
+        },
+        './utils': {
+          validate: sinon.stub(),
+          validateAllocation: sinon.stub()
+        }
+      });
+      let rpc = new _RPC({ loggerVerbosity: 0 });
+      rpc.start('path/to/config', function(err) {
+        expect(err.message).to.equal('Invalid Private Key');
         done();
       });
     });
@@ -169,7 +212,9 @@ describe('class:RPC', function() {
           statSync: sinon.stub().returns({
             isDirectory: () => true
           }),
-          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB"}')
+          )
         },
         './utils': {
           validate: sinon.stub(),
@@ -217,7 +262,9 @@ describe('class:RPC', function() {
           statSync: sinon.stub().returns({
             isDirectory: () => false
           }),
-          readFileSync: sinon.stub().returns(Buffer.from('{}'))
+          readFileSync: sinon.stub().returns(
+            Buffer.from('{"storageAllocation":"23GB"}')
+          )
         },
         './utils': {
           validate: sinon.stub(),
