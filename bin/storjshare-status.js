@@ -79,7 +79,7 @@ function prepareJson(shares) {
     json[i].uptime = prettyMs(share.meta.uptimeMs);
     json[i].restarts = share.meta.numRestarts || 0;
     json[i].peers = share.meta.farmerState.totalPeers || 0;
-    json[i].contracts = fixContractValue(
+    json[i].offers = fixContractValue(
       share.meta.farmerState.contractCount
     );
     json[i].dataReceivedCount = fixContractValue(
@@ -103,12 +103,12 @@ utils.connectToDaemon(port, function(rpc, sock) {
     } else {
       let table = new Table({
         head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-          'Contracts', 'Delta', 'Port', 'Shared'],
+          'Offers', 'Delta', 'Port', 'Shared'],
         style: {
           head: ['cyan', 'bold'],
           border: []
         },
-        colWidths: [45, 10, 10, 10, 10, 11, 9, 11, 10]
+        colWidths: [45, 9, 10, 10, 9, 15, 9, 10, 9]
       });
       shares.forEach((share) => {
         let status = '?';
@@ -138,13 +138,20 @@ utils.connectToDaemon(port, function(rpc, sock) {
 
         let contracts = fixContractValue(share.meta.farmerState.contractCount);
 
+        let percentDataReceived = (
+          share.meta.farmerState.dataReceivedCount !== 0 ?
+          Math.round(
+            fixContractValue(share.meta.farmerState.dataReceivedCount) /
+            fixContractValue(share.meta.farmerState.contractCount) * 100
+          ) : 0);
+
         table.push([
           `${share.id}\n  → ${share.config.storagePath}`,
           status,
           prettyMs(share.meta.uptimeMs),
           share.meta.numRestarts || 0,
           share.meta.farmerState.totalPeers || 0,
-          contracts,
+          contracts + '\n' + `${percentDataReceived}% received`,
           ntpStatus,
           port + '\n' + connectionType,
           share.meta.farmerState.spaceUsed + '\n' +
