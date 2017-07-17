@@ -49,7 +49,7 @@ utils.connectToDaemon(port, function(rpc, sock) {
   rpc.status(function(err, shares) {
     let table = new Table({
       head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-        'Contracts', 'Delta', 'Port', 'Shared'],
+        'Offers', 'Delta', 'Port', 'Shared'],
       style: {
         head: ['cyan', 'bold'],
         border: []
