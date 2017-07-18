@@ -18,14 +18,27 @@ const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
 ).toString()));
 
-function vimIsInstalled() {
-  try {
-    execSync('which vim');
-  } catch (err) {
-    return false;
+function whichEditor() {
+
+  const editors = ['vi', 'nano'];
+
+  function checkIsInstalled(editor) {
+    try {
+      execSync('which ' + editor);
+    } catch (err) {
+      return false;
+    }
+
+    return true;
   }
 
-  return true;
+  for (let i = 0; i < editors.length; i++) {
+    if (checkIsInstalled(editors[i])) {
+      return editors[i];
+    }
+  }
+
+  return null;
 }
 
 storjshare_create
@@ -40,6 +53,7 @@ storjshare_create
   .option('--tunnelportmin <port>', 'specify min gateway port')
   .option('--tunnelportmax <port>', 'specify max gateway port')
   .option('--manualforwarding', 'do not use nat traversal strategies')
+  .option('--verbosity <verbosity>', 'specify the logger verbosity')
   .option('--logdir <path>', 'specify the log directory')
   .option('--noedit', 'do not open generated config in editor')
   .option('-o, --outfile <writepath>', 'write config to path')
@@ -84,6 +98,13 @@ if (!storjshare_create.logdir) {
   );
 }
 
+if (storjshare_create.size &&
+    !storjshare_create.size.match(/[0-9]+(T|M|G|K)?B/g)) {
+  console.error('\n Invalid storage size specified: '+
+                storjshare_create.size);
+  process.exit(1);
+}
+
 let exampleConfigPath = path.join(__dirname, '../example/farmer.config.json');
 let exampleConfigString = fs.readFileSync(exampleConfigPath).toString();
 
@@ -110,6 +131,15 @@ function replaceDefaultConfigValue(prop, value) {
     }
   }
 
+let validVerbosities = new RegExp(/^[0-4]$/);
+if (storjshare_create.verbosity &&
+  !validVerbosities.test(storjshare_create.verbosity)) {
+  console.error('\n  * Invalid verbosity.\n  * Accepted values: 4 - DEBUG | \
+3 - INFO | 2 - WARN | 1 - ERROR | 0 - SILENT\n  * Default value of %s \
+will be used.', getDefaultConfigValue('loggerVerbosity').value);
+  storjshare_create.verbosity = null;
+}
+
   prop = prop.split('.').pop();
   exampleConfigString = exampleConfigString.replace(
     toStringReplace(prop, defaultValue.value, defaultValue.type),
@@ -131,7 +161,8 @@ const optionalReplacements = [
   { option: storjshare_create.maxtunnels, name: 'maxTunnels' },
   { option: storjshare_create.tunnelportmin, name: 'tunnelGatewayRange.min' },
   { option: storjshare_create.tunnelportmax, name: 'tunnelGatewayRange.max' },
-  { option: storjshare_create.manualforwarding, name: 'doNotTraverseNat' }
+  { option: storjshare_create.manualforwarding, name: 'doNotTraverseNat' },
+  { option: storjshare_create.verbosity, name: 'loggerVerbosity' }
 ];
 
 optionalReplacements.forEach((repl) => {
@@ -159,7 +190,7 @@ if (!storjshare_create.noedit) {
     // NB: Not all distros ship with vim, so let's use GNU Nano
     editor: process.platform === 'win32'
             ? null
-            : (vimIsInstalled() ? 'vim' : 'nano')
+            : whichEditor()
   }, () => {
     console.log('  ...');
     console.log(`  * use new config: storjshare start --config ${outfile}`);

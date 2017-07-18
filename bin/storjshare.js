@@ -3,8 +3,20 @@
 'use strict';
 
 const storjshare = require('commander');
-const {version} = require('../package');
+const {version, bin} = require('../package');
 const {software: core, protocol} = require('storj-lib').version;
+
+function checkIfValidSubcommand() {
+  if (process.argv.length > 2) {
+    for (var prop in bin) {
+      if (bin[prop].replace('bin/storjshare-','')
+        .replace('.js','') === process.argv[2]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 storjshare
   .version(`daemon: ${version}, core: ${core}, protocol: ${protocol}`)
@@ -20,3 +32,7 @@ storjshare
   .command('killall', 'kills all shares and stops the daemon')
   .command('daemon', 'starts the daemon')
   .parse(process.argv);
+
+if (!checkIfValidSubcommand()) { 
+  storjshare.help(); 
+} 

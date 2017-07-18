@@ -1,5 +1,5 @@
 FROM microsoft/windowsservercore
-MAINTAINER Storj Labs (bill@storj.io)
+MAINTAINER Storj Labs (www.storj.io)
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 ENV NPM_CONFIG_LOGLEVEL info

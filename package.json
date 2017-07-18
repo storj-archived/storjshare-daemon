@@ -1,6 +1,6 @@
 {
   "name": "storjshare-daemon",
-  "version": "3.4.2",
+  "version": "3.5.1",
   "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
   "bin": {
@@ -47,6 +47,10 @@
     {
       "name": "littleskunk",
       "url": "https://github.com/littleskunk"
+    },
+    {
+      "name": "Steve Ashman",
+      "url": "https://github.com/ssa3512"
     }
   ],
   "license": "AGPL-3.0",
@@ -72,7 +76,7 @@
     "pretty-ms": "^2.1.0",
     "rc": "^1.1.6",
     "readable-stream": "^2.2.2",
-    "storj-lib": "^6.6.0",
+    "storj-lib": "^6.7.0",
     "storj-telemetry-reporter": "^5.0.0",
     "strip-json-comments": "^2.0.1",
     "tail": "^1.2.1"
