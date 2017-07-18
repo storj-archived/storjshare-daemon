@@ -126,6 +126,18 @@ describe('module:utils', function() {
 
   });
 
+  describe('#repairConfig', function() {
+
+    it('should convert an unspecified size to bytes', function() {
+      let dummyConfig = {
+        storageAllocation: 1048576
+      };
+      utils.repairConfig(dummyConfig);
+      expect(dummyConfig.storageAllocation).to.equal('1048576B');
+    });
+
+  });
+
   describe('#validateAllocation', function() {
 
     it('should callback null if valid', function(done) {
