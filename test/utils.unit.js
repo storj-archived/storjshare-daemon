@@ -183,7 +183,8 @@ describe('module:utils', function() {
       }, function(err) {
         getFreeSpace.restore();
         getDirectorySize.restore();
-        expect(err.message).to.equal('Invalid storage size');
+        expect(err.message).to.equal(
+          'Invalid storage size: 1024 bytes missing');
         done();
       });
     });
