@@ -5,7 +5,6 @@
 const utils = require('../lib/utils');
 const storj = require('storj-lib');
 const Logger = require('kad-logger-json');
-const Telemetry = require('storj-telemetry-reporter');
 const config = JSON.parse(JSON.stringify(require('../lib/config/farmer')));
 const bytes = require('bytes');
 const processIsManaged = typeof process.send === 'function';
@@ -114,25 +113,6 @@ function updatePercentUsed() {
   });
 }
 
-function sendTelemetryReport() {
-  let telemetryServer = 'https://status.storj.io';
-  let telemetry = new Telemetry(telemetryServer, config.keyPair);
-  let report = {
-    storageAllocated: spaceAllocation,
-    storageUsed: bytes.parse(farmerState.spaceUsed),
-    contactNodeId: config.keyPair.getNodeID(),
-    paymentAddress: config.paymentAddress
-  };
-  telemetry.send(report, (err) => {
-    if (err) {
-      return config.logger.warn('telemetry report rejected, reason: %s',
-                                err.message);
-    }
-    config.logger.info('telemetry report delivered to %s: %j', telemetryServer,
-                       report);
-  });
-}
-
 function updateNtpDelta() {
   storj.utils.getNtpTimeDelta(function(err, delta) {
     if (err) {
@@ -163,8 +143,4 @@ if (processIsManaged) {
 
   sendFarmerState();
   setInterval(sendFarmerState, 10 * 1000); // Update state every 10 secs
-}
-
-if (config.enableTelemetryReporting) {
-  setInterval(sendTelemetryReport, 10 * 60 * 1000);
 }
