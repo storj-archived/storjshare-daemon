@@ -179,8 +179,8 @@ try {
   let currPath = path.dirname(outfile);
   let createIfNotExists = (dir) => {
 	let curr = path.dirname(dir);
-	if (!fs.existsSync(curr)) { createIfNotExists(curr) };
-	if (!fs.existsSync(dir)) { fs.mkdirSync(dir) };
+	if (!fs.existsSync(curr)) { createIfNotExists(curr); }
+	if (!fs.existsSync(dir)) { fs.mkdirSync(dir); }
   };
   createIfNotExists(currPath);
   fs.writeFileSync(outfile, exampleConfigString);
