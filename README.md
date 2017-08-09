@@ -10,18 +10,6 @@ Storj Share Daemon
 Daemon + CLI for farming data on the Storj network, suitable for standalone
 use or inclusion in other packages.
 
-## Installation of Pre-built Binaries
-
-Storj Share Daemon is available as a snap package in the store, installable on
-[supported](https://snapcraft.io/docs/core/install) systems. These packages are
-securely confined and automatically updated.
-
-### Latest Stable Release
-
-```
-snap install storjshare
-```
-
 ## Installation via Arch User Repositories
 
 storjshare daemon is also available for Arch Linux as a package on the AUR as [storjshare-daemon](https://aur.archlinux.org/packages/storjshare-daemon/). Install it via your favourite AUR helper.
