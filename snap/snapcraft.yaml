@@ -10,13 +10,14 @@ confinement: strict
 
 apps:
   storjshare:
-    command: storjshare
+    command: bin/storjshare
     plugs: [network, network-bind, home]
 
 parts:
   storjshare-daemon:
-    source: .
+    source: ..
     plugin: nodejs
-    node-engine: '6.10.0'
+    node-engine: '6.11.2'
+    install: npm install
     build-packages: [git, python, build-essential]
     stage-packages: [nano]
