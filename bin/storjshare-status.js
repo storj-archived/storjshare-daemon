@@ -91,7 +91,7 @@ function prepareJson(shares) {
     json[i].sharedPercent = share.meta.farmerState.percentUsed;
   }
 
-  return json;
+  return JSON.stringify(json);
 }
 
 utils.connectToDaemon(port, function(rpc, sock) {
