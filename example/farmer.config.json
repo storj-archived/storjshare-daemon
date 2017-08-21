@@ -64,8 +64,5 @@
   "storageAllocation": "2GB",
   // Max size of shards that will be accepted and stored
   // Use this and make this lower if you don't have a strong internet connection
-  // "maxShardSize": "100MB",
-  // Periodically report your used and free capacity to Storj Labs to improve
-  // the network - no personally identifiable information is sent
-  "enableTelemetryReporting": true
+  // "maxShardSize": "100MB"
 }
