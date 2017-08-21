@@ -109,7 +109,7 @@ utils.connectToDaemon(port, function(rpc, sock) {
           head: ['cyan', 'bold'],
           border: []
         },
-        colWidths: [45, 9, 10, 10, 9, 15, 9, 10, 9]
+        colWidths: [45, 9, 10, 10, 9, 15, 9, 10, 11]
       });
       shares.forEach((share) => {
         let status = '?';
