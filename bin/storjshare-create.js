@@ -179,6 +179,13 @@ let outfile = path.isAbsolute(storjshare_create.outfile) ?
                 path.join(process.cwd(), storjshare_create.outfile);
 
 try {
+  let currPath = path.dirname(outfile);
+  let createIfNotExists = (dir) => {
+	let curr = path.dirname(dir);
+	if (!fs.existsSync(curr)) { createIfNotExists(curr); }
+	if (!fs.existsSync(dir)) { fs.mkdirSync(dir); }
+  };
+  createIfNotExists(currPath);
   fs.writeFileSync(outfile, exampleConfigString);
 } catch (err) {
   console.log (`\n  failed to write config, reason: ${err.message}`);
