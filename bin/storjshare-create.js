@@ -13,6 +13,7 @@ const stripJsonComments = require('strip-json-comments');
 const storjshare_create = require('commander');
 const {execSync} = require('child_process');
 const utils = require('../lib/utils');
+const touch = require('touch');
 
 const defaultConfig = JSON.parse(stripJsonComments(fs.readFileSync(
   path.join(__dirname, '../example/farmer.config.json')
@@ -84,11 +85,12 @@ if (!storjshare_create.storage) {
 }
 
 if (!storjshare_create.outfile) {
+  const configDir = path.join(homedir(), '.config/storjshare/configs');
   storjshare_create.outfile = path.join(
-    homedir(),
-    '.config/storjshare/configs',
-    storj.KeyPair(storjshare_create.key).getNodeID() + '.json'
+    configDir, storj.KeyPair(storjshare_create.key).getNodeID() + '.json'
   );
+  mkdirp.sync(configDir);
+  touch.sync(storjshare_create.outfile);
 }
 
 if (!storjshare_create.logdir) {
@@ -96,6 +98,7 @@ if (!storjshare_create.logdir) {
     homedir(),
     '.config/storjshare/logs'
   );
+  mkdirp.sync(storjshare_create.logdir);
 }
 
 if (storjshare_create.size &&

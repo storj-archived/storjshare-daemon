@@ -78,7 +78,8 @@
     "readable-stream": "^2.2.2",
     "storj-lib": "^6.8.0",
     "strip-json-comments": "^2.0.1",
-    "tail": "^1.2.1"
+    "tail": "^1.2.1",
+    "touch": "3.1.0"
   },
   "devDependencies": {
     "chai": "^2.2.0",
