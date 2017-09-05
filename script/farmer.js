@@ -11,7 +11,6 @@ const processIsManaged = typeof process.send === 'function';
 
 let spaceAllocation = bytes.parse(config.storageAllocation);
 let farmerState = {
-  bridges: [],
   percentUsed: '...',
   spaceUsed: '...',
   totalPeers: 0,
