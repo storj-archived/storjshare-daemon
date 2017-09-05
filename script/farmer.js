@@ -11,6 +11,7 @@ const processIsManaged = typeof process.send === 'function';
 
 let spaceAllocation = bytes.parse(config.storageAllocation);
 let farmerState = {
+  bridges: [],
   percentUsed: '...',
   spaceUsed: '...',
   totalPeers: 0,
@@ -43,12 +44,12 @@ const farmer = storj.Farmer(config);
 
 config.logger.on('log', () => farmerState.lastActivity = Date.now());
 config.logger.pipe(process.stdout);
-farmer.join((err) => {
-  if (err) {
-    config.logger.error(err.message);
-    process.exit(1);
-  }
+
+farmer.on('bridgeConnected', (bridge) => {
+  config.logger.info('Connected to bridge: %s', bridge.url);
+  farmerState.connectedBridges.push(bridge);
 });
+farmer.connectBridges();
 
 function transportInitialized() {
   return farmer.transport._requiresTraversal !== undefined
