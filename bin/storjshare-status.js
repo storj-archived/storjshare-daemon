@@ -138,13 +138,8 @@ utils.connectToDaemon(port, function(rpc, sock) {
           share.meta.farmerState.ntpStatus.delta);
 
         let contracts = fixContractValue(share.meta.farmerState.contractCount);
-
-        let percentDataReceived = (
-          share.meta.farmerState.dataReceivedCount !== 0 ?
-          Math.round(
-            fixContractValue(share.meta.farmerState.dataReceivedCount) /
-            fixContractValue(share.meta.farmerState.contractCount) * 100
-          ) : 0);
+        let dataReceived = fixContractValue(
+          share.meta.farmerState.dataReceivedCount);
 
         table.push([
           `${share.id}\n  → ${share.config.storagePath}`,
@@ -152,7 +147,7 @@ utils.connectToDaemon(port, function(rpc, sock) {
           prettyMs(share.meta.uptimeMs),
           share.meta.numRestarts || 0,
           share.meta.farmerState.totalPeers || 0,
-          contracts + '\n' + `${percentDataReceived}% received`,
+          contracts + '\n' + `${dataReceived} received`,
           ntpStatus,
           port + '\n' + connectionType,
           share.meta.farmerState.spaceUsed + '\n' +
