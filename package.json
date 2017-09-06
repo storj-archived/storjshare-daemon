@@ -1,6 +1,6 @@
 {
   "name": "storjshare-daemon",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "daemon + process manager for sharing space on the storj network",
   "main": "index.js",
   "bin": {
@@ -69,14 +69,14 @@
     "dnode": "^1.2.2",
     "du": "^0.1.0",
     "editor": "^1.0.0",
-    "fd-diskspace": "git+https://github.com/littleskunk/fd-diskspace#1e07a35e4023a222b10ff5eafcfe8a812097dea2",
+    "diskusage": "^0.2.3",
     "fslogger": "^2.0.1",
     "kad-logger-json": "^0.1.2",
     "mkdirp": "^0.5.1",
     "pretty-ms": "^2.1.0",
     "rc": "^1.1.6",
     "readable-stream": "^2.2.2",
-    "storj-lib": "^7.0.0",
+    "storj-lib": "^7.0.2",
     "strip-json-comments": "^2.0.1",
     "tail": "^1.2.1",
     "touch": "3.1.0"

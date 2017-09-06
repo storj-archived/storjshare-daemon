@@ -12,7 +12,12 @@
   "maxOfferConcurrency": 3,
   // If the seedList is empty, use this bridge to discover seeds
   // Following a transfer, also send an exchange report to this bridge
-  "bridgeUri": "https://api.storj.io",
+  "bridges":[
+    {
+      "url": "https://api.storj.io",
+      "extendedKey": "xpub6AHweYHAxk1EhJSBctQD1nLWPog6Sy2eTpKQLExR1hfzTyyZQWvU4EYNXv1NJN7GpLYXnDLt4PzN874g6zSjAQdFCHZN7U7nbYKYVDUzD42"
+    }
+  ],
   // Known preferred seeds in form of a storj URI
   // Example: "storj://[ip.or.hostname]:[port]/[nodeid]"
   "seedList": [],

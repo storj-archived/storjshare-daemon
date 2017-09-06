@@ -43,12 +43,18 @@ const farmer = storj.Farmer(config);
 
 config.logger.on('log', () => farmerState.lastActivity = Date.now());
 config.logger.pipe(process.stdout);
+
 farmer.join((err) => {
   if (err) {
     config.logger.error(err.message);
     process.exit(1);
   }
+})
+farmer.on('bridgeConnected', (bridge) => {
+  config.logger.info('Connected to bridge: %s', bridge.url);
 });
+farmer.runSpaceCheck(); // Check if we can accept offers
+farmer.connectBridges();
 
 function transportInitialized() {
   return farmer.transport._requiresTraversal !== undefined

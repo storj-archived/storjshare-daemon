@@ -340,6 +340,19 @@ storjshare start --config path/to/config.json
   * starting share with config at path/to/config.json
 ```
 
+#### Updating storjshare and restoring sessions
+
+If you want to upgrade storjshare you can save your current session and
+reload it after updating
+
+```
+storjshare save
+storjshare killall
+npm install -g storjshare-daemon
+storjshare daemon &
+storjshare load
+```
+
 ## License
 
 Storj Share - Daemon + CLI for farming data on the Storj network.  
