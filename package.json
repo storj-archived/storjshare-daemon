@@ -69,7 +69,7 @@
     "dnode": "^1.2.2",
     "du": "^0.1.0",
     "editor": "^1.0.0",
-    "fd-diskspace": "git+https://github.com/littleskunk/fd-diskspace#c339b792a3fa7b6bb3af6f004b9873f270ce729b",
+    "fd-diskspace": "git+https://github.com/littleskunk/fd-diskspace#1e07a35e4023a222b10ff5eafcfe8a812097dea2",
     "fslogger": "^2.0.1",
     "kad-logger-json": "^0.1.2",
     "mkdirp": "^0.5.1",
