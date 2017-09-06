@@ -46,7 +46,6 @@ config.logger.pipe(process.stdout);
 
 farmer.on('bridgeConnected', (bridge) => {
   config.logger.info('Connected to bridge: %s', bridge.url);
-  farmerState.connectedBridges.push(bridge);
 });
 farmer.runSpaceCheck(); // Check if we can accept offers
 farmer.connectBridges();

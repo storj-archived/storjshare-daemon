@@ -14,8 +14,8 @@
   // Following a transfer, also send an exchange report to this bridge
   "bridges":[
     {
-      url: 'api.storj.io',
-      extendedKey: 'xpub6AHweYHAxk1EhJSBctQD1nLWPog6Sy2eTpKQLExR1hfzTyyZQWvU4EYNXv1NJN7GpLYXnDLt4PzN874g6zSjAQdFCHZN7U7nbYKYVDUzD42'
+      "url": "api.storj.io",
+      "extendedKey": "xpub6AHweYHAxk1EhJSBctQD1nLWPog6Sy2eTpKQLExR1hfzTyyZQWvU4EYNXv1NJN7GpLYXnDLt4PzN874g6zSjAQdFCHZN7U7nbYKYVDUzD42"
     }
   ],
   // Known preferred seeds in form of a storj URI
