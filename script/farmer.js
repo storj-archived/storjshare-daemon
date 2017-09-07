@@ -11,6 +11,8 @@ const processIsManaged = typeof process.send === 'function';
 
 let spaceAllocation = bytes.parse(config.storageAllocation);
 let farmerState = {
+  bridges: {},
+  bridgesConnectionStatus: 0,
   percentUsed: '...',
   spaceUsed: '...',
   totalPeers: 0,
@@ -51,10 +53,21 @@ farmer.join((err) => {
   }
 })
 farmer.on('bridgeConnected', (bridge) => {
+  farmerState.bridges[bridge.extendedKey] = bridge;
   config.logger.info('Connected to bridge: %s', bridge.url);
 });
 farmer.runSpaceCheck(); // Check if we can accept offers
 farmer.connectBridges();
+farmer.on('bridgesConnecting', function() {
+  farmerState.bridgesConnectionStatus = 1;
+});
+farmer.on('bridgeChallenge', (bridge) => {
+  farmerState.bridgesConnectionStatus = 2;
+});
+farmer.on('bridgesConnected', function() {
+  farmerState.bridgesConnectionStatus = 3;
+});
+
 
 function transportInitialized() {
   return farmer.transport._requiresTraversal !== undefined
