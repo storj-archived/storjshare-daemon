@@ -49,7 +49,8 @@ if (storjshare_status.remote) {
 
 // Prepare json formatted status for each share
 function prepareJson(shares) {
-  /*jshint maxcomplexity:7 */
+  /*jshint maxcomplexity:11 */
+  /*jshint maxstatements:23 */
   let json = [];
 
   for (let i = 0; i < shares.length; i++) {
@@ -89,13 +90,31 @@ function prepareJson(shares) {
     json[i].port = share.meta.farmerState.portStatus.listenPort;
     json[i].shared = share.meta.farmerState.spaceUsed;
     json[i].sharedPercent = share.meta.farmerState.percentUsed;
+
+    var bridgeCxStat = share.meta.farmerState.bridgesConnectionStatus;
+    switch (bridgeCxStat) {
+      case 0:
+        json[i].bridgeConnectionStatus = 'disconnected';
+        break;
+      case 1:
+        json[i].bridgeConnectionStatus = 'connecting';
+        break;
+      case 2:
+        json[i].bridgeConnectionStatus = 'confirming';
+        break;
+      case 3:
+        json[i].bridgeConnectionStatus = 'connected';
+        break;
+      default:
+        break;
+    }
   }
 
   return JSON.stringify(json);
 }
 
 utils.connectToDaemon(port, function(rpc, sock) {
-  /*jshint maxcomplexity:7 */
+  /*jshint maxcomplexity:10 */
   rpc.status(function(err, shares) {
     if (storjshare_status.json) {
       // Print out json formatted share statuses
@@ -104,12 +123,12 @@ utils.connectToDaemon(port, function(rpc, sock) {
     } else {
       let table = new Table({
         head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-          'Offers', 'Delta', 'Port', 'Shared'],
+          'Offers', 'Delta', 'Port', 'Shared', 'Bridges'],
         style: {
           head: ['cyan', 'bold'],
           border: []
         },
-        colWidths: [45, 9, 10, 10, 9, 15, 9, 10, 11]
+        colWidths: [45, 9, 10, 10, 9, 15, 9, 10, 11, 14]
       });
       shares.forEach((share) => {
         let status = '?';
@@ -141,6 +160,25 @@ utils.connectToDaemon(port, function(rpc, sock) {
         let dataReceived = fixContractValue(
           share.meta.farmerState.dataReceivedCount);
 
+        var bridgeCxStat = share.meta.farmerState.bridgesConnectionStatus;
+        var bridgeCxString = '...';
+        switch (bridgeCxStat) {
+          case 0:
+            bridgeCxString = colors.gray('disconnected');
+            break;
+          case 1:
+            bridgeCxString = colors.yellow('connecting');
+            break;
+          case 2:
+            bridgeCxString = colors.orange('confirming');
+            break;
+          case 3:
+            bridgeCxString = colors.green('connected');
+            break;
+          default:
+            break;
+        }
+
         table.push([
           `${share.id}\n  → ${share.config.storagePath}`,
           status,
@@ -151,7 +189,8 @@ utils.connectToDaemon(port, function(rpc, sock) {
           ntpStatus,
           port + '\n' + connectionType,
           share.meta.farmerState.spaceUsed + '\n' +
-            `(${share.meta.farmerState.percentUsed}%)`
+            `(${share.meta.farmerState.percentUsed}%)`,
+          bridgeCxString
         ]);
       });
       console.log('\n' + table.toString());
