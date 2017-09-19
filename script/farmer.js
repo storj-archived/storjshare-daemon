@@ -56,7 +56,6 @@ farmer.on('bridgeConnected', (bridge) => {
   farmerState.bridges[bridge.extendedKey] = bridge;
   config.logger.info('Connected to bridge: %s', bridge.url);
 });
-farmer.runSpaceCheck(); // Check if we can accept offers
 farmer.connectBridges();
 farmer.on('bridgesConnecting', function() {
   farmerState.bridgesConnectionStatus = 1;
