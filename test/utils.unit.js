@@ -160,47 +160,6 @@ describe('module:utils', function() {
       });
     });
 
-    it('should callback error if cannot get size', function(done) {
-      let getFreeSpace = sinon.stub(
-        utils,
-        'getFreeSpace'
-      ).callsArgWith(1, null, 1024);
-      let getDirectorySize = sinon.stub(
-        utils,
-        'getDirectorySize'
-      ).callsArgWith(1, new Error('Failed to get size'));
-      utils.validateAllocation({
-        storageAllocation: '512B',
-        storagePath: 'some/directory/path'
-      }, function(err) {
-        getFreeSpace.restore();
-        getDirectorySize.restore();
-        expect(err.message).to.equal('Failed to get size');
-        done();
-      });
-    });
-
-    it('should callback error if invalid', function(done) {
-      let getFreeSpace = sinon.stub(
-        utils,
-        'getFreeSpace'
-      ).callsArgWith(1, null, 512);
-      let getDirectorySize = sinon.stub(
-        utils,
-        'getDirectorySize'
-      ).callsArgWith(1, null, 512);
-      utils.validateAllocation({
-        storageAllocation: '2048B',
-        storagePath: 'some/directory/path'
-      }, function(err) {
-        getFreeSpace.restore();
-        getDirectorySize.restore();
-        expect(err.message).to.equal(
-          'Invalid storage size: 1024 bytes missing');
-        done();
-      });
-    });
-
   });
 
   describe('#portIsAvailable', function() {
