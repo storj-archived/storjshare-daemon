@@ -33,10 +33,34 @@ describe('module:utils', function() {
 
   describe('#isValidEthereumAddress', function() {
 
-    it('should return true for valid mainnet', function() {
+    it('should return true for checksumed address', function() {
       expect(utils.isValidEthereumAddress(
         '0xC2D7CF95645D33006175B78989035C7c9061d3F9'
       )).to.equal(true);
+    });
+
+    it('should return true for normalized address', function() {
+      expect(utils.isValidEthereumAddress(
+        '0xc2d7cf95645d33006175b78989035c7c9061d3f9'
+      )).to.equal(true);
+    });
+
+    it('should return true for uppercase address', function() {
+      expect(utils.isValidEthereumAddress(
+        '0xC2D7CF95645D33006175B78989035C7C9061D3F9'
+      )).to.equal(true);
+    });
+
+    it('should return false for invalid checksum', function() {
+      expect(utils.isValidEthereumAddress(
+        '0xC2D7Cf95645D33006175B78989035C7c9061d3F9'
+      )).to.equal(false);
+    });
+
+    it('should return false for public key hash digest', function() {
+      expect(utils.isValidEthereumAddress(
+        'C2D7CF95645D33006175B78989035C7c9061d3F9'
+      )).to.equal(false);
     });
 
     it('should return false for invalid address', function() {
