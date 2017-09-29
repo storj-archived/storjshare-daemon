@@ -48,21 +48,6 @@ describe('class:RPC', function() {
       });
     });
 
-    it('should fall through is unsafe flag', function(done) {
-      let _RPC = proxyquire('../lib/api', {
-        os: {
-          cpus: sinon.stub().returns([])
-        }
-      });
-      let rpc = new _RPC({ loggerVerbosity: 0 });
-      rpc.start('path/to/config', function(err) {
-        expect(err.message).to.equal(
-          'failed to read config at path/to/config'
-        );
-        done();
-      }, true);
-    });
-
     it('should callback error if no config given', function(done) {
       let _RPC = proxyquire('../lib/api', {
         fs: {
