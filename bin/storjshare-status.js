@@ -80,7 +80,7 @@ function prepareJson(shares) {
     json[i].uptime = prettyMs(share.meta.uptimeMs);
     json[i].restarts = share.meta.numRestarts || 0;
     json[i].peers = share.meta.farmerState.totalPeers || 0;
-    json[i].offers = fixContractValue(
+    json[i].allocs = fixContractValue(
       share.meta.farmerState.contractCount
     );
     json[i].dataReceivedCount = fixContractValue(
@@ -123,7 +123,7 @@ utils.connectToDaemon(port, function(rpc, sock) {
     } else {
       let table = new Table({
         head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
-          'Offers', 'Delta', 'Port', 'Shared', 'Bridges'],
+          'Allocs', 'Delta', 'Port', 'Shared', 'Bridges'],
         style: {
           head: ['cyan', 'bold'],
           border: []
