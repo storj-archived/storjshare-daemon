@@ -67,7 +67,6 @@ farmer.on('bridgesConnected', function() {
   farmerState.bridgesConnectionStatus = 3;
 });
 
-
 function transportInitialized() {
   return farmer.transport._requiresTraversal !== undefined
     && farmer.transport._portOpen !== undefined;
