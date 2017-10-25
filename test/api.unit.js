@@ -321,6 +321,47 @@ describe('class:RPC', function() {
       });
     });
 
+
+    it('should reset stoped share status', function (done) {
+      let rpc = new RPC({loggerVerbosity: 0});
+
+      let _proc = {
+        kill: sinon.stub()
+      };
+
+      let meta = {
+        uptimeMs: -1,
+        numRestarts: -1,
+        peers: -1,
+        farmerState: {
+          bridgesConnectionStatus: -1,
+          totalPeers: -1,
+          ntpStatus: {
+            delta: -1
+          }
+        }
+      };
+
+      rpc.shares.set('test', {
+        process: _proc,
+        readyState: 1,
+        meta: meta
+      });
+
+      rpc.stop('test', function () {
+        expect(rpc.shares.get('test').meta.uptimeMs).to.equal(0);
+        expect(rpc.shares.get('test').meta.numRestarts).to.equal(0);
+        expect(rpc.shares.get('test').meta.peers).to.equal(0);
+        expect(rpc.shares.get('test')
+          .meta.farmerState.bridgesConnectionStatus).to.equal(0);
+        expect(rpc.shares.get('test')
+          .meta.farmerState.totalPeers).to.equal(0);
+        expect(rpc.shares.get('test')
+          .meta.farmerState.ntpStatus.delta).to.equal(0);
+        done();
+      });
+    });
+
   });
 
   describe('#restart', function() {
