@@ -9,7 +9,7 @@ const utils = require('../lib/utils');
 const storjshare_save = require('commander');
 
 storjshare_save
-  .description('saves a snapshot of shares')
+  .description('saves a snapshot of nodes')
   .option('-s, --snapshot <path>', 'path to write the snapshot file')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')

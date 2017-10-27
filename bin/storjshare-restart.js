@@ -7,9 +7,9 @@ const utils = require('../lib/utils');
 const storjshare_restart = require('commander');
 
 storjshare_restart
-  .description('restarts the running share specified')
-  .option('-i, --nodeid <nodeid>', 'id of the running share')
-  .option('-a, --all', 'restart all running shares')
+  .description('restarts the running node specified')
+  .option('-i, --nodeid <nodeid>', 'id of the running node')
+  .option('-a, --all', 'restart all running nodes')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
   .parse(process.argv);
@@ -30,7 +30,7 @@ if (storjshare_restart.remote) {
 
 utils.connectToDaemon(port, function(rpc, sock) {
   if (storjshare_restart.all) {
-    console.info('\n  * restarting all managed shares');
+    console.info('\n  * restarting all managed nodes');
   }
 
   rpc.restart(storjshare_restart.nodeid || '*', (err) => {
@@ -42,7 +42,7 @@ utils.connectToDaemon(port, function(rpc, sock) {
     if (storjshare_restart.nodeid) {
       console.info(`\n  * share ${storjshare_restart.nodeid} restarted`);
     } else {
-      console.info('\n  * all shares restarted successfully');
+      console.info('\n  * all nodes restarted successfully');
     }
 
     sock.end();

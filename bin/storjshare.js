@@ -26,10 +26,10 @@ storjshare
   .command('status', 'check status of node(s)')
   .command('logs', 'tail the logs for a node')
   .command('create', 'create a new configuration')
-  .command('save', 'snapshot the currently managed shares')
-  .command('load', 'load a snapshot of previously managed shares')
+  .command('save', 'snapshot the currently managed node')
+  .command('load', 'load a snapshot of previously managed nodes')
   .command('destroy', 'kills the farming node')
-  .command('killall', 'kills all shares and stops the daemon')
+  .command('killall', 'kills all nodes and stops the daemon')
   .command('daemon', 'starts the daemon')
   .parse(process.argv);
 

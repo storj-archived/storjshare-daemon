@@ -9,9 +9,9 @@ const config = require('../lib/config/daemon');
 const storjshare_start = require('commander');
 
 storjshare_start
-  .description('starts a new network share')
+  .description('starts a new network node')
   .option('-c, --config <path>', 'specify the configuration path')
-  .option('-d, --detached', 'run share without management from daemon')
+  .option('-d, --detached', 'run node without management from daemon')
   .option('-u, --unsafe', 'ignore system resource guards')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
@@ -49,10 +49,10 @@ function runManagedShare() {
   utils.connectToDaemon(port, function(rpc, sock) {
     rpc.start(configPath, (err) => {
       if (err) {
-        console.error(`\n  failed to start share, reason: ${err.message}`);
+        console.error(`\n  failed to start node, reason: ${err.message}`);
         return sock.end();
       }
-      console.info(`\n  * starting share with config at ${configPath}`);
+      console.info(`\n  * starting node with config at ${configPath}`);
       sock.end();
     }, storjshare_start.unsafe);
   }, address);

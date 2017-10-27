@@ -7,7 +7,7 @@ const utils = require('../lib/utils');
 const storjshare_killall = require('commander');
 
 storjshare_killall
-  .description('destroys all running shares and stop daemon')
+  .description('destroys all running nodes and stop daemon')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
   .parse(process.argv);

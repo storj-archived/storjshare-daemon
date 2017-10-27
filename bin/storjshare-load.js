@@ -9,7 +9,7 @@ const utils = require('../lib/utils');
 const storjshare_load = require('commander');
 
 storjshare_load
-  .description('loads a snapshot of shares and starts all of them')
+  .description('loads a snapshot of nodes and starts all of them')
   .option('-s, --snapshot <path>', 'path to load the snapshot file')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
