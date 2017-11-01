@@ -3,7 +3,7 @@ MAINTAINER Storj Labs (www.storj.io)
 
 RUN apt-get update && \
 apt-get -y install apt-utils curl && \
-curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
 apt-get -y install build-essential git libssl-dev nodejs python vim && \
 npm install --global storjshare-daemon --unsafe-perm && \
 apt-get --purge remove -y apt-utils build-essential curl git libssl-dev python vim && \

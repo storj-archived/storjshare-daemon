@@ -19,7 +19,7 @@ storjshare daemon is also available for Arch Linux as a package on the AUR as [s
 Make sure you have the following prerequisites installed:
 
 * Git
-* Node.js LTS (6.11.x)
+* Node.js LTS (8.x.x)
 * NPM
 * Python 2.7
 * GCC/G++/Make

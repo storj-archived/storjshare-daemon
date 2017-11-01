@@ -17,7 +17,7 @@ parts:
   storjshare-daemon:
     source-subdir: ..
     plugin: nodejs
-    node-engine: '6.11.3'
+    node-engine: '8.9.0'
     install: npm install
     build-packages: [git, python, build-essential]
     stage-packages: [nano]
