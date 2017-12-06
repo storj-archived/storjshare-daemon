@@ -127,7 +127,7 @@ describe('class:RPC', function() {
       });
       rpc.start('path/to/config', function(err) {
         expect(err.message).to.equal(
-          'share 2c9e76f298cb3a023785be8985205d371580ba27 is already running'
+          'node 2c9e76f298cb3a023785be8985205d371580ba27 is already running'
         );
         done();
       });
@@ -301,7 +301,7 @@ describe('class:RPC', function() {
     it('should callback error if no share', function(done) {
       let rpc = new RPC({ loggerVerbosity: 0 });
       rpc.stop('test', function(err) {
-        expect(err.message).to.equal('share test is not running');
+        expect(err.message).to.equal('node test is not running');
         done();
       });
     });
@@ -441,7 +441,7 @@ describe('class:RPC', function() {
       let rpc = new RPC({ loggerVerbosity: 0 });
       rpc.shares.set('test', { process: null });
       rpc.destroy('test', function(err) {
-        expect(err.message).to.equal('share test is not running');
+        expect(err.message).to.equal('node test is not running');
         done();
       });
     });
