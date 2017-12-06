@@ -1,4 +1,4 @@
-FROM node:boron-alpine
+FROM node:alpine
 MAINTAINER Storj Labs (storj.io)
 
 RUN apk add --no-cache bash g++ git make openssl-dev python vim && \

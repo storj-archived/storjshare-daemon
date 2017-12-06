@@ -9,7 +9,7 @@ Replace the values below using the output from `storjshare --version`.
 Replace the values below using the output from `node --version`.
 
 ```
-6.9.1
+v8.x.x
 ```
 
 ### Expected Behavior

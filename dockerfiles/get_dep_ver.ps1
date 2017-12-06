@@ -17,7 +17,7 @@ $version = $version.Substring($pos+1)
 Write-Host "Found Latest Version of Git for Windows - ${version}"
 $env:MINGIT_VERSION = "${version}"
 
-$node_base_ver = 6
+$node_base_ver = 8
 $arch_ver = "-x64"
 $uri = "https://nodejs.org/dist/latest-v${node_base_ver}.x/"
 $site = invoke-webrequest $uri -DisableKeepAlive -UseBasicParsing

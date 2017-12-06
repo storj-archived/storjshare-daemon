@@ -75,7 +75,6 @@
     "mkdirp": "^0.5.1",
     "pretty-ms": "^3.0.1",
     "rc": "^1.2.2",
-    "readable-stream": "^2.3.3",
     "storj-lib": "^8.4.2",
     "strip-json-comments": "^2.0.1",
     "tail": "^1.2.3",
