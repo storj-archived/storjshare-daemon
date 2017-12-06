@@ -7,8 +7,8 @@ const utils = require('../lib/utils');
 const storjshare_stop = require('commander');
 
 storjshare_stop
-  .description('stops the running share specified')
-  .option('-i, --nodeid <nodeid>', 'id of the running share')
+  .description('stops the running node specified')
+  .option('-i, --nodeid <nodeid>', 'id of the running node')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
   .parse(process.argv);

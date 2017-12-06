@@ -43,11 +43,11 @@ function whichEditor() {
 }
 
 storjshare_create
-  .description('generates a new share configuration')
+  .description('generates a new node configuration')
   .option('--storj <addr>', 'specify the STORJ address (required)')
   .option('--key <privkey>', 'specify the private key')
   .option('--storage <path>', 'specify the storage path')
-  .option('--size <maxsize>', 'specify share size (ex: 10GB, 1TB)')
+  .option('--size <maxsize>', 'specify node size (ex: 10GB, 1TB)')
   .option('--rpcport <port>', 'specify the rpc port number')
   .option('--rpcaddress <addr>', 'specify the rpc address')
   .option('--maxtunnels <tunnels>', 'specify the max tunnels')

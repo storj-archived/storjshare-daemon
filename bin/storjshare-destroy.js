@@ -7,8 +7,8 @@ const utils = require('../lib/utils');
 const storjshare_destroy = require('commander');
 
 storjshare_destroy
-  .description('stops a running share and removes it from status')
-  .option('-i, --nodeid <nodeid>', 'id of the managed share')
+  .description('stops a running node and removes it from status')
+  .option('-i, --nodeid <nodeid>', 'id of the managed node')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
   .parse(process.argv);

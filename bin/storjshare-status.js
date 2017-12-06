@@ -10,11 +10,11 @@ const colors = require('colors/safe');
 const storjshare_status = require('commander');
 
 storjshare_status
-  .description('prints the status of all managed shares')
+  .description('prints the status of all managed nodes')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
   .option('-j, --json',
-    'JSON formatted status of all managed shares')
+    'JSON formatted status of all managed nodes')
   .parse(process.argv);
 
 function getColoredValue(status, value) {

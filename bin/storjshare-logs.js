@@ -12,8 +12,8 @@ const path = require('path');
 const FsLogger = require('fslogger');
 
 storjshare_logs
-  .description('tails the logs for the given share id')
-  .option('-i, --nodeid <nodeid>', 'id of the running share')
+  .description('tails the logs for the given node id')
+  .option('-i, --nodeid <nodeid>', 'id of the running node')
   .option('-l, --lines <num>', 'lines back to print')
   .option('-r, --remote <hostname:port>',
     'hostname and optional port of the daemon')
