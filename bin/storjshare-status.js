@@ -122,7 +122,7 @@ utils.connectToDaemon(port, function(rpc, sock) {
       console.log(json);
     } else {
       let table = new Table({
-        head: ['Share', 'Status', 'Uptime', 'Restarts', 'Peers',
+        head: ['Node', 'Status', 'Uptime', 'Restarts', 'Peers',
           'Allocs', 'Delta', 'Port', 'Shared', 'Bridges'],
         style: {
           head: ['cyan', 'bold'],
