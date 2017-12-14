@@ -101,11 +101,11 @@ utils.connectToDaemon(port, function(rpc, sock) {
     }
 
     try {
-      if (!fs.statSync(logFileDir).isDirectory()) {
-        logFileDir = path.dirname(logFileDir);
-      }
-    } catch (err) {
+      fs.statSync(logFileDir).isDirectory();
       logFileDir = path.dirname(logFileDir);
+    } catch (err) {
+       console.error(`\n  invalid node id for ${storjshare_logs.nodeid}`);
+       return sock.end();
     }
 
     const fslogger = new FsLogger(logFileDir, storjshare_logs.nodeid);
