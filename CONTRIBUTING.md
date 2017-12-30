@@ -1,7 +1,7 @@
 Contributing
 ============
 
-Want to contribute, but not sure where to start? Check out our [issue board](http://waffle.io/storj/core)! 
+Want to contribute, but not sure where to start? Check out our [issue board](https://waffle.io/storj/core)! 
 
 Contributor License Agreement
 -----------------------------
