@@ -20,10 +20,13 @@ storjshare_status
 function getColoredValue(status, value) {
   switch (status) {
     case 0:
+      // good to go
       return colors.green(value);
     case 1:
-      return colors.yellow(value);
+      //mark Tunnel Connections as bad
+      return colors.red(value);
     case 2:
+      //Not Connected - Private NET
       return colors.red(value);
     default:
       return value;
