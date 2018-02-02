@@ -34,14 +34,14 @@
   "doNotTraverseNat": false,
   // Maximum number of tunnels to provide to the network
   // Tunnels help nodes with restrictive network configurations participate
-  "maxTunnels": 3,
+  "maxTunnels": 0,
   // Maximum number of concurrent connections to allow
   "maxConnections": 150,
   // If providing tunnels, the starting and ending port range to open for
   // them
   "tunnelGatewayRange": {
-    "min": 4001,
-    "max": 4003
+    "min": 0,
+    "max": 0
   },
   // Number of times to retry joining the network and the wait time between
   "joinRetry": {
