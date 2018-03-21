@@ -79,6 +79,8 @@ npm install --global windows-build-tools
 
 ---
 
+### Install ###
+
 Once build dependencies have been installed for your platform, install the
 package globally using Node Package Manager:
 
