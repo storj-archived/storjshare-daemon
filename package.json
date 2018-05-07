@@ -76,7 +76,7 @@
     "moment": "^2.19.3",
     "pretty-ms": "^3.0.1",
     "rc": "^1.2.2",
-    "storj-lib": "^8.7.2",
+    "storj-lib": "storj/core#914bbb500c8584be344635b4076b1f57c3d0b1ea",
     "strip-json-comments": "^2.0.1",
     "tail": "^1.2.3",
     "touch": "3.1.0",
